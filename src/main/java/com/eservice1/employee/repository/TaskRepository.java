@@ -1,0 +1,13 @@
+package com.eservice1.employee.repository;
+
+import com.eservice1.employee.entity.Task;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface TaskRepository
+        extends JpaRepository<Task, Long> {
+
+    List<Task> findByEmployeeId(Long employeeId);
+
+}

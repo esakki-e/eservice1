@@ -8,18 +8,25 @@ import com.eservice1.submission.entity.RequestStatus;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.stereotype.Service;
 
+import com.eservice1.employee.entity.Priority;
+import com.eservice1.employee.entity.Task;
+import com.eservice1.employee.entity.TaskStatus;
+import com.eservice1.employee.repository.TaskRepository;
 @Service
 public class CustomerRequestService {
 
     private final CustomerRequestRepository requestRepository;
     private final PortalServiceRepository serviceRepository;
 
+    private final TaskRepository taskRepository;
     public CustomerRequestService(
             CustomerRequestRepository requestRepository,
-            PortalServiceRepository serviceRepository) {
+            PortalServiceRepository serviceRepository,
+            TaskRepository taskRepository) {
 
         this.requestRepository = requestRepository;
         this.serviceRepository = serviceRepository;
+        this.taskRepository = taskRepository;
     }
 
     public CustomerRequest createRequest(CustomerRequestDTO dto) {
@@ -35,6 +42,17 @@ public class CustomerRequestService {
         request.setService(service);
         request.setStatus(RequestStatus.PENDING);
 
-        return requestRepository.save(request);
+        CustomerRequest savedRequest =
+                requestRepository.save(request);
+
+        Task task = new Task();
+
+        task.setRequest(savedRequest);
+        task.setStatus(TaskStatus.PENDING);
+        task.setPriority(Priority.MEDIUM);
+
+        taskRepository.save(task);
+
+        return savedRequest;
     }
 }
