@@ -5,6 +5,8 @@ import com.eservice1.user.entity.User;
 import com.eservice1.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import com.eservice1.user.dto.AuthResponse;
+
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
@@ -25,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public User login(
+    public AuthResponse login(
             @RequestBody LoginRequest request) {
 
         return userService.login(request);

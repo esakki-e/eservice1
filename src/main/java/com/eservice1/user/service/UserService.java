@@ -6,15 +6,23 @@ import com.eservice1.user.entity.User;
 import com.eservice1.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+
+import com.eservice1.config.JwtService;
+import com.eservice1.user.dto.AuthResponse;
+
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
 
+    private final JwtService jwtService;
+
     public UserService(
-            UserRepository userRepository) {
+            UserRepository userRepository,
+            JwtService jwtService) {
 
         this.userRepository = userRepository;
+        this.jwtService = jwtService;
     }
 
     public User register(User user) {
@@ -22,7 +30,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public User login(LoginRequest request) {
+    public AuthResponse login(LoginRequest request) {
 
         User user =
                 userRepository.findByPhoneNumber(
@@ -37,9 +45,13 @@ public class UserService {
             );
         }
 
-        return user;
-    }
+        String token =
+                jwtService.generateToken(
+                        user.getPhoneNumber()
+                );
 
+        return new AuthResponse(token);
+    }
     public User createOwner() {
 
         User owner = new User();
