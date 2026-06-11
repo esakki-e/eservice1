@@ -57,9 +57,13 @@ public class JwtService {
                     .build()
                     .parseSignedClaims(token);
 
+            System.out.println("TOKEN IS VALID");
+
             return true;
 
         } catch (Exception e) {
+
+            e.printStackTrace();
 
             return false;
         }
