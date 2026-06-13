@@ -22,4 +22,14 @@ public class PortalServiceService {
     public List<PortalService> getAll() {
         return repository.findAll();
     }
+
+    public void delete(Long id) {
+        repository.deleteById(id);
+    }
+
+    public PortalService getById(Long id) {
+        return repository.findById(id)
+                .orElseThrow();
+    }
+
 }

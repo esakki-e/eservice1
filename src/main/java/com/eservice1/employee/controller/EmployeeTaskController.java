@@ -4,8 +4,11 @@ import com.eservice1.employee.entity.Priority;
 import com.eservice1.employee.entity.Task;
 import com.eservice1.employee.service.TaskService;
 import org.springframework.web.bind.annotation.*;
-
+import org.springframework.security.core.Authentication;
 import java.util.List;
+
+
+import org.springframework.web.bind.annotation.RequestBody;
 
 @RestController
 @RequestMapping("/employee/tasks")
@@ -17,6 +20,19 @@ public class EmployeeTaskController {
             TaskService taskService) {
 
         this.taskService = taskService;
+    }
+
+    @PostMapping
+    public Task createTask(
+            @RequestBody Task task) {
+
+        return taskService.createTask(task);
+    }
+
+    @GetMapping
+    public List<Task> getAllTasks() {
+
+        return taskService.getAllTasks();
     }
 
     @GetMapping("/{employeeId}")
@@ -59,6 +75,16 @@ public class EmployeeTaskController {
         return taskService.assignEmployee(
                 taskId,
                 employeeId
+        );
+    }
+    @PostMapping("/{requestId}/self-assign")
+    public Task selfAssign(
+            @PathVariable Long requestId,
+            Authentication authentication) {
+
+        return taskService.selfAssign(
+                requestId,
+                authentication.getName()
         );
     }
 }

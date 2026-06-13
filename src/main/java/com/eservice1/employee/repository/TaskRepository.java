@@ -10,4 +10,5 @@ public interface TaskRepository
 
     List<Task> findByEmployeeId(Long employeeId);
 
+    Task findByRequestId(Long requestId);
 }

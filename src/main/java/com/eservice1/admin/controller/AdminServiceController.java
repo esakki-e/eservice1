@@ -25,6 +25,33 @@ public class AdminServiceController {
     public List<PortalService> getAllServices() {
         return service.getAll();
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteService(@PathVariable Long id) {
+        service.delete(id);
+    }
+    @PutMapping("/{id}")
+    public PortalService updateService(
+            @PathVariable Long id,
+            @RequestBody PortalService updatedService) {
+
+        PortalService serviceToUpdate =
+                service.getById(id);
+
+        serviceToUpdate.setServiceName(
+                updatedService.getServiceName()
+        );
+
+        serviceToUpdate.setDescription(
+                updatedService.getDescription()
+        );
+
+        serviceToUpdate.setActive(
+                updatedService.getActive()
+        );
+
+        return service.save(serviceToUpdate);
+    }
 }
 
 

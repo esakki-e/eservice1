@@ -9,6 +9,13 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import org.springframework.security.config.http.SessionCreationPolicy;
+
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
 @Configuration
 public class SecurityConfig {
 
@@ -18,6 +25,7 @@ public class SecurityConfig {
             JwtFilter jwtFilter) {
 
         this.jwtFilter = jwtFilter;
+
     }
 
     @Bean
@@ -26,8 +34,8 @@ public class SecurityConfig {
             throws Exception {
 
         http
+                .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
-
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(
                                 SessionCreationPolicy.STATELESS
@@ -36,12 +44,44 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers(
-                                "/auth/**"
-                        ).permitAll()
+                        .requestMatchers("/auth/**")
+                        .permitAll()
+                        .requestMatchers("/documents/download/**")
+                        .permitAll()
+                        //.requestMatchers("/admin/**")
+                        //.hasAuthority("OWNER")
 
+                        //.requestMatchers("/employees/**")
+                        //.hasAuthority("OWNER")
+
+                        .requestMatchers("/admin/**")
+                        .hasAnyAuthority(
+                                "OWNER",
+                                "EMPLOYEE"
+                        )
+
+                        .requestMatchers("/users/**")
+                        .hasAuthority("OWNER")
+
+                        .requestMatchers("/employees/**")
+                        .hasAnyAuthority(
+                                "OWNER",
+                                "EMPLOYEE"
+                        )
+
+                        .requestMatchers("/employee/**")
+                        .hasAnyAuthority(
+                                "OWNER",
+                                "EMPLOYEE"
+                        )
+                        .requestMatchers("/requests/**")
+                        .permitAll()
+                        .requestMatchers(
+                                "/services/**"
+                        ).permitAll()
                         .anyRequest()
                         .authenticated()
+
                 );
         http.addFilterBefore(
                 jwtFilter,
@@ -49,5 +89,41 @@ public class SecurityConfig {
         );
 
         return http.build();
+    }
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration configuration =
+                new CorsConfiguration();
+
+        configuration.setAllowedOrigins(
+                List.of("http://localhost:5173")
+        );
+
+        configuration.setAllowedMethods(
+                List.of(
+                        "GET",
+                        "POST",
+                        "PUT",
+                        "DELETE",
+                        "OPTIONS"
+                )
+        );
+
+        configuration.setAllowedHeaders(
+                List.of("*")
+        );
+
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration(
+                "/**",
+                configuration
+        );
+
+        return source;
     }
 }

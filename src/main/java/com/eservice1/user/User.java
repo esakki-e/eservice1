@@ -3,6 +3,10 @@ package com.eservice1.user.entity;
 import com.eservice1.common.Role;
 import jakarta.persistence.*;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -13,12 +17,22 @@ public class User {
 
     private String name;
 
+    @Column(unique = true)
     private String phoneNumber;
 
     private String password;
 
+
+
     @Enumerated(EnumType.STRING)
     private Role role;
+
+    public GrantedAuthority getAuthority() {
+
+        return new SimpleGrantedAuthority(
+                role.name()
+        );
+    }
 
     public User() {
     }
@@ -58,4 +72,6 @@ public class User {
     public void setRole(Role role) {
         this.role = role;
     }
+
+
 }

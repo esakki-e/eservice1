@@ -34,4 +34,14 @@ public class EmployeeController {
 
         return employeeRepository.findAll();
     }
+
+    @PostMapping("/promote/{userId}")
+    public Employee promoteUser(
+            @PathVariable Long userId) {
+
+        return employeeService
+                .promoteUser(userId);
+    }
+
+
 }
