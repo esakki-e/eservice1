@@ -48,6 +48,10 @@ public class SecurityConfig {
                         .permitAll()
                         .requestMatchers("/documents/download/**")
                         .permitAll()
+                        .requestMatchers(
+                                "/customer/**"
+                        )
+                        .permitAll()
                         //.requestMatchers("/admin/**")
                         //.hasAuthority("OWNER")
 

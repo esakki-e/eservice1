@@ -6,7 +6,13 @@ function Employees() {
 
     const [employees, setEmployees] =
         useState([]);
+    const [searchName,
+        setSearchName] =
+        useState("");
 
+    const [searchPhone,
+        setSearchPhone] =
+        useState("");
     useEffect(() => {
 
         const token =
@@ -29,7 +35,27 @@ function Employees() {
             });
 
     }, []);
+    const filteredEmployees =
+        employees.filter(employee => {
 
+            const matchesName =
+                employee.name
+                    .toLowerCase()
+                    .includes(
+                        searchName
+                            .toLowerCase()
+                    );
+
+            const matchesPhone =
+                employee.phoneNumber
+                    .includes(
+                        searchPhone
+                    );
+
+            return matchesName
+                &&
+                matchesPhone;
+        });
     return (
         <>
             <Navbar />
@@ -39,7 +65,41 @@ function Employees() {
                 <h2 className="mb-4">
                     Employees
                 </h2>
+                <div className="row mb-3">
 
+                    <div className="col-md-6">
+
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search by Name"
+                            value={searchName}
+                            onChange={(e) =>
+                                setSearchName(
+                                    e.target.value
+                                )
+                            }
+                        />
+
+                    </div>
+
+                    <div className="col-md-6">
+
+                        <input
+                            type="text"
+                            className="form-control"
+                            placeholder="Search by Phone"
+                            value={searchPhone}
+                            onChange={(e) =>
+                                setSearchPhone(
+                                    e.target.value
+                                )
+                            }
+                        />
+
+                    </div>
+
+                </div>
                 <table className="table table-bordered table-hover">
 
                     <thead className="table-dark">
@@ -48,6 +108,8 @@ function Employees() {
                         <th>ID</th>
                         <th>Name</th>
                         <th>Phone Number</th>
+                        <th>Tasks</th>
+                        <th>Completed</th>
                         <th>Status</th>
                     </tr>
 
@@ -55,8 +117,7 @@ function Employees() {
 
                     <tbody>
 
-                    {employees.map(employee => (
-
+                    {filteredEmployees.map(employee => (
                         <tr key={employee.id}>
 
                             <td>{employee.id}</td>
@@ -66,7 +127,10 @@ function Employees() {
                             <td>
                                 {employee.phoneNumber}
                             </td>
-
+                            <td>{employee.taskCount}</td>
+                            <td>
+                                {employee.completedTasks}
+                            </td>
                             <td>
                                 <span
                                     className={

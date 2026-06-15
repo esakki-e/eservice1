@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../../components/Navbar";
+import CustomerNavbar from "../../components/CustomerNavbar";
 import { useNavigate } from "react-router-dom";
 
 function CustomerServices() {
@@ -25,7 +25,7 @@ function CustomerServices() {
 
     return (
         <>
-            <Navbar />
+            <CustomerNavbar />
 
             <div className="container mt-4">
 

@@ -2,25 +2,17 @@ import {
     useParams,
     useNavigate
 } from "react-router-dom";
-import Navbar from "../../components/Navbar";
+import CustomerNavbar from "../../components/CustomerNavbar";
 //import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 
 function ServiceDocuments() {
 
     const { id } = useParams();
-    const [aadhaarFile, setAadhaarFile] =
-        useState(null);
+    const navigate = useNavigate();
 
-    const [photoFile, setPhotoFile] =
-        useState(null);
-
-    const [rationFile, setRationFile] =
-        useState(null);
-    const navigate =
-        useNavigate();
     const [customerName, setCustomerName] =
         useState("");
 
@@ -29,11 +21,17 @@ function ServiceDocuments() {
             localStorage.getItem("phoneNumber")
             || ""
         );
-    const requiredDocuments = [
-        "Aadhaar Card",
-        "Passport Size Photo",
-        "Ration Card"
-    ];
+    const [dob,
+        setDob] =
+        useState("");
+
+    const [requiredDocuments,
+        setRequiredDocuments] =
+        useState([]);
+
+    const [uploadedFiles,
+        setUploadedFiles] =
+        useState({});
     const submitRequest = async () => {
 
         try {
@@ -89,9 +87,16 @@ function ServiceDocuments() {
                 );
             };
 
-            await uploadFile(aadhaarFile);
-            await uploadFile(photoFile);
-            await uploadFile(rationFile);
+            for (
+                const file
+                of Object.values(
+                uploadedFiles
+            )
+                ) {
+
+                await uploadFile(file);
+
+            }
 
             alert(
                 "Application Submitted Successfully"
@@ -109,11 +114,49 @@ function ServiceDocuments() {
             );
         }
     };
+    useEffect(() => {
 
+        const token =
+            localStorage.getItem("token");
+
+        axios.get(
+            `http://localhost:8080/services/${id}/documents`,
+
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${token}`
+                }
+            }
+        )
+            .then(res => {
+
+                setRequiredDocuments(
+                    res.data
+                );
+
+            })
+            .catch(console.error);
+
+    }, [id]);
+    useEffect(() => {
+
+        setCustomerName(
+            localStorage.getItem(
+                "customerName"
+            ) || ""
+        );
+
+        setDob(
+            localStorage.getItem(
+                "customerDob"
+            ) || ""
+        );
+
+    }, []);
     return (
         <>
-            <Navbar />
-
+            <CustomerNavbar/>
             <div className="container mt-4">
 
                 <div className="card p-4 shadow">
@@ -127,11 +170,14 @@ function ServiceDocuments() {
                     </h5>
                     <input
                         className="form-control mb-3"
-                        placeholder="Customer Name"
                         value={customerName}
-                        onChange={(e) =>
-                            setCustomerName(e.target.value)
-                        }
+                        readOnly
+                    />
+
+                    <input
+                        className="form-control mb-3"
+                        value={dob}
+                        readOnly
                     />
 
                     <input
@@ -143,70 +189,50 @@ function ServiceDocuments() {
                         Required Documents
                     </h4>
 
-                    <ul className="list-group mb-4">
+                    <div className="mb-4">
 
-                        {requiredDocuments.map(
-                            (document, index) => (
+                        {
+                            requiredDocuments.map(
+                                document => (
 
-                                <li
-                                    key={index}
-                                    className="list-group-item"
-                                >
-                                    {document}
-                                </li>
+                                    <div
+                                        key={document.id}
+                                        className="mb-3"
+                                    >
 
+                                        <label
+                                            className="form-label"
+                                        >
+                                            {
+                                                document.documentName
+                                            }
+                                        </label>
+
+                                        <input
+                                            type="file"
+                                            className="form-control"
+                                            onChange={(e) =>
+
+                                                setUploadedFiles(
+                                                    {
+                                                        ...uploadedFiles,
+
+                                                        [
+                                                            document.documentName
+                                                            ]:
+                                                            e.target.files[0]
+                                                    }
+                                                )
+
+                                            }
+                                        />
+
+                                    </div>
+
+                                )
                             )
-                        )}
+                        }
 
-                    </ul>
-
-                    <div className="mb-3">
-
-                        <label className="form-label">
-                            Aadhaar Card
-                        </label>
-
-
-                        <input
-                            type="file"
-                            className="form-control"
-                            onChange={(e) =>
-                                setAadhaarFile(e.target.files[0])
-                            }
-                        />
-
-                    </div>
-
-                    <div className="mb-3">
-
-                        <label className="form-label">
-                            Passport Size Photo
-                        </label>
-
-
-                        <input
-                            type="file"
-                            className="form-control"
-                            onChange={(e) =>
-                                setPhotoFile(e.target.files[0])
-                            }
-                        />
-                    </div>
-
-                    <div className="mb-3">
-
-                        <label className="form-label">
-                            Ration Card
-                        </label>
-
-
-                        <input
-                            type="file"
-                            className="form-control"
-                            onChange={(e) =>
-                                setRationFile(e.target.files[0])
-                            }
-                        />
                     </div>
 
                     <div className="d-flex gap-2">

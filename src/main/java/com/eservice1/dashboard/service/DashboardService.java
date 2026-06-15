@@ -8,6 +8,8 @@ import com.eservice1.employee.repository.TaskRepository;
 import com.eservice1.service.repository.PortalServiceRepository;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.stereotype.Service;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Service
 public class DashboardService {
@@ -65,6 +67,32 @@ public class DashboardService {
         response.setPendingTasks(pending);
         response.setCompletedTasks(completed);
 
+        LocalDate today =
+                LocalDate.now();
+
+        LocalDateTime start =
+                today.atStartOfDay();
+
+        LocalDateTime end =
+                today.plusDays(1)
+                        .atStartOfDay();
+
+        response.setTodayRequests(
+                requestRepository
+                        .countByCreatedAtBetween(
+                                start,
+                                end
+                        )
+        );
+        System.out.println(
+                "TODAY REQUESTS = "
+                        +
+                        requestRepository
+                                .countByCreatedAtBetween(
+                                        start,
+                                        end
+                                )
+        );
         return response;
     }
 }

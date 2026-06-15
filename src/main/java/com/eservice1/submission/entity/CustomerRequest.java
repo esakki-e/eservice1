@@ -2,6 +2,7 @@ package com.eservice1.submission.entity;
 
 import com.eservice1.service.entity.PortalService;
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "customer_requests")
@@ -15,6 +16,8 @@ public class CustomerRequest {
 
     private String phoneNumber;
 
+    private LocalDateTime createdAt;
+
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
 
@@ -23,6 +26,15 @@ public class CustomerRequest {
     private PortalService service;
 
     public CustomerRequest() {
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(
+            LocalDateTime createdAt) {
+
+        this.createdAt = createdAt;
     }
 
     public Long getId() {

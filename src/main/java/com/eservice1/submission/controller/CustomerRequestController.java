@@ -35,7 +35,9 @@ public class CustomerRequestController {
             @PathVariable String phoneNumber) {
 
         return requestRepository
-                .findByPhoneNumber(phoneNumber);
+                .findByPhoneNumberOrderByCreatedAtDesc(
+                        phoneNumber
+                );
     }
 
 }

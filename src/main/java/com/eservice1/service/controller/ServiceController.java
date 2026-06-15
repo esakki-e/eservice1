@@ -3,7 +3,8 @@ package com.eservice1.service.controller;
 import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.service.PortalServiceService;
 import org.springframework.web.bind.annotation.*;
-
+import com.eservice1.document.entity.RequiredDocument;
+import com.eservice1.document.service.DocumentService;
 import java.util.List;
 
 @RestController
@@ -11,16 +12,28 @@ import java.util.List;
 public class ServiceController {
 
     private final PortalServiceService service;
+    private final DocumentService documentService;
 
     public ServiceController(
-            PortalServiceService service) {
+            PortalServiceService service,
+            DocumentService documentService) {
 
         this.service = service;
+        this.documentService = documentService;
     }
 
     @GetMapping
     public List<PortalService> getServices() {
 
         return service.getAll();
+    }
+
+    @GetMapping("/{serviceId}/documents")
+    public List<RequiredDocument> getDocuments(
+            @PathVariable Long serviceId) {
+
+        return documentService.getDocuments(
+                serviceId
+        );
     }
 }

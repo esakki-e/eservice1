@@ -24,6 +24,21 @@ import CustomerServices
     from "./pages/customer/CustomerServices";
 import Users
     from "./pages/owner/Users";
+import LandingPage from "./pages/LandingPage";
+import CustomerLogin
+    from "./pages/customer/CustomerLogin";
+import CustomerProfile
+    from "./pages/customer/CustomerProfile";
+
+import CustomerProfileCheck
+    from "./pages/customer/CustomerProfileCheck";
+import CustomerProtectedRoute
+    from "./components/CustomerProtectedRoute";
+import CustomerProfileView
+    from "./pages/customer/CustomerProfileView";
+
+import CustomerProfileEdit
+    from "./pages/customer/CustomerProfileEdit";
 function App() {
 
     return (
@@ -33,8 +48,17 @@ function App() {
 
                 <Route
                     path="/"
+                    element={<LandingPage />}
+                />
+                <Route
+                    path="/login"
                     element={<Login />}
                 />
+                <Route
+                    path="/customer-login"
+                    element={<CustomerLogin />}
+                />
+
 
                 <Route
                     path="/dashboard"
@@ -96,13 +120,13 @@ function App() {
                     }
                 />
                 <Route
-                path="/my-requests"
-                element={
-                    <ProtectedRoute>
-                        <MyRequests />
-                    </ProtectedRoute>
-                }
-            />
+                    path="/my-requests"
+                    element={
+                        <CustomerProtectedRoute>
+                            <MyRequests />
+                        </CustomerProtectedRoute>
+                    }
+                />
                 <Route
                     path="/employees"
                     element={
@@ -138,18 +162,51 @@ function App() {
                 <Route
                     path="/service-documents/:id"
                     element={
-                        <ProtectedRoute>
+                        <CustomerProtectedRoute>
                             <ServiceDocuments />
-                        </ProtectedRoute>
+                        </CustomerProtectedRoute>
                     }
                 />
 
                 <Route
                     path="/customer-services"
                     element={
-                        <ProtectedRoute>
+                        <CustomerProtectedRoute>
                             <CustomerServices />
-                        </ProtectedRoute>
+                        </CustomerProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer-profile"
+                    element={
+                        <CustomerProtectedRoute>
+                            <CustomerProfile />
+                        </CustomerProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer-profile-check"
+                    element={
+                        <CustomerProtectedRoute>
+                            <CustomerProfileCheck />
+                        </CustomerProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/customer-profile-view"
+                    element={
+                        <CustomerProtectedRoute>
+                            <CustomerProfileView />
+                        </CustomerProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/customer-profile-edit"
+                    element={
+                        <CustomerProtectedRoute>
+                            <CustomerProfileEdit />
+                        </CustomerProtectedRoute>
                     }
                 />
             </Routes>

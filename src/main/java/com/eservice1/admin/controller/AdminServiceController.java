@@ -3,6 +3,7 @@ package com.eservice1.admin.controller;
 import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.service.PortalServiceService;
 import org.springframework.web.bind.annotation.*;
+import com.eservice1.service.dto.CreateServiceRequest;
 
 import java.util.List;
 
@@ -17,8 +18,12 @@ public class AdminServiceController {
     }
 
     @PostMapping
-    public PortalService createService(@RequestBody PortalService portalService) {
-        return service.save(portalService);
+    public PortalService createService(
+            @RequestBody CreateServiceRequest request) {
+
+        return service.createService(
+                request
+        );
     }
 
     @GetMapping

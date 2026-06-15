@@ -7,6 +7,7 @@ public class DashboardResponse {
     private long totalEmployees;
     private long pendingTasks;
     private long completedTasks;
+    private long todayRequests;
 
     public long getTotalServices() {
         return totalServices;
@@ -47,4 +48,16 @@ public class DashboardResponse {
     public void setCompletedTasks(long completedTasks) {
         this.completedTasks = completedTasks;
     }
+
+    public long getTodayRequests() {
+        return todayRequests;
+    }
+
+    public void setTodayRequests(
+            long todayRequests) {
+
+        this.todayRequests =
+                todayRequests;
+    }
+
 }

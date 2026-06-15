@@ -4,6 +4,14 @@ import com.eservice1.submission.entity.UploadedDocument;
 import com.eservice1.submission.repository.UploadedDocumentRepository;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
 import java.util.List;
 
 @RestController
@@ -27,5 +35,37 @@ public class UploadedDocumentController {
 
         return documentRepository
                 .findByRequestId(requestId);
+    }
+
+    @GetMapping("/download/{documentId}")
+    public ResponseEntity<Resource>
+    downloadDocument(
+            @PathVariable Long documentId)
+            throws Exception {
+
+        UploadedDocument document =
+                documentRepository
+                        .findById(documentId)
+                        .orElseThrow();
+
+        Path path =
+                Paths.get(
+                        document.getFilePath()
+                );
+
+        Resource resource =
+                new UrlResource(
+                        path.toUri()
+                );
+
+        return ResponseEntity.ok()
+                .header(
+                        HttpHeaders
+                                .CONTENT_DISPOSITION,
+                        "attachment; filename=\""
+                                + document.getFileName()
+                                + "\""
+                )
+                .body(resource);
     }
 }

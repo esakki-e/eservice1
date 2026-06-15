@@ -7,7 +7,8 @@ import com.eservice1.employee.entity.TaskStatus;
 import com.eservice1.employee.repository.EmployeeRepository;
 import com.eservice1.employee.repository.TaskRepository;
 import org.springframework.stereotype.Service;
-
+import com.eservice1.submission.entity.RequestStatus;
+import com.eservice1.submission.repository.CustomerRequestRepository;
 
 import java.util.List;
 
@@ -16,6 +17,8 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final EmployeeRepository employeeRepository;
+    private final CustomerRequestRepository
+            requestRepository;
 
     public Task selfAssign(
             Long requestId,
@@ -39,7 +42,20 @@ public class TaskService {
         }
 
         task.setEmployee(employee);
-        task.setStatus(TaskStatus.ACCEPTED);
+
+        task.setStatus(
+                TaskStatus.ACCEPTED
+        );
+
+        task.getRequest()
+                .setStatus(
+                        RequestStatus.IN_PROGRESS
+                );
+
+        requestRepository.save(
+                task.getRequest()
+        );
+
         return taskRepository.save(task);
     }
     public Task createTask(Task task) {
@@ -48,13 +64,14 @@ public class TaskService {
 
         return taskRepository.save(task);
     }
-
     public TaskService(
             TaskRepository taskRepository,
-            EmployeeRepository employeeRepository) {
+            EmployeeRepository employeeRepository,
+            CustomerRequestRepository requestRepository) {
 
         this.taskRepository = taskRepository;
         this.employeeRepository = employeeRepository;
+        this.requestRepository = requestRepository;
     }
     public List<Task> getAllTasks() {
 
@@ -64,14 +81,24 @@ public class TaskService {
 
         return taskRepository.findByEmployeeId(employeeId);
     }
-
     public Task acceptTask(Long taskId) {
 
         Task task =
                 taskRepository.findById(taskId)
                         .orElseThrow();
 
-        task.setStatus(TaskStatus.ACCEPTED);
+        task.setStatus(
+                TaskStatus.ACCEPTED
+        );
+
+        task.getRequest()
+                .setStatus(
+                        RequestStatus.IN_PROGRESS
+                );
+
+        requestRepository.save(
+                task.getRequest()
+        );
 
         return taskRepository.save(task);
     }
@@ -110,6 +137,15 @@ public class TaskService {
 
         task.setEmployee(employee);
 
+        task.getRequest()
+                .setStatus(
+                        RequestStatus.IN_PROGRESS
+                );
+
+        requestRepository.save(
+                task.getRequest()
+        );
+
         return taskRepository.save(task);
     }
 
@@ -119,7 +155,18 @@ public class TaskService {
                 taskRepository.findById(taskId)
                         .orElseThrow();
 
-        task.setStatus(TaskStatus.COMPLETED);
+        task.setStatus(
+                TaskStatus.COMPLETED
+        );
+
+        task.getRequest()
+                .setStatus(
+                        RequestStatus.COMPLETED
+                );
+
+        requestRepository.save(
+                task.getRequest()
+        );
 
         return taskRepository.save(task);
     }

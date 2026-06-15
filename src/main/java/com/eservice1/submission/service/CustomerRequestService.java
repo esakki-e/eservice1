@@ -12,6 +12,7 @@ import com.eservice1.employee.entity.Priority;
 import com.eservice1.employee.entity.Task;
 import com.eservice1.employee.entity.TaskStatus;
 import com.eservice1.employee.repository.TaskRepository;
+import java.time.LocalDateTime;
 @Service
 public class CustomerRequestService {
 
@@ -42,6 +43,10 @@ public class CustomerRequestService {
         request.setService(service);
         request.setStatus(RequestStatus.PENDING);
 
+        request.setCreatedAt(
+                LocalDateTime.now()
+        );
+
         CustomerRequest savedRequest =
                 requestRepository.save(request);
 
@@ -50,6 +55,7 @@ public class CustomerRequestService {
         task.setRequest(savedRequest);
         task.setStatus(TaskStatus.PENDING);
         task.setPriority(Priority.MEDIUM);
+
 
         taskRepository.save(task);
 

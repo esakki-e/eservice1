@@ -1,17 +1,33 @@
-import { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 
 
 function Requests() {
 
-    const [requests, setRequests] = useState([]);
-    const [employees, setEmployees] = useState([]);
+    const [requests, setRequests] =
+        useState(
+            /** @type {any[]} */ ([])
+        );    const [employees, setEmployees] = useState([]);
     const [selectedEmployees, setSelectedEmployees] = useState({});
     const [acceptedRequests,
         setAcceptedRequests] =
         useState([]);
     const role = localStorage.getItem("role");
+    const [searchName,
+        setSearchName] =
+        useState("");
+
+    const [searchPhone,
+        setSearchPhone] =
+        useState("");
+
+    const [statusFilter,
+        setStatusFilter] =
+        useState("ALL");
+    const [dateFilter,
+        setDateFilter] =
+        useState("");
     const assignEmployee = async (requestId) => {
 
         const employeeId =
@@ -53,7 +69,14 @@ function Requests() {
             }
         )
             .then(res => {
-                setRequests(res.data);
+                setRequests(
+                    res.data.sort(
+                        (a, b) =>
+                            new Date(b.createdAt)
+                            -
+                            new Date(a.createdAt)
+                    )
+                );
             });
         axios.get(
             "http://localhost:8080/employees",
@@ -94,6 +117,45 @@ function Requests() {
 
         alert("Request Accepted");
     };
+    const filteredRequests =
+        requests.filter(request => {
+
+            const matchesName =
+                request.customerName
+                    .toLowerCase()
+                    .includes(
+                        searchName
+                            .toLowerCase()
+                    );
+
+            const matchesPhone =
+                request.phoneNumber
+                    .includes(
+                        searchPhone
+                    );
+
+            const matchesStatus =
+                statusFilter === "ALL"
+                ||
+                request.status ===
+                statusFilter;
+
+            const matchesDate =
+                !dateFilter
+                ||
+                request.createdAt
+                    ?.substring(0, 10)
+                === dateFilter;
+
+            return matchesName
+                &&
+                matchesPhone
+                &&
+                matchesStatus
+                &&
+                matchesDate;
+        });
+
     return (
         <>
             <Navbar />
@@ -102,6 +164,86 @@ function Requests() {
 
                 <h2>Customer Requests</h2>
 
+                <div className="row mb-3">
+
+                    <div className="col-md-3">
+
+                        <input
+                            className="form-control"
+                            placeholder="Search Customer"
+                            value={searchName}
+                            onChange={(e) =>
+                                setSearchName(
+                                    e.target.value
+                                )
+                            }
+                        />
+
+                    </div>
+
+                    <div className="col-md-3">
+
+                        <input
+                            className="form-control"
+                            placeholder="Search Phone"
+                            value={searchPhone}
+                            onChange={(e) =>
+                                setSearchPhone(
+                                    e.target.value
+                                )
+                            }
+                        />
+
+                    </div>
+                    <div className="col-md-3">
+
+                        <input
+                            type="date"
+                            className="form-control"
+                            value={dateFilter}
+                            onChange={(e) =>
+                                setDateFilter(
+                                    e.target.value
+                                )
+                            }
+                        />
+
+                    </div>
+                    <div className="col-md-3">
+
+                        <select
+                            className="form-select"
+                            value={statusFilter}
+                            onChange={(e) =>
+                                setStatusFilter(
+                                    e.target.value
+                                )
+                            }
+                        >
+
+                            <option value="ALL">
+                                All Status
+                            </option>
+
+                            <option value="PENDING">
+                                Pending
+                            </option>
+
+                            <option value="IN_PROGRESS">
+                                In Progress
+                            </option>
+
+                            <option value="COMPLETED">
+                                Completed
+                            </option>
+
+
+                        </select>
+
+                    </div>
+
+                </div>
+
                 <table className="table">
 
                     <thead>
@@ -109,6 +251,7 @@ function Requests() {
                         <th>ID</th>
                         <th>Customer</th>
                         <th>Phone</th>
+                        <th>Date</th>
                         <th>Service</th>
                         <th>Status</th>
 
@@ -124,8 +267,7 @@ function Requests() {
 
                     <tbody>
 
-                    {requests.map(request => (
-
+                    {filteredRequests.map(request => (
                         <tr key={request.id}>
 
                             <td>{request.id}</td>
@@ -133,6 +275,23 @@ function Requests() {
                             <td>{request.customerName}</td>
 
                             <td>{request.phoneNumber}</td>
+
+                            <td>
+                                {
+                                    new Date(
+                                        request.createdAt
+                                    ).toLocaleString(
+                                        "en-IN",
+                                        {
+                                            day: "2-digit",
+                                            month: "short",
+                                            year: "numeric",
+                                            hour: "numeric",
+                                            minute: "2-digit",
+                                            hour12: true
+                                        }
+                                    )
+                                }                            </td>
 
                             <td>
                                 {request.service?.serviceName}

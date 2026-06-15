@@ -40,7 +40,10 @@ public class AdminRequestController {
             @PathVariable String phoneNumber) {
 
         return requestRepository
-                .findByPhoneNumber(phoneNumber);
+                .findByPhoneNumberOrderByCreatedAtDesc(
+                        phoneNumber
+
+                );
     }
 
     @GetMapping("/test")

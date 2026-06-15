@@ -25,6 +25,11 @@ function EmployeeDashboard() {
             }
         )
             .then(res => {
+                console.log(
+                    "TASKS FROM API:",
+                    res.data
+                );
+
                 setTasks(res.data);
             })
             .catch(console.error);
@@ -45,131 +50,157 @@ function EmployeeDashboard() {
             }
         );
 
-        window.location.reload();
-    };
-
-    const completeTask = async (id) => {
-
-        const token = localStorage.getItem("token");
-
-        await axios.post(
-            `http://localhost:8080/employee/tasks/${id}/complete`,
-            {},
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
+        setTasks(
+            tasks.map(task =>
+                task.id === id
+                    ? {
+                        ...task,
+                        status: "ACCEPTED"
+                    }
+                    : task
+            )
         );
-
-        window.location.reload();
     };
+        const completeTask = async (id) => {
 
-    const loadDocuments = async (
-        requestId
-    ) => {
+            const token = localStorage.getItem("token");
 
-        const token =
-            localStorage.getItem("token");
-
-        const res = await axios.get(
-            `http://localhost:8080/documents/request/${requestId}`,
-            {
-                headers: {
-                    Authorization:
-                        `Bearer ${token}`
+            await axios.post(
+                `http://localhost:8080/employee/tasks/${id}/complete`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 }
-            }
-        );
+            );
 
-        setDocuments({
-            ...documents,
-            [requestId]: res.data
-        });
-    };
+            window.location.reload();
+        };
 
-    return (
-        <>
-            <Navbar />
+        const loadDocuments = async (
+            requestId
+        ) => {
 
-            <div className="container mt-4">
+            const token =
+                localStorage.getItem("token");
 
-                <h2>My Tasks</h2>
+            const res = await axios.get(
+                `http://localhost:8080/documents/request/${requestId}`,
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${token}`
+                    }
+                }
+            );
 
-                <table className="table table-bordered">
+            setDocuments(prev=>({
+                ...prev,
+                [requestId]: res.data
+            }));
+        };
 
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Customer</th>
-                        <th>Service</th>
-                        <th>Status</th>
-                        <th>Documents</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
+        return (
+            <>
+                <Navbar/>
 
-                    <tbody>
+                <div className="container mt-4">
 
-                    {tasks.map(task => (
+                    <h2>My Tasks</h2>
 
-                        <tr key={task.id}>
+                    <table className="table table-bordered">
 
-                            <td>{task.id}</td>
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Customer</th>
+                            <th>Service</th>
+                            <th>Status</th>
+                            <th>Documents</th>
+                            <th>Action</th>
+                        </tr>
+                        </thead>
 
-                            <td>
-                                {task.request.customerName}
-                            </td>
+                        <tbody>
 
-                            <td>
-                                {task.request?.service?.serviceName}                            </td>
-                            <td>
+                        {tasks.map(task => (
 
-                                <button
-                                    className="btn btn-info btn-sm"
-                                    onClick={() =>
-                                        loadDocuments(
+                            <tr key={task.id}>
+
+                                <td>{task.id}</td>
+
+                                <td>
+                                    {
+                                        new Date(
+                                            task.request.createdAt
+                                        ).toLocaleString(
+                                            "en-IN",
+                                            {
+                                                day: "2-digit",
+                                                month: "short",
+                                                year: "numeric",
+                                                hour: "numeric",
+                                                minute: "2-digit",
+                                                hour12: true
+                                            }
+                                        )
+                                    }                                </td>
+
+                                <td>
+                                    {task.request.customerName}
+                                </td>
+
+                                <td>
+                                    {task.request?.service?.serviceName}                            </td>
+                                <td>
+
+                                    <button
+                                        className="btn btn-info btn-sm"
+                                        onClick={() =>
+                                            loadDocuments(
+                                                task.request.id
+                                            )
+                                        }
+                                    >
+                                        View Documents
+                                    </button>
+
+                                    {
+                                        documents[
                                             task.request.id
+                                            ] && (
+
+                                            <ul
+                                                className="mt-2"
+                                            >
+
+                                                {
+                                                    documents[
+                                                        task.request.id
+                                                        ].map(doc => (
+
+                                                        <li key={doc.id}>
+                                                            <a
+                                                                href={`http://localhost:8080/documents/download/${doc.id}`}
+                                                                target="_blank"
+                                                                rel="noreferrer"
+                                                            >
+                                                                {doc.documentName}
+                                                            </a>
+                                                        </li>
+
+                                                    ))
+                                                }
+
+                                            </ul>
+
                                         )
                                     }
-                                >
-                                    View Documents
-                                </button>
 
-                                {
-                                    documents[
-                                        task.request.id
-                                        ] && (
-
-                                        <ul
-                                            className="mt-2"
-                                        >
-
-                                            {
-                                                documents[
-                                                    task.request.id
-                                                    ].map(doc => (
-
-                                                    <li key={doc.id}>
-                                                        <a
-                                                            href={`http://localhost:8080/documents/download/${doc.id}`}
-                                                            target="_blank"
-                                                            rel="noreferrer"
-                                                        >
-                                                            {doc.documentName}
-                                                        </a>
-                                                    </li>
-
-                                                ))
-                                            }
-
-                                        </ul>
-
-                                    )
-                                }
-
-                            </td>
-                            <td>
+                                </td>
+                                <td>
     <span
         className={
             task.status === "COMPLETED"
@@ -181,43 +212,52 @@ function EmployeeDashboard() {
     >
         {task.status}
     </span>
-                        </td>
+                                </td>
 
-                            <td>
+                                <td>
+                                    <button
+                                        className={
+                                            task.status === "ACCEPTED"
+                                                ? "btn btn-secondary btn-sm me-2"
+                                                : "btn btn-success btn-sm me-2"
+                                        }
+                                        disabled={
+                                            task.status !== "PENDING"
+                                        }
+                                        onClick={() =>
+                                            acceptTask(task.id)
+                                        }
+                                    >
+                                        {
+                                            task.status === "ACCEPTED"
+                                                ? "Accepted"
+                                                : "Accept"
+                                        }
+                                    </button>
 
-                                <button
-                                    className="btn btn-success btn-sm me-2"
-                                    disabled={task.status !== "PENDING"}
-                                    onClick={() =>
-                                        acceptTask(task.id)
-                                    }
-                                >
-                                    Accept
-                                </button>
+                                    <button
+                                        className="btn btn-primary btn-sm"
+                                        disabled={task.status === "COMPLETED"}
+                                        onClick={() =>
+                                            completeTask(task.id)
+                                        }
+                                    >
+                                        Complete
+                                    </button>
 
-                                <button
-                                    className="btn btn-primary btn-sm"
-                                    disabled={task.status === "COMPLETED"}
-                                    onClick={() =>
-                                        completeTask(task.id)
-                                    }
-                                >
-                                    Complete
-                                </button>
+                                </td>
 
-                            </td>
+                            </tr>
 
-                        </tr>
+                        ))}
 
-                    ))}
+                        </tbody>
 
-                    </tbody>
+                    </table>
 
-                </table>
-
-            </div>
-        </>
-    );
-}
+                </div>
+            </>
+        );
+    }
 
 export default EmployeeDashboard;

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-
+import  "./Navbar.css";
 function Navbar() {
     const role = localStorage.getItem("role");
     const logout = () => {
@@ -11,8 +11,13 @@ function Navbar() {
 
     return (
 
-        <nav className="navbar navbar-dark bg-dark">
-            <div className="container-fluid">
+        <nav
+            className="
+        navbar
+        navbar-dark
+        navbar-custom
+    "
+        >            <div className="container-fluid">
 
                 <div>
                     {role === "OWNER" && (
