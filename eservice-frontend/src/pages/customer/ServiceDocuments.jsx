@@ -18,7 +18,7 @@ function ServiceDocuments() {
 
     const [phoneNumber, setPhoneNumber] =
         useState(
-            localStorage.getItem("phoneNumber")
+            localStorage.getItem("customerPhone")
             || ""
         );
     const [dob,
@@ -32,6 +32,17 @@ function ServiceDocuments() {
     const [uploadedFiles,
         setUploadedFiles] =
         useState({});
+
+    const [fields, setFields] =
+        useState([]);
+
+    const [fieldValues, setFieldValues] =
+        useState({});
+
+    const [autoFillData,
+        setAutoFillData] =
+        useState({});
+
     const submitRequest = async () => {
 
         try {
@@ -44,7 +55,7 @@ function ServiceDocuments() {
                     "http://localhost:8080/requests",
                     {
                         customerName,
-                        phoneNumber:localStorage.getItem("phoneNumber"),
+                        phoneNumber:localStorage.getItem("customerPhone"),
                         serviceId: id
                     },
                     {
@@ -56,6 +67,22 @@ function ServiceDocuments() {
                 );
             const requestId =
                 response.data.id;
+
+            const formResponses =
+                fields.map(field => ({
+
+                    requestId,
+
+                    fieldId: field.id,
+
+                    value:
+                        fieldValues[field.id] || ""
+
+                }));
+            await axios.post(
+                "http://localhost:8080/service-form-responses",
+                formResponses
+            );
            // console.log(response.data);
             const uploadFile = async (file) => {
 
@@ -141,6 +168,21 @@ function ServiceDocuments() {
     }, [id]);
     useEffect(() => {
 
+        axios.get(
+            `http://localhost:8080/service-form-fields/service/${id}/active`
+        )
+            .then(res => {
+
+                setFields(
+                    res.data
+                );
+
+            })
+            .catch(console.error);
+
+    }, [id]);
+    useEffect(() => {
+
         setCustomerName(
             localStorage.getItem(
                 "customerName"
@@ -152,6 +194,25 @@ function ServiceDocuments() {
                 "customerDob"
             ) || ""
         );
+
+    }, []);
+    useEffect(() => {
+
+        const phoneNumber =
+            localStorage.getItem(
+                "customerPhone"
+            );
+
+        axios.get(
+            `http://localhost:8080/customer-form-responses/autofill/${phoneNumber}`
+        )
+            .then(res => {
+
+                setAutoFillData(
+                    res.data
+                );
+
+            });
 
     }, []);
     return (
@@ -185,6 +246,60 @@ function ServiceDocuments() {
                         value={phoneNumber}
                         readOnly
                     />
+                    <h4 className="mt-4">
+                        Application Details
+                    </h4>
+
+                    {
+                        fields.map(field => (
+
+                            <div
+                                key={field.id}
+                                className="mb-3"
+                            >
+
+                                <label
+                                    className="form-label"
+                                >
+                                    {field.fieldName}
+                                </label>
+
+                                <input
+                                    className="form-control"
+                                    type={
+                                        field.fieldType === "NUMBER"
+                                            ? "number"
+                                            : field.fieldType === "DATE"
+                                                ? "date"
+                                                : "text"
+                                    }
+                                    value={
+                                        fieldValues[field.id]
+                                        ??
+                                        autoFillData[
+                                            field.fieldName
+                                            ]
+                                        ??
+                                        ""
+
+                                    }
+                                    onChange={(e) =>
+
+                                        setFieldValues({
+
+                                            ...fieldValues,
+
+                                            [field.id]:
+                                            e.target.value
+                                        })
+
+                                    }
+                                />
+
+                            </div>
+
+                        ))
+                    }
                     <h4>
                         Required Documents
                     </h4>

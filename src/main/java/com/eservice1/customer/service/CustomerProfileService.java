@@ -18,7 +18,29 @@ public class CustomerProfileService {
     public CustomerProfile save(
             CustomerProfile profile) {
 
-        return repository.save(profile);
+        CustomerProfile existing =
+                repository.findByPhoneNumber(
+                        profile.getPhoneNumber()
+                );
+
+        if (existing != null) {
+
+            existing.setCustomerName(
+                    profile.getCustomerName()
+            );
+
+            existing.setDob(
+                    profile.getDob()
+            );
+
+            return repository.save(
+                    existing
+            );
+        }
+
+        return repository.save(
+                profile
+        );
     }
     public CustomerProfile getByPhone(
             String phoneNumber) {

@@ -103,6 +103,13 @@ function Services() {
                                 >
                                     Apply
                                 </Link>
+                                <Link
+                                    to={`/service-fields/${service.id}`}
+                                    className="btn btn-success btn-sm ms-2"
+                                >
+                                    Manage Fields
+                                </Link>
+
                             </td>
                         </tr>
                     ))}

@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./CustomerProfile.css";
+
 
 function CustomerProfileCheck() {
 
@@ -19,7 +21,7 @@ function CustomerProfileCheck() {
         )
             .then(res => {
 
-                if (res.data) {
+                if (res.data && res.data.customerName) {
 
                     localStorage.setItem(
                         "customerName",
@@ -31,9 +33,11 @@ function CustomerProfileCheck() {
                         res.data.dob
                     );
 
-                    navigate(
-                        "/customer-services"
-                    );
+                    navigate("/customer-services");
+
+                } else {
+
+                    navigate("/customer-profile");
                 }
 
             })
@@ -46,8 +50,22 @@ function CustomerProfileCheck() {
             });
 
     }, []);
+    return (
 
-    return <h3>Loading...</h3>;
-}
+        <div className="profile-check-loading">
+
+            <div className="loader"></div>
+
+            <h2>
+                Verifying Profile...
+            </h2>
+
+            <p>
+                Please wait while we load your account.
+            </p>
+
+        </div>
+
+    );}
 
 export default CustomerProfileCheck;

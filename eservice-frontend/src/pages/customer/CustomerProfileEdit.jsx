@@ -1,6 +1,6 @@
-import {
-    useState
-} from "react";
+
+import { useEffect, useState } from "react";
+
 
 import axios from "axios";
 
@@ -31,7 +31,22 @@ function CustomerProfileEdit() {
                 "customerDob"
             )
         );
+    const [fields, setFields] = useState([]);
 
+    const [values, setValues] = useState({});
+    useEffect(() => {
+
+        axios.get(
+            "http://localhost:8080/customer-form-fields"
+        )
+            .then(res => {
+
+                setFields(res.data);
+
+            })
+            .catch(console.error);
+
+    }, []);
     const updateProfile =
         async () => {
 
@@ -48,6 +63,17 @@ function CustomerProfileEdit() {
                     dob
                 }
             );
+            for (const fieldId in values) {
+
+                await axios.post(
+                    "http://localhost:8080/customer-form-responses",
+                    {
+                        fieldId,
+                        phoneNumber,
+                        value: values[fieldId]
+                    }
+                );
+            }
 
             localStorage.setItem(
                 "customerName",
@@ -67,7 +93,72 @@ function CustomerProfileEdit() {
                 "/customer-profile-view"
             );
         };
+    const handleChange = (
+        fieldId,
+        value
+    ) => {
 
+        setValues(prev => ({
+            ...prev,
+            [fieldId]: value
+        }));
+
+    };
+    useEffect(() => {
+
+        const phoneNumber =
+            localStorage.getItem(
+                "customerPhone"
+            );
+
+        axios.get(
+            `http://localhost:8080/customer/profile/${phoneNumber}`
+        )
+            .then(res => {
+
+                setCustomerName(
+                    res.data.customerName
+                );
+
+                setDob(
+                    res.data.dob
+                );
+
+            });
+
+    }, []);
+    useEffect(() => {
+
+        const phoneNumber =
+            localStorage.getItem(
+                "customerPhone"
+            );
+
+        axios.get(
+            `http://localhost:8080/customer-form-responses/${phoneNumber}`
+        )
+            .then(res => {
+
+                const map = {};
+
+                res.data.forEach(
+                    item => {
+
+                        map[
+                            item.field.id
+                            ] =
+                            item.value;
+
+                    }
+                );
+
+                setValues(
+                    map
+                );
+
+            });
+
+    }, []);
     return (
         <>
             <CustomerNavbar />
@@ -80,14 +171,13 @@ function CustomerProfileEdit() {
                         Edit Profile
                     </h3>
 
+                    <div className="profile-label">
+                        Full Name
+                    </div>
+
                     <input
-                        className="
-                        form-control
-                        mb-3
-                    "
-                        value={
-                            customerName
-                        }
+                        className="profile-input"
+                        value={customerName}
                         onChange={(e) =>
                             setCustomerName(
                                 e.target.value
@@ -95,12 +185,13 @@ function CustomerProfileEdit() {
                         }
                     />
 
+                    <div className="profile-label">
+                        Date of Birth
+                    </div>
+
                     <input
                         type="date"
-                        className="
-                        form-control
-                        mb-3
-                    "
+                        className="profile-input"
                         value={dob}
                         onChange={(e) =>
                             setDob(
@@ -108,18 +199,63 @@ function CustomerProfileEdit() {
                             )
                         }
                     />
+                    <hr className="my-4" />
+
+                    <h4>
+                        Additional Information
+                    </h4>
+
+                    {
+                        fields.map(field => (
+
+                            <div
+                                key={field.id}
+                                className="mb-3"
+                            >
+
+                                <label
+                                    className="profile-label"
+                                >
+                                    {field.fieldName}
+                                </label>
+
+                                <input
+                                    type={
+                                        field.fieldType === "NUMBER"
+                                            ? "number"
+                                            : "text"
+                                    }
+                                    className="profile-input"
+                                    value={
+                                        values[field.id]
+                                        || ""
+                                    }
+                                    onChange={(e) =>
+                                        setValues({
+                                            ...values,
+                                            [field.id]:
+                                            e.target.value
+                                        })
+                                    }
+                                />
+
+                            </div>
+
+                        ))
+                    }
+
+
+
 
                     <button
-                        className="
-                        btn
-                        btn-success
-                    "
+                        className="save-profile-btn"
                         onClick={
                             updateProfile
                         }
                     >
-                        Save
+                        Save Changes
                     </button>
+
 
                 </div>
 

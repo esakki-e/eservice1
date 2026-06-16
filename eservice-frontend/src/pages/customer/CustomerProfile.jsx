@@ -1,6 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import "./CustomerProfile.css";
+import PageTransition from "../../components/PageTransition";
+import { motion } from "framer-motion";
 
 function CustomerProfile() {
 
@@ -48,48 +51,99 @@ function CustomerProfile() {
 
     return (
 
-        <div className="container mt-5">
-            <div className="row justify-content-center">
+        <PageTransition>
 
-                <div className="col-lg-6">
+            <div className="customer-profile-page">
 
-                    <div className="profile-card">
-            <h2>
-                Complete Profile
-            </h2>
+                <motion.div
+                    className="profile-card"
+                    initial={{
+                        opacity: 0,
+                        y: 40
+                    }}
+                    animate={{
+                        opacity: 1,
+                        y: 0
+                    }}
+                    transition={{
+                        duration: 0.6
+                    }}
+                >
 
-            <input
-                className="form-control mb-3"
-                placeholder="Full Name"
-                value={customerName}
-                onChange={(e) =>
-                    setCustomerName(
-                        e.target.value
-                    )
-                }
-            />
+                    <div className="profile-icon">
+                        👤
+                    </div>
 
-            <input
-                type="date"
-                className="form-control mb-3"
-                value={dob}
-                onChange={(e) =>
-                    setDob(
-                        e.target.value
-                    )
-                }
-            />
 
-            <button
-                className="btn btn-success"
-                onClick={saveProfile}
-            >
-                Save Profile
-            </button>
+                    <h1 className="profile-title">
+                        Complete Profile
+                    </h1>
 
-        </div>
-                </div></div></div>
+                    <p className="profile-subtitle">
+                        Please complete your details
+                        before applying for services.
+                    </p>
+
+                    <div className="verified-box">
+
+                        <div className="verified-text">
+                            ✅ Mobile Verified
+                        </div>
+
+                        <div>
+                            {
+                                localStorage.getItem(
+                                    "customerPhone"
+                                )
+                            }
+                        </div>
+
+                    </div>
+
+                    <div className="profile-label">
+                        Full Name
+                    </div>
+
+                    <input
+                        className="profile-input"
+                        placeholder="Enter Full Name"
+                        value={customerName}
+                        onChange={(e) =>
+                            setCustomerName(
+                                e.target.value
+                            )
+                        }
+                    />
+
+                    <div className="profile-label">
+                        Date of Birth
+                    </div>
+
+                    <input
+                        type="date"
+                        className="profile-input"
+                        value={dob}
+                        onChange={(e) =>
+                            setDob(
+                                e.target.value
+                            )
+                        }
+                    />
+
+                    <button
+                        className="save-profile-btn"
+                        onClick={saveProfile}
+                    >
+                        Save Profile
+                    </button>
+
+                </motion.div>
+
+            </div>
+
+        </PageTransition>
     );
+
 }
 
 export default CustomerProfile;

@@ -39,177 +39,200 @@ import CustomerProfileView
 
 import CustomerProfileEdit
     from "./pages/customer/CustomerProfileEdit";
+import { AnimatePresence }
+    from "framer-motion";
+
+import {
+    useLocation
+} from "react-router-dom";
+import ServiceFieldManager
+    from "./pages/owner/ServiceFieldManager";
+function AnimatedRoutes() {
+
+    const location =
+        useLocation();
+
+    return (
+
+        <AnimatePresence mode="wait">
+
+            <Routes
+                location={location}
+                key={location.pathname}
+            >
+
+
+                    <Route
+                        path="/"
+                        element={<LandingPage />}
+                    />
+                    <Route
+                        path="/login"
+                        element={<Login />}
+                    />
+                    <Route
+                        path="/customer-login"
+                        element={<CustomerLogin />}
+                    />
+
+
+                    <Route
+                        path="/dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <Dashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/services"
+                        element={
+                            <ProtectedRoute>
+                                <Services />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/services/create"
+                        element={
+                            <ProtectedRoute>
+                                <CreateService />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/services/edit/:id"
+                        element={
+                            <ProtectedRoute>
+                                <EditService />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/requests/create"
+                        element={
+                            <ProtectedRoute>
+                                <CreateRequest />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/requests"
+                        element={
+                            <ProtectedRoute>
+                                <Requests />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/employee-dashboard"
+                        element={
+                            <ProtectedRoute>
+                                <EmployeeDashboard />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/my-requests"
+                        element={
+                            <CustomerProtectedRoute>
+                                <MyRequests />
+                            </CustomerProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/employees"
+                        element={
+                            <ProtectedRoute>
+                                <Employees />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/users"
+                        element={
+                            <ProtectedRoute>
+                                <Users />
+                            </ProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="*"
+                        element={<Login />}
+                    />
+
+                    <Route
+                        path="/service-documents/:id"
+                        element={
+                            <CustomerProtectedRoute>
+                                <ServiceDocuments />
+                            </CustomerProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/customer-services"
+                        element={
+                            <CustomerProtectedRoute>
+                                <CustomerServices />
+                            </CustomerProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer-profile"
+                        element={
+                            <CustomerProtectedRoute>
+                                <CustomerProfile />
+                            </CustomerProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer-profile-check"
+                        element={
+                            <CustomerProtectedRoute>
+                                <CustomerProfileCheck />
+                            </CustomerProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/customer-profile-view"
+                        element={
+                            <CustomerProtectedRoute>
+                                <CustomerProfileView />
+                            </CustomerProtectedRoute>
+                        }
+                    />
+
+                    <Route
+                        path="/customer-profile-edit"
+                        element={
+                            <CustomerProtectedRoute>
+                                <CustomerProfileEdit />
+                            </CustomerProtectedRoute>
+                        }
+                    />
+                <Route
+                    path="/service-fields/:serviceId"
+                    element={<ServiceFieldManager />}
+                />
+
+
+            </Routes>
+
+        </AnimatePresence>
+    );
+}
 function App() {
 
     return (
         <BrowserRouter>
 
-            <Routes>
-
-                <Route
-                    path="/"
-                    element={<LandingPage />}
-                />
-                <Route
-                    path="/login"
-                    element={<Login />}
-                />
-                <Route
-                    path="/customer-login"
-                    element={<CustomerLogin />}
-                />
-
-
-                <Route
-                    path="/dashboard"
-                    element={
-                        <ProtectedRoute>
-                            <Dashboard />
-                        </ProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="/services"
-                    element={
-                        <ProtectedRoute>
-                            <Services />
-                        </ProtectedRoute>
-                    }
-                />
-
-                <Route
-                path="/services/create"
-                element={
-                    <ProtectedRoute>
-                        <CreateService />
-                    </ProtectedRoute>
-                }
-            />
-                <Route
-                    path="/services/edit/:id"
-                    element={
-                        <ProtectedRoute>
-                            <EditService />
-                        </ProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="/requests/create"
-                    element={
-                        <ProtectedRoute>
-                            <CreateRequest />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/requests"
-                    element={
-                        <ProtectedRoute>
-                            <Requests />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/employee-dashboard"
-                    element={
-                        <ProtectedRoute>
-                            <EmployeeDashboard />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/my-requests"
-                    element={
-                        <CustomerProtectedRoute>
-                            <MyRequests />
-                        </CustomerProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/employees"
-                    element={
-                        <ProtectedRoute>
-                            <Employees />
-                        </ProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="/employees"
-                    element={
-                        <ProtectedRoute>
-                            <Employees />
-                        </ProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="/users"
-                    element={
-                        <ProtectedRoute>
-                            <Users />
-                        </ProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="*"
-                    element={<Login />}
-                />
-
-                <Route
-                    path="/service-documents/:id"
-                    element={
-                        <CustomerProtectedRoute>
-                            <ServiceDocuments />
-                        </CustomerProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="/customer-services"
-                    element={
-                        <CustomerProtectedRoute>
-                            <CustomerServices />
-                        </CustomerProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer-profile"
-                    element={
-                        <CustomerProtectedRoute>
-                            <CustomerProfile />
-                        </CustomerProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer-profile-check"
-                    element={
-                        <CustomerProtectedRoute>
-                            <CustomerProfileCheck />
-                        </CustomerProtectedRoute>
-                    }
-                />
-                <Route
-                    path="/customer-profile-view"
-                    element={
-                        <CustomerProtectedRoute>
-                            <CustomerProfileView />
-                        </CustomerProtectedRoute>
-                    }
-                />
-
-                <Route
-                    path="/customer-profile-edit"
-                    element={
-                        <CustomerProtectedRoute>
-                            <CustomerProfileEdit />
-                        </CustomerProtectedRoute>
-                    }
-                />
-            </Routes>
+            <AnimatedRoutes />
 
         </BrowserRouter>
     );

@@ -1,0 +1,230 @@
+.customer-profile-page{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    padding:40px;
+
+    background:
+            radial-gradient(
+                    circle at top left,
+                    rgba(37,99,235,.15),
+                    transparent 30%
+            ),
+            radial-gradient(
+                    circle at bottom right,
+                    rgba(99,102,241,.15),
+                    transparent 30%
+            ),
+            #f8fafc;
+}
+
+.profile-card{
+
+    width:100%;
+
+    max-width:550px;
+
+    padding:40px;
+
+    border-radius:30px;
+
+    background:
+            rgba(255,255,255,.82);
+
+    backdrop-filter:
+            blur(20px);
+
+    box-shadow:
+            0 30px 60px rgba(15,23,42,.08);
+
+    animation:
+            profileAppear .6s ease;
+}
+
+.profile-icon{
+
+    font-size:60px;
+
+    text-align:center;
+
+    margin-bottom:15px;
+}
+
+.profile-title{
+
+    text-align:center;
+
+    font-size:34px;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-bottom:8px;
+}
+
+.profile-subtitle{
+
+    text-align:center;
+
+    color:#64748b;
+
+    margin-bottom:30px;
+}
+
+.profile-label{
+
+    font-weight:600;
+
+    margin-bottom:8px;
+
+    color:#334155;
+}
+
+.profile-input{
+
+    width:100%;
+
+    padding:15px;
+
+    border-radius:16px;
+
+    border:1px solid #cbd5e1;
+
+    margin-bottom:20px;
+
+    transition:.3s;
+}
+
+.profile-input:focus{
+
+    outline:none;
+
+    border-color:#2563eb;
+
+    box-shadow:
+            0 0 0 4px rgba(37,99,235,.12);
+}
+
+.verified-box{
+
+    padding:15px;
+
+    border-radius:16px;
+
+    background:#eff6ff;
+
+    border:1px solid #bfdbfe;
+
+    margin-bottom:25px;
+}
+
+.verified-text{
+
+    color:#1d4ed8;
+
+    font-weight:600;
+}
+
+.save-profile-btn{
+
+    width:100%;
+
+    border:none;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    font-weight:700;
+
+    color:white;
+
+    background:
+            linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+            );
+
+    transition:.3s;
+}
+
+.save-profile-btn:hover{
+
+    transform:
+            translateY(-3px);
+
+    box-shadow:
+            0 15px 30px rgba(37,99,235,.25);
+}
+
+@keyframes profileAppear{
+
+    from{
+
+        opacity:0;
+
+        transform:
+                translateY(40px);
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:
+                translateY(0);
+    }
+}
+.profile-check-loading{
+
+    min-height:100vh;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:
+            linear-gradient(
+                    135deg,
+                    #0f172a,
+                    #1e293b,
+                    #2563eb
+            );
+
+    color:white;
+}
+
+.loader{
+
+    width:60px;
+    height:60px;
+
+    border:6px solid rgba(255,255,255,.2);
+
+    border-top:6px solid white;
+
+    border-radius:50%;
+
+    animation:spin 1s linear infinite;
+
+    margin-bottom:20px;
+}
+
+@keyframes spin{
+
+    to{
+        transform:rotate(360deg);
+    }
+}

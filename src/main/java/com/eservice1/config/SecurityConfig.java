@@ -2,6 +2,7 @@ package com.eservice1.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
@@ -32,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http)
             throws Exception {
-
+        System.out.println("SECURITY CONFIG LOADED");
         http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
@@ -52,7 +53,15 @@ public class SecurityConfig {
                                 "/customer/**"
                         )
                         .permitAll()
-                        //.requestMatchers("/admin/**")
+
+                        //.requestMatchers(
+                        //    HttpMethod.GET,
+                        //    "/customer-form-fields/active"
+                        //).hasAnyRole(
+                        //    "CUSTOMER",
+                        //    "EMPLOYEE",
+                        //    "OWNER"
+                        //).requestMatchers("/admin/**")
                         //.hasAuthority("OWNER")
 
                         //.requestMatchers("/employees/**")
@@ -63,7 +72,11 @@ public class SecurityConfig {
                                 "OWNER",
                                 "EMPLOYEE"
                         )
-
+                        .requestMatchers(
+                                "/login",
+                                "/customer-login",
+                                "/customer/profile/**"
+                        ).permitAll()
                         .requestMatchers("/users/**")
                         .hasAuthority("OWNER")
 
@@ -83,6 +96,19 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/services/**"
                         ).permitAll()
+                        .requestMatchers("/customer-form-fields/**")
+                        .permitAll()
+
+                        .requestMatchers(
+                                "/customer-form-responses/**"
+                        )
+                        .permitAll()
+
+                        .requestMatchers("/service-form-fields/**")
+                        .permitAll()
+
+                        .requestMatchers("/service-form-responses/**")
+                        .permitAll()
                         .anyRequest()
                         .authenticated()
 

@@ -13,7 +13,7 @@ function MyRequests() {
 
         const token = localStorage.getItem("token");
         const phoneNumber =
-            localStorage.getItem("phoneNumber");
+            localStorage.getItem("customerPhone");
 
         console.log("Phone:", phoneNumber);
         axios.get(

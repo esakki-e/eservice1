@@ -1,0 +1,198 @@
+.customer-login-page{
+
+    min-height:100vh;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    background:
+            radial-gradient(
+                    circle at top left,
+                    rgba(37,99,235,.18),
+                    transparent 30%
+            ),
+            radial-gradient(
+                    circle at bottom right,
+                    rgba(99,102,241,.18),
+                    transparent 30%
+            ),
+            #f8fafc;
+}
+
+.login-card{
+
+    width:420px;
+
+    padding:40px;
+
+    border-radius:32px;
+
+    background:
+            rgba(255,255,255,.78);
+
+    backdrop-filter:
+            blur(20px);
+
+    box-shadow:
+            0 30px 60px rgba(15,23,42,.08);
+
+    animation:
+            cardAppear .7s ease;
+}
+
+.login-title{
+
+    font-size:36px;
+
+    font-weight:800;
+
+    color:#0f172a;
+
+    margin-bottom:10px;
+}
+
+.login-subtitle{
+
+    color:#64748b;
+
+    margin-bottom:30px;
+}
+
+.phone-input{
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    border:
+            1px solid #cbd5e1;
+
+    font-size:16px;
+
+    transition:.3s;
+}
+
+.phone-input:focus{
+
+    outline:none;
+
+    border-color:#2563eb;
+
+    box-shadow:
+            0 0 0 4px rgba(37,99,235,.12);
+}
+
+.continue-btn{
+
+    width:100%;
+
+    margin-top:20px;
+
+    border:none;
+
+    padding:16px;
+
+    border-radius:16px;
+
+    color:white;
+
+    font-weight:600;
+
+    background:
+            linear-gradient(
+                    135deg,
+                    #2563eb,
+                    #4f46e5
+            );
+
+    transition:.3s;
+}
+
+.continue-btn:hover{
+
+    transform:
+            translateY(-3px);
+}
+
+.login-footer{
+
+    text-align:center;
+
+    margin-top:20px;
+
+    color:#64748b;
+
+    font-size:14px;
+}
+
+@keyframes cardAppear{
+
+    from{
+        opacity:0;
+        transform:
+                translateY(40px);
+    }
+
+    to{
+        opacity:1;
+        transform:
+                translateY(0);
+    }
+}
+.login-bg-circle{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(70px);
+
+    z-index:0;
+}
+
+.circle1{
+
+    width:250px;
+
+    height:250px;
+
+    background:
+            rgba(37,99,235,.18);
+
+    top:100px;
+
+    left:150px;
+}
+
+.circle2{
+
+    width:220px;
+
+    height:220px;
+
+    background:
+            rgba(99,102,241,.18);
+
+    bottom:100px;
+
+    right:150px;
+}
+
+.login-icon{
+
+    font-size:60px;
+
+    margin-bottom:15px;
+
+    text-align:center;
+}
+
+.otp-input{
+
+    margin-top:15px;
+}

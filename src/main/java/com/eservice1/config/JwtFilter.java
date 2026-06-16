@@ -42,7 +42,16 @@ public class JwtFilter extends OncePerRequestFilter {
 
         System.out.println("FILTER HIT");
 
-
+        System.out.println(
+                "REQUEST URI = " +
+                        request.getRequestURI()
+        );
+        System.out.println(
+                "AUTH BEFORE  = " +
+                        SecurityContextHolder
+                                .getContext()
+                                .getAuthentication()
+        );
         String header =
                 request.getHeader("Authorization");
 
@@ -78,7 +87,12 @@ public class JwtFilter extends OncePerRequestFilter {
                         .setAuthentication(auth);
             }
         }
-
+        System.out.println(
+                "AUTH AFTER = " +
+                        SecurityContextHolder
+                                .getContext()
+                                .getAuthentication()
+        );
         filterChain.doFilter(
                 request,
                 response
