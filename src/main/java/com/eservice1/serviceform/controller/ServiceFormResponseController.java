@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import com.eservice1.serviceform.dto.ServiceFormResponseViewDTO;
+
 @RestController
 @RequestMapping("/service-form-responses")
 public class ServiceFormResponseController {
@@ -34,6 +36,16 @@ public class ServiceFormResponseController {
             @PathVariable Long requestId
     ) {
         return service.getResponses(
+                requestId
+        );
+    }
+    @GetMapping("/request/{requestId}")
+    public List<ServiceFormResponseViewDTO>
+    getResponseDetails(
+            @PathVariable Long requestId
+    ) {
+
+        return service.getResponseDetails(
                 requestId
         );
     }

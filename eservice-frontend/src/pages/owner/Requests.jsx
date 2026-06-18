@@ -1,6 +1,7 @@
 import  { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
+import {Link} from "react-router-dom";
 
 
 function Requests() {
@@ -8,7 +9,11 @@ function Requests() {
     const [requests, setRequests] =
         useState(
             /** @type {any[]} */ ([])
-        );    const [employees, setEmployees] = useState([]);
+        );
+    const [employees, setEmployees] = useState([]);
+    const [formResponses,
+        setFormResponses] =
+        useState({});
     const [selectedEmployees, setSelectedEmployees] = useState({});
     const [acceptedRequests,
         setAcceptedRequests] =
@@ -28,6 +33,28 @@ function Requests() {
     const [dateFilter,
         setDateFilter] =
         useState("");
+    const loadFormResponses = async (
+        requestId
+    ) => {
+
+        const token =
+            localStorage.getItem("token");
+
+        const res = await axios.get(
+            `http://localhost:8080/service-form-responses/request/${requestId}`,
+            {
+                headers: {
+                    Authorization:
+                        `Bearer ${token}`
+                }
+            }
+        );
+
+        setFormResponses(prev => ({
+            ...prev,
+            [requestId]: res.data
+        }));
+    };
     const assignEmployee = async (requestId) => {
 
         const employeeId =
@@ -270,8 +297,13 @@ function Requests() {
                     {filteredRequests.map(request => (
                         <tr key={request.id}>
 
-                            <td>{request.id}</td>
-
+                            <td>
+                                <Link
+                                    to={`/request-details/${request.id}`}
+                                >
+                                    #{request.id}
+                                </Link>
+                            </td>
                             <td>{request.customerName}</td>
 
                             <td>{request.phoneNumber}</td>
@@ -311,6 +343,7 @@ function Requests() {
     {request.status}
 </span>
                             </td>
+
                             <td>
 
                                 {role === "OWNER" && (

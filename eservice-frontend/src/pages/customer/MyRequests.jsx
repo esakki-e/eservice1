@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomerNavbar from "../../components/CustomerNavbar.jsx";
+import {Link} from "react-router-dom";
 
 function MyRequests() {
 
@@ -83,7 +84,13 @@ function MyRequests() {
                     {requests.map(request => (
 
                         <tr key={request.id}>
-                            <td>{request.id}</td>
+                            <td>
+                                <Link
+                                    to={`/request-details/${request.id}`}
+                                >
+                                    #{request.id}
+                                </Link>
+                            </td>
 
                             <td>
                                 {request.service?.serviceName}

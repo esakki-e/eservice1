@@ -8,7 +8,7 @@ import java.util.List;
 public interface UploadedDocumentRepository
         extends JpaRepository<UploadedDocument, Long> {
 
-    List<UploadedDocument> findByRequestId(
+    List<UploadedDocument> findByRequest_Id(
             Long requestId
     );
 }

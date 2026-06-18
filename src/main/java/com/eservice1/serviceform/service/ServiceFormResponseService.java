@@ -6,16 +6,27 @@ import com.eservice1.serviceform.repository.ServiceFormResponseRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ArrayList;
 
+import com.eservice1.serviceform.dto.ServiceFormResponseViewDTO;
+import com.eservice1.serviceform.entity.ServiceFormField;
+
+import com.eservice1.serviceform.repository.ServiceFormFieldRepository;
 @Service
 public class ServiceFormResponseService {
 
     private final ServiceFormResponseRepository repository;
+    private final ServiceFormFieldRepository
+            fieldRepository;
 
     public ServiceFormResponseService(
-            ServiceFormResponseRepository repository
+            ServiceFormResponseRepository repository,
+            ServiceFormFieldRepository fieldRepository
     ) {
+
         this.repository = repository;
+
+        this.fieldRepository = fieldRepository;
     }
 
     public void saveResponses(
@@ -66,5 +77,46 @@ public class ServiceFormResponseService {
         return repository.findByRequestId(
                 requestId
         );
+    }
+    public List<ServiceFormResponseViewDTO>
+    getResponseDetails(
+            Long requestId
+    ) {
+
+        List<ServiceFormResponse> responses =
+                repository.findByRequestId(
+                        requestId
+                );
+
+        List<ServiceFormResponseViewDTO> result =
+                new ArrayList<>();
+
+        for (
+                ServiceFormResponse response
+                : responses
+        ) {
+
+            ServiceFormField field =
+                    fieldRepository.findById(
+                            response.getFieldId()
+                    ).orElse(null);
+
+            if (field != null) {
+
+                result.add(
+
+                        new ServiceFormResponseViewDTO(
+
+                                field.getFieldName(),
+
+                                response.getValue()
+
+                        )
+
+                );
+            }
+        }
+
+        return result;
     }
 }

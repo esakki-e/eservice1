@@ -47,6 +47,8 @@ import {
 } from "react-router-dom";
 import ServiceFieldManager
     from "./pages/owner/ServiceFieldManager";
+import RequestDetails
+    from "./pages/common/RequestDetails";
 function AnimatedRoutes() {
 
     const location =
@@ -220,8 +222,10 @@ function AnimatedRoutes() {
                     path="/service-fields/:serviceId"
                     element={<ServiceFieldManager />}
                 />
-
-
+                <Route
+                    path="/request-details/:id"
+                    element={<RequestDetails />}
+                />
             </Routes>
 
         </AnimatePresence>

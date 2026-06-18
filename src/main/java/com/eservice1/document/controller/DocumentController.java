@@ -37,35 +37,7 @@ public class DocumentController {
         this.requestRepository =
                 requestRepository;
     }
-    @GetMapping("/download/{id}")
-    public ResponseEntity<Resource> downloadFile(
-            @PathVariable Long id)
-            throws Exception {
 
-        UploadedDocument document =
-                documentRepository
-                        .findById(id)
-                        .orElseThrow();
-
-        Path path =
-                Paths.get(
-                        document.getFilePath()
-                );
-
-        Resource resource =
-                new UrlResource(
-                        path.toUri()
-                );
-
-        return ResponseEntity.ok()
-                .header(
-                        HttpHeaders.CONTENT_DISPOSITION,
-                        "attachment; filename=\""
-                                + document.getFileName()
-                                + "\""
-                )
-                .body(resource);
-    }
     @PostMapping("/upload")
     public String uploadFile(
             @RequestParam("file")
@@ -128,5 +100,17 @@ public class DocumentController {
         );
 
         return "File uploaded successfully";
+    }
+
+    @GetMapping("/request/{requestId}")
+    public java.util.List<UploadedDocument>
+    getDocumentsByRequest(
+            @PathVariable Long requestId
+    ) {
+
+        return documentRepository
+                .findByRequest_Id(
+                        requestId
+                );
     }
 }

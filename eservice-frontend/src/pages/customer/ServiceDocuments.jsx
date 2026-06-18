@@ -98,7 +98,7 @@ function ServiceDocuments() {
                 formData.append(
                     "requestId",
                     requestId
-                );
+                );const token = localStorage.getItem("token");
 
                 await axios.post(
                     "http://localhost:8080/documents/upload",

@@ -109,7 +109,19 @@ public class SecurityConfig {
 
                         .requestMatchers("/service-form-responses/**")
                         .permitAll()
-                        .anyRequest()
+
+                        .requestMatchers(
+                                "/documents/request/**"
+                        )
+                        .permitAll()
+
+                        .requestMatchers(
+                                "/documents/upload"
+                        )
+
+                        .permitAll()
+                        .requestMatchers("/requests/**")
+                        .permitAll().anyRequest()
                         .authenticated()
 
                 );

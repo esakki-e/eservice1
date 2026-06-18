@@ -28,14 +28,6 @@ public class UploadedDocumentController {
                 documentRepository;
     }
 
-    @GetMapping("/request/{requestId}")
-    public List<UploadedDocument>
-    getDocumentsByRequestId(
-            @PathVariable Long requestId) {
-
-        return documentRepository
-                .findByRequestId(requestId);
-    }
 
     @GetMapping("/download/{documentId}")
     public ResponseEntity<Resource>
@@ -68,4 +60,5 @@ public class UploadedDocumentController {
                 )
                 .body(resource);
     }
+
 }

@@ -39,6 +39,14 @@ public class CustomerRequestController {
                         phoneNumber
                 );
     }
+    @GetMapping("/{id}")
+    public CustomerRequest getRequest(
+            @PathVariable Long id
+    ) {
+        return requestRepository
+                .findById(id)
+                .orElseThrow();
+    }
 
 }
 
