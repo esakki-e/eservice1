@@ -1,12 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../../components/Navbar";
 import "./Dashboard.css";
-
+import DashboardLayout
+    from "../../layouts/DashboardLayout";
 function Dashboard() {
 
     const [dashboard, setDashboard] =
         useState({});
+    const [animatedDashboard, setAnimatedDashboard] = useState({
+        totalServices: 0,
+        totalRequests: 0,
+        totalEmployees: 0,
+        pendingTasks: 0,
+        completedTasks: 0,
+        todayRequests: 0
+    });
     const [analytics,
         setAnalytics] =
         useState([]);
@@ -50,118 +58,197 @@ function Dashboard() {
             });
 
     }, []);
+    useEffect(() => {
 
-    return (
+        const interval = setInterval(() => {
+
+            setAnimatedDashboard(prev => ({
+
+                totalServices:
+                    prev.totalServices < (dashboard.totalServices || 0)
+                        ? prev.totalServices + 1
+                        : prev.totalServices,
+
+                totalRequests:
+                    prev.totalRequests < (dashboard.totalRequests || 0)
+                        ? Math.min(
+                            prev.totalRequests + 5,
+                            dashboard.totalRequests
+                        )
+                        : prev.totalRequests,
+
+                totalEmployees:
+                    prev.totalEmployees < (dashboard.totalEmployees || 0)
+                        ? prev.totalEmployees + 1
+                        : prev.totalEmployees,
+
+                pendingTasks:
+                    prev.pendingTasks < (dashboard.pendingTasks || 0)
+                        ? prev.pendingTasks + 1
+                        : prev.pendingTasks,
+
+                completedTasks:
+                    prev.completedTasks < (dashboard.completedTasks || 0)
+                        ? prev.completedTasks + 1
+                        : prev.completedTasks,
+
+                todayRequests:
+                    prev.todayRequests < (dashboard.todayRequests || 0)
+                        ? prev.todayRequests + 1
+                        : prev.todayRequests
+
+            }));
+
+        }, 50);
+
+        return () => clearInterval(interval);
+
+    }, [dashboard]);
+    return (<DashboardLayout>
         <>
-            <Navbar/>
 
-            <div className="container mt-4">
+
+            <div className="max-w-7xl mx-auto">
                 <div className="mb-4">
-                    <h2 className="dashboard-title">
-                        Owner Dashboard
+                    <h2 className="text-5xl font-bold text-slate-900">                        Admin Dashboard
                     </h2>
 
-                    <p className="dashboard-subtitle">
-                        Monitor services, requests,
+                    <p className="text-slate-500 mt-2 text-lg">                        Monitor services, requests,
                         employees and analytics.
                     </p>
                 </div>
 
 
-                <div className="row">
+                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
 
-                    <div className="col-md-4 mb-3">
-                        <div
-                            className="card shadow-sm text-center p-4 dashboard-card"
-                        >
-                            <div className="display-6 mb-2">
-                                🛠
+                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-blue-500">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Total Services
+                                </p>
+
+                                <h2 className="text-5xl font-bold mt-3 text-slate-900">
+                                    {animatedDashboard.totalServices}                                </h2>
+
+                                <p className="text-emerald-600 text-sm mt-2">
+                                    Active services
+                                </p>
                             </div>
 
-                            <h5>Total Services</h5>                            <h1 className="display-5">
-                                {dashboard.totalServices}
-                            </h1>
+                            <div className="text-5xl">
+                                🛠️
+                            </div>
                         </div>
                     </div>
 
-                    <div className="col-md-4 mb-3">
-                        <div
-                            className="card shadow-sm text-center p-4 dashboard-card"
-                        >
-                            <div className="display-6 mb-2">
+                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-violet-500">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Total Requests
+                                </p>
+
+                                <h2 className="text-5xl font-bold mt-3 text-slate-900">
+                                    {animatedDashboard.totalRequests}                                </h2>
+
+                                <p className="text-indigo-600 text-sm mt-2">
+                                    Applications received
+                                </p>
+                            </div>
+
+                            <div className="text-5xl">
                                 📄
                             </div>
-
-                            <h5>Total Requests</h5>                            <h1 className="display-5">
-                                {dashboard.totalRequests}
-                            </h1>
                         </div>
                     </div>
 
-                    <div className="col-md-4 mb-3">
-                        <div
-                            className="card shadow-sm text-center p-4 dashboard-card"
-                        >
-                            <div className="display-6 mb-2">
+                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-cyan-500">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Employees
+                                </p>
+
+                                <h2 className="text-5xl font-bold mt-3 text-slate-900">
+                                    {animatedDashboard.totalEmployees}                                </h2>
+
+                                <p className="text-cyan-600 text-sm mt-2">
+                                    Active workforce
+                                </p>
+                            </div>
+
+                            <div className="text-5xl">
                                 👨‍💼
                             </div>
-
-                            <h5>Total Employees</h5>                            <h1 className="display-5">
-                                {dashboard.totalEmployees}
-                            </h1>
                         </div>
                     </div>
+                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-indigo-500">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Today's Requests
+                                </p>
 
-                    <div className="col-md-4 mb-3">
-                        <div
-                            className="card shadow-sm text-center p-4 dashboard-card"
-                        >
-                            <div className="display-6 mb-2">
-                                ⏳
+                                <h2 className="text-5xl font-bold mt-3 text-indigo-600">
+                                    {animatedDashboard.todayRequests}                                </h2>
                             </div>
 
-                            <h5>Pending Tasks</h5>                            <h1 className="display-5">
-                                {dashboard.pendingTasks}
-                            </h1>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                        <div
-                            className="card shadow-sm text-center p-4 dashboard-card"
-                        >
-                            <div className="display-6 mb-2">
-                                ✅
-                            </div>
-
-                            <h5>Completed Tasks</h5>                            <h1 className="display-5">
-                                {dashboard.completedTasks}
-                            </h1>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4 mb-3">
-                        <div
-                            className="card shadow-sm text-center p-4 dashboard-card"
-                        >
-                            <div className="display-6 mb-2">
+                            <div className="text-5xl">
                                 📅
                             </div>
+                        </div>
+                    </div>
+                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-orange-500">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Pending Tasks
+                                </p>
 
-                            <h5>Today Requests</h5>                            <h1 className="display-5">
-                                {dashboard.todayRequests}
-                            </h1>
+                                <h2 className="text-5xl font-bold mt-3 text-orange-500">
+                                    {animatedDashboard.pendingTasks}                                </h2>
+                            </div>
+
+                            <div className="text-5xl">
+                                ⏳
+                            </div>
                         </div>
                     </div>
 
-                </div>
-                <div
-                    className="
-        card
-        shadow-sm
-        mt-4
-        analytics-card
-    "
+                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-emerald-500">
+                        <div className="flex justify-between items-start">
+                            <div>
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Completed Tasks
+                                </p>
+
+                                <h2 className="text-5xl font-bold mt-3 text-emerald-600">
+                                    {animatedDashboard.completedTasks}                                </h2>
+                            </div>
+
+                            <div className="text-5xl">
+                                ✅
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                </div>                <div
+                className="
+mt-8
+rounded-3xl
+overflow-hidden
+shadow-xl
+bg-gradient-to-r
+from-blue-600
+via-indigo-600
+to-violet-600
+text-white
+cursor-pointer
+"
+
                     onClick={() =>
                         setShowAnalytics(
                             !showAnalytics
@@ -173,24 +260,33 @@ function Dashboard() {
 
                         <div
                             className="
-    analytics-item
-    d-flex
-    justify-content-between
-    align-items-center
+    mt-6
+    rounded-3xl
+    bg-gradient-to-r
+    from-blue-600
+    via-indigo-600
+    to-purple-600
+    p-8
+    shadow-xl
+    text-white
+    flex
+    items-center
+    justify-between
 "
                         >
 
                             <div>
 
-                                <h4>
+                                <h3 className="text-3xl font-bold">
                                     Service Analytics
-                                </h4>
+                                </h3>
 
-                                <p className="text-muted">
+                                <p className="text-blue-100 mt-2">
+
 
                                     {
-                                        analytics.length
-                                    } Services
+                                        Math.min(analytics.length, 3)
+                                    } Top Services
 
                                 </p>
 
@@ -216,8 +312,8 @@ function Dashboard() {
                                     className="mt-3"
                                 >
                                     {
-                                        analytics.map(
-                                            (item, index) => (
+
+                                            analytics.slice(0, 3).map((item, index) => (
 
                                                 <div
                                                     key={
@@ -310,6 +406,7 @@ function Dashboard() {
 
             </div>
         </>
+        </DashboardLayout>
     );
 }
 export default Dashboard;

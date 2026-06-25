@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 import { Link } from "react-router-dom";
+import DashboardLayout
+    from "../../layouts/DashboardLayout";
 
 function Services() {
 
@@ -51,74 +53,269 @@ function Services() {
         }
     };
     return (
-        <>
-            <Navbar />
+        <DashboardLayout>
 
-            <div className="container mt-4">
+            <div className="max-w-7xl mx-auto p-6">
 
-                <h2>Services</h2>
+                {/* Header */}
+                <div className="flex justify-between items-center mb-8">
 
-                <table className="table table-bordered">
+                    <div>
+                        <h1 className="text-4xl font-bold text-slate-800">
+                            Services
+                        </h1>
 
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Service Name</th>
-                        <th>Description</th>
-                        <th>Active</th>
-                        <th>Action</th>                    </tr>
-                    </thead>
+                        <p className="text-slate-500 mt-1">
+                            Manage the services available in the portal
+                        </p>
+                    </div>
 
-                    <tbody>
-                    {services.map(service => (
-                        <tr key={service.id}>
-                            <td>{service.id}</td>
-                            <td>{service.serviceName}</td>
-                            <td>{service.description}</td>
-                            <td>
-                                {service.active ? "Yes" : "No"}
-                            </td>
+                    <Link
+                        to="/services/create"
+                        className="
+                        px-5
+                        py-3
+                        rounded-xl
+                        bg-indigo-600
+                        text-white
+                        font-medium
+                        shadow-md
+                        hover:bg-indigo-700
+                        transition
+                    "
+                    >
+                        + Create Service
+                    </Link>
 
-                            <td>
+                </div>
 
-                                <Link
-                                    to={`/services/edit/${service.id}`}
-                                    className="btn btn-warning btn-sm me-2"
-                                >
-                                    Edit
-                                </Link>
+                {/* Services Table */}
+                <div
+                    className="
+                    bg-white
+                    rounded-3xl
+                    shadow-lg
+                    border
+                    border-slate-200
+                    overflow-hidden
+                "
+                >
 
-                                <button
-                                    className="btn btn-danger btn-sm"
-                                    onClick={() =>
-                                        deleteService(service.id)
-                                    }
-                                >
-                                    Delete
-                                </button>
+                    <table className="w-full">
 
-                                <Link
-                                    to={`/service-documents/${service.id}`}
-                                    className="btn btn-primary btn-sm ms-2"
-                                >
-                                    Apply
-                                </Link>
-                                <Link
-                                    to={`/service-fields/${service.id}`}
-                                    className="btn btn-success btn-sm ms-2"
-                                >
-                                    Manage Fields
-                                </Link>
+                        <thead>
 
-                            </td>
+                        <tr
+                            className="
+                            bg-slate-50
+                            text-slate-600
+                            text-sm
+                            uppercase
+                        "
+                        >
+                            <th className="text-left p-4">ID</th>
+                            <th className="text-left p-4">Service</th>
+                            <th className="text-left p-4">Description</th>
+                            <th className="text-left p-4">Status</th>
+                            <th className="text-right p-4">Actions</th>
                         </tr>
-                    ))}
-                    </tbody>
 
-                </table>
+                        </thead>
+
+                        <tbody>
+
+                        {services.map(service => (
+
+                            <tr
+                                key={service.id}
+                                className="
+                                border-b
+                                border-slate-100
+                                hover:bg-slate-50
+                                transition
+                            "
+                            >
+
+                                <td className="p-4 font-semibold text-slate-700">
+                                    {service.id}
+                                </td>
+
+                                <td className="p-4">
+
+                                    <div className="flex items-center gap-3">
+
+                                        <div
+                                            className="
+                                            w-10
+                                            h-10
+                                            rounded-xl
+                                            bg-indigo-100
+                                            text-indigo-600
+                                            flex
+                                            items-center
+                                            justify-center
+                                        "
+                                        >
+                                            📄
+                                        </div>
+
+                                        <div>
+                                            <p className="text-slate-800 font-semibold">
+                                                {service.serviceName}
+                                            </p>
+                                        </div>
+
+                                    </div>
+
+                                </td>
+
+                                <td className="p-4 text-slate-500">
+                                    {service.description}
+                                </td>
+
+                                <td className="p-4">
+
+                                    {service.active ? (
+
+                                        <span
+                                            className="
+                                            px-3
+                                            py-1
+                                            rounded-full
+                                            bg-green-100
+                                            text-green-700
+                                            text-sm
+                                            font-medium
+                                        "
+                                        >
+                                        ● Active
+                                    </span>
+
+                                    ) : (
+
+                                        <span
+                                            className="
+                                            px-3
+                                            py-1
+                                            rounded-full
+                                            bg-red-100
+                                            text-red-700
+                                            text-sm
+                                            font-medium
+                                        "
+                                        >
+                                        ● Inactive
+                                    </span>
+
+                                    )}
+
+                                </td>
+
+                                <td className="p-4">
+
+                                    <div
+                                        className="
+                                        flex
+                                        justify-end
+                                        gap-2
+                                    "
+                                    >
+
+                                        <Link
+                                            to={`/services/edit/${service.id}`}
+                                            className="
+                                            w-10
+                                            h-10
+                                            rounded-xl
+                                            bg-amber-100
+                                            text-amber-700
+                                            flex
+                                            items-center
+                                            justify-center
+                                            hover:bg-amber-200
+                                            transition
+                                        "
+                                            title="Edit"
+                                        >
+                                            ✏️
+                                        </Link>
+
+                                        <Link
+                                            to={`/service-fields/${service.id}`}
+                                            className="
+                                            w-10
+                                            h-10
+                                            rounded-xl
+                                            bg-emerald-100
+                                            text-emerald-700
+                                            flex
+                                            items-center
+                                            justify-center
+                                            hover:bg-emerald-200
+                                            transition
+                                        "
+                                            title="Manage Fields"
+                                        >
+                                            ⚙️
+                                        </Link>
+
+                                        <Link
+                                            to={`/service-documents/${service.id}`}
+                                            className="
+                                            w-10
+                                            h-10
+                                            rounded-xl
+                                            bg-blue-100
+                                            text-blue-700
+                                            flex
+                                            items-center
+                                            justify-center
+                                            hover:bg-blue-200
+                                            transition
+                                        "
+                                            title="Apply"
+                                        >
+                                            ↗
+                                        </Link>
+
+                                        <button
+                                            onClick={() =>
+                                                deleteService(service.id)
+                                            }
+                                            className="
+                                            w-10
+                                            h-10
+                                            rounded-xl
+                                            bg-red-100
+                                            text-red-700
+                                            flex
+                                            items-center
+                                            justify-center
+                                            hover:bg-red-200
+                                            transition
+                                        "
+                                            title="Delete"
+                                        >
+                                            🗑️
+                                        </button>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                        ))}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
-        </>
+
+        </DashboardLayout>
     );
 }
 

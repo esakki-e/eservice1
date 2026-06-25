@@ -2,8 +2,7 @@ import { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./CustomerProfile.css";
-
-
+import { API_URL } from "../../config";
 function CustomerProfileCheck() {
 
     const navigate =

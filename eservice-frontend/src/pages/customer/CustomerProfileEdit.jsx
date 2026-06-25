@@ -163,99 +163,298 @@ function CustomerProfileEdit() {
         <>
             <CustomerNavbar />
 
-            <div className="container mt-4">
+            <div className="
+            min-h-screen
+            bg-gradient-to-b
+            from-blue-300
+            via-slate-50
+            to-blue-100
+            py-10
+            px-4
+        ">
 
-                <div className="card p-4">
+                <div className="
+                max-w-4xl
+                mx-auto
+            ">
 
-                    <h3>
-                        Edit Profile
-                    </h3>
+                    {/* Header */}
 
-                    <div className="profile-label">
-                        Full Name
+                    <div className="mb-6">
+
+                        <h2 className="
+                        text-4xl
+                        font-bold
+                        text-slate-800
+                    ">
+                            Edit Profile
+                        </h2>
+
+                        <p className="
+                        text-slate-600
+                        mt-2
+                    ">
+                            Keep your details up to date before applying for services.
+                        </p>
+
                     </div>
 
-                    <input
-                        className="profile-input"
-                        value={customerName}
-                        onChange={(e) =>
-                            setCustomerName(
-                                e.target.value
-                            )
-                        }
-                    />
+                    {/* Mobile Verified */}
 
-                    <div className="profile-label">
-                        Date of Birth
+                    <div className="
+                    bg-green-50
+                    border
+                    border-green-200
+                    rounded-3xl
+                    p-5
+                    mb-6
+                    shadow-sm
+                ">
+
+                        <div className="
+                        flex
+                        items-center
+                        gap-3
+                    ">
+
+                            <div className="
+                            w-10
+                            h-10
+                            rounded-full
+                            bg-green-100
+                            flex
+                            items-center
+                            justify-center
+                            text-green-600
+                            font-bold
+                        ">
+                                ✓
+                            </div>
+
+                            <div>
+
+                                <p className="
+                                text-green-700
+                                font-semibold
+                            ">
+                                    Mobile Verified
+                                </p>
+
+                                <p className="
+                                text-slate-800
+                                font-medium
+                            ">
+                                    {
+                                        localStorage.getItem(
+                                            "customerPhone"
+                                        )
+                                    }
+                                </p>
+
+                            </div>
+
+                        </div>
+
                     </div>
 
-                    <input
-                        type="date"
-                        className="profile-input"
-                        value={dob}
-                        onChange={(e) =>
-                            setDob(
-                                e.target.value
-                            )
-                        }
-                    />
-                    <hr className="my-4" />
+                    {/* Basic Details */}
 
-                    <h4>
-                        Additional Information
-                    </h4>
+                    <div className="
+                    bg-white
+                    rounded-3xl
+                    border
+                    shadow-sm
+                    p-6
+                    mb-6
+                ">
 
-                    {
-                        fields.map(field => (
+                        <h3 className="
+                        text-xl
+                        font-bold
+                        text-slate-800
+                        mb-6
+                    ">
+                            Basic Details
+                        </h3>
 
-                            <div
-                                key={field.id}
-                                className="mb-3"
-                            >
+                        <div className="
+                        grid
+                        md:grid-cols-2
+                        gap-5
+                    ">
 
-                                <label
-                                    className="profile-label"
-                                >
-                                    {field.fieldName}
+                            <div>
+
+                                <label className="
+                                block
+                                mb-2
+                                text-slate-700
+                                font-medium
+                            ">
+                                    Full Name
                                 </label>
 
                                 <input
-                                    type={
-                                        field.fieldType === "NUMBER"
-                                            ? "number"
-                                            : "text"
-                                    }
-                                    className="profile-input"
-                                    value={
-                                        values[field.id]
-                                        || ""
-                                    }
+                                    className="
+                                    w-full
+                                    px-4
+                                    py-3
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                    bg-slate-50
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-blue-500
+                                "
+                                    value={customerName}
                                     onChange={(e) =>
-                                        setValues({
-                                            ...values,
-                                            [field.id]:
+                                        setCustomerName(
                                             e.target.value
-                                        })
+                                        )
                                     }
                                 />
 
                             </div>
 
-                        ))
-                    }
+                            <div>
 
+                                <label className="
+                                block
+                                mb-2
+                                text-slate-700
+                                font-medium
+                            ">
+                                    Date of Birth
+                                </label>
 
+                                <input
+                                    type="date"
+                                    className="
+                                    w-full
+                                    px-4
+                                    py-3
+                                    rounded-2xl
+                                    border
+                                    border-slate-200
+                                    bg-slate-50
+                                    focus:outline-none
+                                    focus:ring-2
+                                    focus:ring-blue-500
+                                "
+                                    value={dob}
+                                    onChange={(e) =>
+                                        setDob(
+                                            e.target.value
+                                        )
+                                    }
+                                />
 
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {/* Additional Information */}
+
+                    <div className="
+                    bg-white
+                    rounded-3xl
+                    border
+                    shadow-sm
+                    p-6
+                    mb-6
+                ">
+
+                        <h3 className="
+                        text-xl
+                        font-bold
+                        text-slate-800
+                        mb-6
+                    ">
+                            Additional Information
+                        </h3>
+
+                        <div className="
+                        grid
+                        md:grid-cols-2
+                        gap-5
+                    ">
+
+                            {fields.map(field => (
+
+                                <div key={field.id}>
+
+                                    <label className="
+                                    block
+                                    mb-2
+                                    text-slate-700
+                                    font-medium
+                                ">
+                                        {field.fieldName}
+                                    </label>
+
+                                    <input
+                                        type={
+                                            field.fieldType === "NUMBER"
+                                                ? "number"
+                                                : "text"
+                                        }
+                                        className="
+                                        w-full
+                                        px-4
+                                        py-3
+                                        rounded-2xl
+                                        border
+                                        border-slate-200
+                                        bg-slate-50
+                                        focus:outline-none
+                                        focus:ring-2
+                                        focus:ring-blue-500
+                                    "
+                                        value={
+                                            values[field.id]
+                                            || ""
+                                        }
+                                        onChange={(e) =>
+                                            setValues({
+                                                ...values,
+                                                [field.id]:
+                                                e.target.value
+                                            })
+                                        }
+                                    />
+
+                                </div>
+
+                            ))}
+
+                        </div>
+
+                    </div>
+
+                    {/* Save Button */}
 
                     <button
-                        className="save-profile-btn"
-                        onClick={
-                            updateProfile
-                        }
+                        onClick={updateProfile}
+                        className="
+                        w-full
+                        py-4
+                        rounded-3xl
+                        font-semibold
+                        text-white
+                        bg-gradient-to-r
+                        from-blue-600
+                        to-indigo-600
+                        shadow-lg
+                        hover:from-blue-700
+                        hover:to-indigo-700
+                        transition
+                    "
                     >
-                        Save Changes
+                        💾 Save Changes
                     </button>
-
 
                 </div>
 

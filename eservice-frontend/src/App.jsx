@@ -49,6 +49,12 @@ import ServiceFieldManager
     from "./pages/owner/ServiceFieldManager";
 import RequestDetails
     from "./pages/common/RequestDetails";
+import EmployeeLayout
+    from "./layouts/EmployeeLayout";
+import EmployeeRequests
+    from "./pages/employee/EmployeeRequests";
+
+
 function AnimatedRoutes() {
 
     const location =
@@ -225,7 +231,11 @@ function AnimatedRoutes() {
                 <Route
                     path="/request-details/:id"
                     element={<RequestDetails />}
-                />
+                /><Route
+                path="/employee-requests"
+                element={<EmployeeRequests />}
+            />
+
             </Routes>
 
         </AnimatePresence>

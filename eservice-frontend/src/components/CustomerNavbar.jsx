@@ -12,147 +12,266 @@ function CustomerNavbar() {
 
     const logout = () => {
 
-        localStorage.removeItem(
-            "customerPhone"
-        );
+        localStorage.clear();
 
-        localStorage.removeItem(
-            "customerName"
-        );
-
-        localStorage.removeItem(
-            "customerDob"
-        );
-
-        navigate(
-            "/customer-login"
-        );
+        navigate("/");
     };
-
     return (
 
-        <nav
+
+<nav
+    className="
+    sticky
+    top-0
+    z-50
+    bg-slate-900
+    border-b
+    border-slate-800
+    shadow-lg
+"
+>
+
+    <div
+        className="
+        max-w-7xl
+        mx-auto
+        px-3
+        sm:px-6
+        h-16
+        flex
+        items-center
+        justify-between
+    "
+    >
+
+        <div
             className="
-            navbar
-            navbar-dark
-            bg-primary
-            px-3
+            flex
+            items-center
+            gap-2
+            sm:gap-4
         "
         >
 
+            <button
+                onClick={() =>
+                    setShowMenu(!showMenu)
+                }
+                className="
+                w-10
+                h-10
+                rounded-xl
+                bg-slate-800
+                text-white
+                hover:bg-slate-700
+                transition
+            "
+            >
+                ☰
+            </button>
+
             <div
                 className="
-                d-flex
-                align-items-center
+                flex
+                items-center
+                gap-2
+                sm:gap-3
             "
             >
 
-                <button
+                <div
                     className="
-                    btn
-                    btn-light
-                    me-3
-                    "
-                    onClick={() =>
-                        setShowMenu(
-                            !showMenu
-                        )
-                    }
+                    w-10
+                    h-10
+                    rounded-xl
+                    bg-indigo-600
+                    text-white
+                    flex
+                    items-center
+                    justify-center
+                    font-bold
+                    shrink-0
+                "
                 >
-                    ☰
-                </button>
+                    V
+                </div>
 
                 <h5
-                    className="text-white m-0"
+                    className="
+                    text-white
+                    font-bold
+                    m-0
+                    text-sm
+                    sm:text-lg
+                    leading-tight
+                "
                 >
                     E-Service Portal
                 </h5>
 
             </div>
 
-            <div>
+        </div>
 
-                <Link
-                    to="/customer-services"
+        {/* Desktop Links */}
+
+        <div
+            className="
+            hidden
+            md:flex
+            items-center
+            gap-2
+        "
+        >
+
+            <Link
+                to="/customer-services"
+                className="
+                px-4
+                py-2
+                rounded-xl
+                text-slate-300
+                hover:bg-slate-800
+                hover:text-white
+                transition
+            "
+            >
+                Services
+            </Link>
+
+            <Link
+                to="/my-requests"
+                className="
+                px-4
+                py-2
+                rounded-xl
+                text-slate-300
+                hover:bg-slate-800
+                hover:text-white
+                transition
+            "
+            >
+                My Requests
+            </Link>
+
+        </div>
+
+        {
+            showMenu && (
+
+                <div
                     className="
-                    text-white
-                    me-3
-                    text-decoration-none
+                    absolute
+                    top-20
+                    left-3
+                    sm:left-6
+                    w-60
+                    bg-white
+                    rounded-2xl
+                    shadow-xl
+                    border
+                    border-slate-200
+                    p-3
                 "
                 >
-                    Services
-                </Link>
 
-                <Link
-                    to="/my-requests"
-                    className="
-                    text-white
-                    text-decoration-none
-                "
-                >
-                    My Requests
-                </Link>
+                    {/* Mobile Navigation */}
 
-            </div>
-
-            {
-                showMenu &&
-                (
-                    <div
-                        className="
-                        position-absolute
-                        bg-white
-                        shadow
-                        p-3
-                        rounded
-                    "
-                        style={{
-                            top: "60px",
-                            left: "10px",
-                            zIndex: 1000
-                        }}
-                    >
+                    <div className="md:hidden">
 
                         <Link
-                            to="/customer-profile-view"
+                            to="/customer-services"
                             className="
-                            d-block
-                            mb-2
-                            text-decoration-none
+                            block
+                            px-4
+                            py-3
+                            rounded-xl
+                            text-slate-700
+                            hover:bg-slate-100
                         "
                         >
-                            Profile
+                            Services
                         </Link>
 
                         <Link
-                            to="/customer-profile-edit"
+                            to="/my-requests"
                             className="
-                            d-block
-                            mb-2
-                            text-decoration-none
+                            block
+                            px-4
+                            py-3
+                            rounded-xl
+                            text-slate-700
+                            hover:bg-slate-100
                         "
                         >
-                            Edit Profile
+                            My Requests
                         </Link>
 
-                        <button
-                            className="
-                            btn
-                            btn-danger
-                            btn-sm
-                        "
-                            onClick={logout}
-                        >
-                            Logout
-                        </button>
+                        <hr className="my-2" />
 
                     </div>
-                )
-            }
 
-        </nav>
+                    <Link
+                        to="/customer-profile-view"
+                        className="
+                        block
+                        px-4
+                        py-3
+                        rounded-xl
+                        text-slate-700
+                        hover:bg-slate-100
+                        transition
+                    "
+                    >
+                        Profile
+                    </Link>
+
+                    <Link
+                        to="/customer-profile-edit"
+                        className="
+                        block
+                        px-4
+                        py-3
+                        rounded-xl
+                        text-slate-700
+                        hover:bg-slate-100
+                        transition
+                    "
+                    >
+                        Edit Profile
+                    </Link>
+
+                    <hr className="my-2" />
+
+                    <button
+                        onClick={logout}
+                        className="
+                        w-full
+                        px-4
+                        py-3
+                        rounded-xl
+                        bg-red-500
+                        text-white
+                        font-medium
+                        hover:bg-red-600
+                        transition
+                    "
+                    >
+                        Logout
+                    </button>
+
+                </div>
+
+            )
+        }
+
+    </div>
+
+</nav>
+
 
     );
+
 }
 
 export default CustomerNavbar;

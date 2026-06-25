@@ -496,3 +496,102 @@ body{
 
      flex-wrap:wrap;
  }
+@media (max-width: 768px) {
+
+
+    .landing-page{
+    padding:20px;
+}
+
+    .hero-container{
+        grid-template-columns:1fr;
+        gap:40px;
+        text-align:center;
+    }
+
+    .hero-title{
+        font-size:48px;
+        line-height:1.1;
+        margin-top:20px;
+    }
+
+    .hero-subtitle{
+        font-size:18px;
+        line-height:1.7;
+        max-width:100%;
+    }
+
+    .hero-buttons{
+        flex-direction:column;
+        width:100%;
+    }
+
+    .customer-btn,
+    .staff-btn{
+        width:100%;
+    }
+
+    .hero-stats{
+        gap:15px;
+        justify-content:center;
+        flex-wrap:wrap;
+    }
+
+    .hero-stats > div{
+        min-width:90px;
+    }
+
+    .hero-card{
+        width:100%;
+        padding:25px;
+    }
+
+    .preview-header{
+        font-size:22px;
+    }
+
+    .preview-item{
+        padding:14px;
+        font-size:14px;
+    }
+
+    .trust-row{
+        justify-content:center;
+        text-align:center;
+    }
+
+
+}
+
+@media (max-width: 480px){
+
+    .hero-title{
+    font-size:38px;
+}
+
+    .hero-subtitle{
+        font-size:16px;
+    }
+
+    .hero-badge{
+        font-size:12px;
+    }
+
+    .hero-stats{
+        gap:10px;
+    }
+
+    .hero-stats h3{
+        font-size:22px;
+    }
+
+    .hero-stats p{
+        font-size:14px;
+    }
+
+    .hero-card{
+        padding:20px;
+    }
+
+
+}

@@ -6,7 +6,7 @@ import com.eservice1.employee.service.TaskService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 import java.util.List;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -67,16 +67,7 @@ public class EmployeeTaskController {
         );
     }
 
-    @PostMapping("/{taskId}/assign/{employeeId}")
-    public Task assignEmployee(
-            @PathVariable Long taskId,
-            @PathVariable Long employeeId) {
 
-        return taskService.assignEmployee(
-                taskId,
-                employeeId
-        );
-    }
     @PostMapping("/{requestId}/self-assign")
     public Task selfAssign(
             @PathVariable Long requestId,
@@ -86,5 +77,35 @@ public class EmployeeTaskController {
                 requestId,
                 authentication.getName()
         );
+    }
+    @PostMapping("/{requestId}/assign/{employeeId}")
+    public Task assignEmployee(
+            @PathVariable Long requestId,
+            @PathVariable Long employeeId) {
+
+        System.out.println("ASSIGN CONTROLLER HIT");
+        System.out.println("REQUEST ID = " + requestId);
+        System.out.println("EMPLOYEE ID = " + employeeId);
+
+        return taskService.assignEmployee(
+                requestId,
+                employeeId
+        );
+    }
+    @PostMapping("/upload-result")
+    public String uploadResult(
+            @RequestParam("file")
+            MultipartFile file,
+
+            @RequestParam("taskId")
+            Long taskId)
+            throws Exception {
+
+        taskService.uploadResult(
+                taskId,
+                file
+        );
+
+        return "SUCCESS";
     }
 }

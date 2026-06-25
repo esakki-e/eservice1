@@ -47,6 +47,11 @@ public class SecurityConfig {
 
                         .requestMatchers("/auth/**")
                         .permitAll()
+
+                        .requestMatchers(
+                                "/admin/requests/test"
+                        )
+                        .permitAll()
                         .requestMatchers("/documents/download/**")
                         .permitAll()
                         .requestMatchers(

@@ -9,7 +9,12 @@ import com.eservice1.employee.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import com.eservice1.submission.entity.RequestStatus;
 import com.eservice1.submission.repository.CustomerRequestRepository;
+import org.springframework.web.multipart.MultipartFile;
+import java.io.File;
+import java.io.IOException;
 
+import com.eservice1.submission.entity.UploadedDocument;
+import com.eservice1.submission.repository.UploadedDocumentRepository;
 import java.util.List;
 
 @Service
@@ -17,9 +22,8 @@ public class TaskService {
 
     private final TaskRepository taskRepository;
     private final EmployeeRepository employeeRepository;
-    private final CustomerRequestRepository
-            requestRepository;
-
+    private final CustomerRequestRepository requestRepository;
+    private final UploadedDocumentRepository uploadedDocumentRepository;
     public Task selfAssign(
             Long requestId,
             String phoneNumber) {
@@ -67,11 +71,16 @@ public class TaskService {
     public TaskService(
             TaskRepository taskRepository,
             EmployeeRepository employeeRepository,
-            CustomerRequestRepository requestRepository) {
+            CustomerRequestRepository requestRepository,
+            UploadedDocumentRepository uploadedDocumentRepository) {
 
         this.taskRepository = taskRepository;
+
         this.employeeRepository = employeeRepository;
+
         this.requestRepository = requestRepository;
+
+        this.uploadedDocumentRepository = uploadedDocumentRepository;
     }
     public List<Task> getAllTasks() {
 
@@ -88,7 +97,7 @@ public class TaskService {
                         .orElseThrow();
 
         task.setStatus(
-                TaskStatus.ACCEPTED
+                TaskStatus.IN_PROGRESS
         );
 
         task.getRequest()
@@ -120,26 +129,39 @@ public class TaskService {
             Long requestId,
             Long employeeId) {
 
+        System.out.println("ASSIGN SERVICE HIT");
+        System.out.println("REQUEST ID = " + requestId);
+        System.out.println("EMPLOYEE ID = " + employeeId);
+
         Task task =
                 taskRepository.findByRequestId(
                         requestId
                 );
 
-        Employee employee =
-                employeeRepository.findById(employeeId)
-                        .orElseThrow();
-
-        if (task.getEmployee() != null) {
+        if (task == null) {
             throw new RuntimeException(
-                    "Already assigned"
+                    "Task not found for request " + requestId
             );
         }
 
+        Employee employee =
+                employeeRepository.findById(
+                        employeeId
+                ).orElseThrow(
+                        () -> new RuntimeException(
+                                "Employee not found"
+                        )
+                );
+
         task.setEmployee(employee);
+
+        task.setStatus(
+                TaskStatus.PENDING
+        );
 
         task.getRequest()
                 .setStatus(
-                        RequestStatus.IN_PROGRESS
+                        RequestStatus.ASSIGNED
                 );
 
         requestRepository.save(
@@ -148,7 +170,6 @@ public class TaskService {
 
         return taskRepository.save(task);
     }
-
     public Task completeTask(Long taskId) {
 
         Task task =
@@ -169,6 +190,79 @@ public class TaskService {
         );
 
         return taskRepository.save(task);
+    }
+    public void uploadResult(
+            Long taskId,
+            MultipartFile file)
+            throws IOException {
+
+        Task task =
+                taskRepository.findById(
+                        taskId
+                ).orElseThrow();
+
+        String uploadDir =
+                System.getProperty("user.dir")
+                        + File.separator
+                        + "uploads"
+                        + File.separator;
+
+        File dir =
+                new File(uploadDir);
+
+        if (!dir.exists()) {
+
+            dir.mkdirs();
+        }
+
+        String filePath =
+                uploadDir +
+                        "RESULT_" +
+                        file.getOriginalFilename();
+
+        file.transferTo(
+                new File(filePath)
+        );
+
+        UploadedDocument document =
+                new UploadedDocument();
+
+        document.setDocumentName(
+                "RESULT_" +
+                        file.getOriginalFilename()
+        );
+
+        document.setFileName(
+                "RESULT_" +
+                        file.getOriginalFilename()
+        );
+
+        document.setFilePath(
+                filePath
+        );
+
+        document.setRequest(
+                task.getRequest()
+        );
+
+        uploadedDocumentRepository.save(
+                document
+        );
+
+        task.setStatus(
+                TaskStatus.COMPLETED
+        );
+
+        task.getRequest()
+                .setStatus(
+                        RequestStatus.COMPLETED
+                );
+
+        requestRepository.save(
+                task.getRequest()
+        );
+
+        taskRepository.save(task);
     }
 
 }

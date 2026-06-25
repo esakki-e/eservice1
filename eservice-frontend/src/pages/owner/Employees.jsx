@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
-
+import DashboardLayout
+    from "../../layouts/DashboardLayout";
 function Employees() {
 
     const [employees, setEmployees] =
@@ -57,21 +58,181 @@ function Employees() {
                 matchesPhone;
         });
     return (
-        <>
-            <Navbar />
+        <DashboardLayout>
 
-            <div className="container mt-4">
+            <div className="min-h-screen bg-slate-50 p-8">
 
-                <h2 className="mb-4">
-                    Employees
-                </h2>
-                <div className="row mb-3">
+                <div className="max-w-7xl mx-auto">
 
-                    <div className="col-md-6">
+                    {/* Header */}
+
+                    <div className="mb-8">
+
+                        <h1 className="
+                        text-4xl
+                        font-bold
+                        text-slate-800
+                    ">
+                            Employees
+                        </h1>
+
+                        <p className="
+                        text-slate-500
+                        mt-2
+                    ">
+                            Track workload and performance across your team
+                        </p>
+
+                    </div>
+
+                    {/* Employee Summary Cards */}
+
+                    <div className="
+                    grid
+                    grid-cols-1
+                    md:grid-cols-2
+                    xl:grid-cols-3
+                    gap-6
+                    mb-8
+                ">
+
+                        {filteredEmployees.map(employee => {
+
+                            const completion =
+                                employee.taskCount > 0
+                                    ? Math.round(
+                                        (
+                                            employee.completedTasks /
+                                            employee.taskCount
+                                        ) * 100
+                                    )
+                                    : 0;
+
+                            return (
+
+                                <div
+                                    key={employee.id}
+                                    className="
+                                    bg-white
+                                    rounded-3xl
+                                    border
+                                    shadow-sm
+                                    p-6
+                                "
+                                >
+
+                                    <div className="
+                                    flex
+                                    justify-between
+                                    items-start
+                                    mb-4
+                                ">
+
+                                        <div>
+
+                                            <h3 className="
+                                            font-bold
+                                            text-lg
+                                            text-slate-800
+                                        ">
+                                                {employee.name}
+                                            </h3>
+
+                                            <p className="
+                                            text-sm
+                                            text-slate-500
+                                        ">
+                                                {employee.phoneNumber}
+                                            </p>
+
+                                        </div>
+
+                                        <span
+                                            className={
+                                                employee.active
+                                                    ? `
+                                                px-3
+                                                py-1
+                                                rounded-full
+                                                text-xs
+                                                font-semibold
+                                                bg-emerald-100
+                                                text-emerald-700
+                                                `
+                                                    : `
+                                                px-3
+                                                py-1
+                                                rounded-full
+                                                text-xs
+                                                font-semibold
+                                                bg-red-100
+                                                text-red-700
+                                                `
+                                            }
+                                        >
+                                        {employee.active
+                                            ? "Active"
+                                            : "Inactive"}
+                                    </span>
+
+                                    </div>
+
+                                    <div className="
+                                    flex
+                                    justify-between
+                                    text-sm
+                                    mb-2
+                                ">
+                                    <span>
+                                        {employee.completedTasks}
+                                        /
+                                        {employee.taskCount}
+                                        {" "}
+                                        completed
+                                    </span>
+
+                                        <span className="font-semibold">
+                                        {completion}%
+                                    </span>
+                                    </div>
+
+                                    <div className="
+                                    w-full
+                                    bg-slate-200
+                                    rounded-full
+                                    h-2
+                                ">
+                                        <div
+                                            className="
+                                            bg-emerald-500
+                                            h-2
+                                            rounded-full
+                                        "
+                                            style={{
+                                                width:
+                                                    `${completion}%`
+                                            }}
+                                        />
+                                    </div>
+
+                                </div>
+
+                            );
+                        })}
+
+                    </div>
+
+                    {/* Search */}
+
+                    <div className="
+                    grid
+                    md:grid-cols-2
+                    gap-4
+                    mb-6
+                ">
 
                         <input
                             type="text"
-                            className="form-control"
                             placeholder="Search by Name"
                             value={searchName}
                             onChange={(e) =>
@@ -79,15 +240,18 @@ function Employees() {
                                     e.target.value
                                 )
                             }
+                            className="
+                            h-14
+                            px-4
+                            rounded-2xl
+                            border
+                            border-slate-200
+                            bg-white
+                        "
                         />
-
-                    </div>
-
-                    <div className="col-md-6">
 
                         <input
                             type="text"
-                            className="form-control"
                             placeholder="Search by Phone"
                             value={searchPhone}
                             onChange={(e) =>
@@ -95,66 +259,146 @@ function Employees() {
                                     e.target.value
                                 )
                             }
+                            className="
+                            h-14
+                            px-4
+                            rounded-2xl
+                            border
+                            border-slate-200
+                            bg-white
+                        "
                         />
 
                     </div>
 
+                    {/* Table */}
+
+                    <div className="
+                    bg-white
+                    rounded-3xl
+                    border
+                    shadow-sm
+                    overflow-hidden
+                ">
+
+                        <table className="w-full">
+
+                            <thead className="bg-slate-50">
+
+                            <tr>
+
+                                <th className="p-4 text-left">
+                                    ID
+                                </th>
+
+                                <th className="p-4 text-left">
+                                    Name
+                                </th>
+
+                                <th className="p-4 text-left">
+                                    Phone
+                                </th>
+
+                                <th className="p-4 text-left">
+                                    Tasks
+                                </th>
+
+                                <th className="p-4 text-left">
+                                    Completed
+                                </th>
+
+                                <th className="p-4 text-left">
+                                    Status
+                                </th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                            {filteredEmployees.map(
+                                employee => (
+
+                                    <tr
+                                        key={employee.id}
+                                        className="
+                                        border-t
+                                        hover:bg-slate-50
+                                    "
+                                    >
+
+                                        <td className="p-4">
+                                            {employee.id}
+                                        </td>
+
+                                        <td className="
+                                        p-4
+                                        font-medium
+                                    ">
+                                            {employee.name}
+                                        </td>
+
+                                        <td className="p-4">
+                                            {employee.phoneNumber}
+                                        </td>
+
+                                        <td className="p-4">
+                                            {employee.taskCount}
+                                        </td>
+
+                                        <td className="p-4">
+                                            {employee.completedTasks}
+                                        </td>
+
+                                        <td className="p-4">
+
+                                        <span
+                                            className={
+                                                employee.active
+                                                    ? `
+                                                    px-3
+                                                    py-1
+                                                    rounded-full
+                                                    text-xs
+                                                    font-semibold
+                                                    bg-emerald-100
+                                                    text-emerald-700
+                                                    `
+                                                    : `
+                                                    px-3
+                                                    py-1
+                                                    rounded-full
+                                                    text-xs
+                                                    font-semibold
+                                                    bg-red-100
+                                                    text-red-700
+                                                    `
+                                            }
+                                        >
+                                            {employee.active
+                                                ? "Active"
+                                                : "Inactive"}
+                                        </span>
+
+                                        </td>
+
+                                    </tr>
+
+                                )
+                            )}
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
                 </div>
-                <table className="table table-bordered table-hover">
-
-                    <thead className="table-dark">
-
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Phone Number</th>
-                        <th>Tasks</th>
-                        <th>Completed</th>
-                        <th>Status</th>
-                    </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                    {filteredEmployees.map(employee => (
-                        <tr key={employee.id}>
-
-                            <td>{employee.id}</td>
-
-                            <td>{employee.name}</td>
-
-                            <td>
-                                {employee.phoneNumber}
-                            </td>
-                            <td>{employee.taskCount}</td>
-                            <td>
-                                {employee.completedTasks}
-                            </td>
-                            <td>
-                                <span
-                                    className={
-                                        employee.active
-                                            ? "badge text-bg-success"
-                                            : "badge text-bg-danger"
-                                    }
-                                >
-                                    {employee.active
-                                        ? "Active"
-                                        : "Inactive"}
-                                </span>
-                            </td>
-
-                        </tr>
-
-                    ))}
-
-                    </tbody>
-
-                </table>
 
             </div>
-        </>
+
+        </DashboardLayout>
     );
 }
 

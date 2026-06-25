@@ -3,6 +3,9 @@ package com.eservice1.admin.controller;
 import com.eservice1.submission.entity.CustomerRequest;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.web.bind.annotation.*;
+import com.eservice1.admin.dto.AdminRequestDTO;
+import com.eservice1.employee.entity.Task;
+import com.eservice1.employee.repository.TaskRepository;
 
 @RestController
 @RequestMapping("/admin/requests")
@@ -10,19 +13,69 @@ public class AdminRequestController {
 
     private final CustomerRequestRepository
             requestRepository;
-
+    private final TaskRepository taskRepository;
     public AdminRequestController(
-            CustomerRequestRepository requestRepository) {
+            CustomerRequestRepository requestRepository,
+            TaskRepository taskRepository) {
 
-        this.requestRepository =
-                requestRepository;
+        this.requestRepository = requestRepository;
+        this.taskRepository = taskRepository;
     }
 
     @GetMapping
-    public java.util.List<CustomerRequest>
-    getAllRequests() {
+    public java.util.List<AdminRequestDTO> getAllRequests() {
 
-        return requestRepository.findAll();
+        java.util.List<CustomerRequest> requests =
+                requestRepository.findAll();
+
+        return requests.stream()
+                .map(request -> {
+
+                    AdminRequestDTO dto =
+                            new AdminRequestDTO();
+
+                    dto.setId(
+                            request.getId()
+                    );
+
+                    dto.setCustomerName(
+                            request.getCustomerName()
+                    );
+
+                    dto.setPhoneNumber(
+                            request.getPhoneNumber()
+                    );
+
+                    dto.setServiceName(
+                            request.getService().getServiceName()                    );
+
+                    dto.setStatus(
+                            request.getStatus().name()
+                    );
+
+                    Task task =
+                            taskRepository.findByRequestId(
+                                    request.getId()
+                            );
+
+                    if (
+                            task != null &&
+                                    task.getEmployee() != null
+                    ) {
+
+                        dto.setAssignedEmployeeId(
+                                task.getEmployee().getId()
+                        );
+
+                        dto.setAssignedEmployeeName(
+                                task.getEmployee().getName()
+                        );
+                    }
+
+                    return dto;
+
+                })
+                .toList();
     }
 
     @GetMapping("/{id}")
