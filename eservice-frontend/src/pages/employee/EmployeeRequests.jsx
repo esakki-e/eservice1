@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
-
+import { API_URL } from "../../config";
 function EmployeeRequests() {
 
     const [requests, setRequests] = useState([]);
@@ -21,7 +21,7 @@ function EmployeeRequests() {
 
             const response =
                 await axios.get(
-                    "http://localhost:8080/admin/requests",
+                    (`${API_URL}/admin/requests`),
                     {
                         headers: {
                             Authorization:
@@ -49,7 +49,7 @@ function EmployeeRequests() {
                 localStorage.getItem("token");
 
             await axios.post(
-                `http://localhost:8080/employee/tasks/${requestId}/self-assign`,
+                `${API_URL}/employee/tasks/${requestId}/self-assign`,
                 {},
                 {
                     headers: {

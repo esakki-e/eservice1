@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomerNavbar from "../../components/CustomerNavbar.jsx";
 import {Link} from "react-router-dom";
-
+import { API_URL } from "../../config";
 function MyRequests() {
 
     const [requests, setRequests] = useState([]);
@@ -29,7 +29,7 @@ function MyRequests() {
 
         console.log("Phone:", phoneNumber);
         axios.get(
-            `http://localhost:8080/requests/phone/${phoneNumber}`,
+            `${API_URL}/requests/phone/${phoneNumber}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -56,7 +56,7 @@ function MyRequests() {
             localStorage.getItem("token");
 
         const res = await axios.get(
-            `http://localhost:8080/documents/request/${requestId}`,
+            `${API_URL}/documents/request/${requestId}`,
             {
                 headers: {
                     Authorization:
@@ -73,7 +73,7 @@ function MyRequests() {
     const downloadResult = (id) => {
 
         window.open(
-            `http://localhost:8080/documents/download/${id}`,
+            `${API_URL}/documents/download/${id}`,
             "_blank"
         );
 

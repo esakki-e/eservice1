@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./CustomerProfile.css";
 import PageTransition from "../../components/PageTransition";
 import { motion } from "framer-motion";
-
+import { API_URL } from "../../config";
 function CustomerProfile() {
 
     const [customerName,
@@ -26,7 +26,7 @@ function CustomerProfile() {
             );
 
         await axios.post(
-            "http://localhost:8080/customer/profile",
+            (`${API_URL}/customer/profile`),
             {
                 phoneNumber,
                 customerName,

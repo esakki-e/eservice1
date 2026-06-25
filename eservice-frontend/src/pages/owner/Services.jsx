@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
+import { API_URL } from "../../config";
 import { Link } from "react-router-dom";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
@@ -14,7 +15,7 @@ function Services() {
         const token = localStorage.getItem("token");
 
         axios.get(
-            "http://localhost:8080/services",
+            (`${API_URL}/services`),
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -32,7 +33,7 @@ function Services() {
             const token = localStorage.getItem("token");
 
             await axios.delete(
-                `http://localhost:8080/admin/services/${id}`,
+                `${API_URL}/admin/services/${id}`,
                 {
                     headers: {
                         Authorization: `Bearer ${token}`

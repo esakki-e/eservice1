@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
-
+import { API_URL } from "../../config";
 function CreateRequest() {
 
     const [customerName, setCustomerName] =
@@ -22,7 +22,7 @@ function CreateRequest() {
             localStorage.getItem("token");
 
         axios.get(
-            "http://localhost:8080/admin/services",
+            (`${API_URL}/admin/services`),
             {
                 headers: {
                     Authorization:
@@ -44,7 +44,7 @@ function CreateRequest() {
             localStorage.getItem("token");
 
         await axios.post(
-            "http://localhost:8080/requests",
+            (`${API_URL}/requests`),
             {
                 customerName,
                 phoneNumber,

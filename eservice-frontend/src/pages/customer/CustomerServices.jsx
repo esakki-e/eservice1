@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import CustomerNavbar from "../../components/CustomerNavbar";
 import { useNavigate } from "react-router-dom";
-
+import { API_URL } from "../../config";
 function CustomerServices() {
 
     const [services, setServices] =
@@ -15,7 +15,7 @@ function CustomerServices() {
     useEffect(() => {
 
         axios.get(
-            "http://localhost:8080/services"
+            (`${API_URL}/services`)
         )
             .then(res => {
                 setServices(res.data);

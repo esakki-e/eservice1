@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
+import { API_URL } from "../../config";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
 function Users() {
@@ -14,7 +15,7 @@ function Users() {
             localStorage.getItem("token");
 
         axios.get(
-            "http://localhost:8080/users",
+            (`${API_URL}/users`),
             {
                 headers: {
                     Authorization:
@@ -39,7 +40,7 @@ function Users() {
             localStorage.getItem("token");
 
         await axios.post(
-            `http://localhost:8080/employees/promote/${userId}`,
+            `${API_URL}/employees/promote/${userId}`,
             {},
             {
                 headers: {

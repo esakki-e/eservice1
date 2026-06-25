@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 import {Link} from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";import { API_URL } from "../../config";
 function EmployeeDashboard() {
 
     const [tasks, setTasks] = useState([]);
@@ -21,7 +21,7 @@ function EmployeeDashboard() {
             );
 
         axios.get(
-            `http://localhost:8080/employee/tasks/${employeeId}`,
+            `${API_URL}/employee/tasks/${employeeId}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -45,7 +45,7 @@ function EmployeeDashboard() {
         const token = localStorage.getItem("token");
 
         await axios.post(
-            `http://localhost:8080/employee/tasks/${id}/accept`,
+            `${API_URL}/employee/tasks/${id}/accept`,
             {},
             {
                 headers: {
@@ -70,7 +70,7 @@ function EmployeeDashboard() {
             const token = localStorage.getItem("token");
 
             await axios.post(
-                `http://localhost:8080/employee/tasks/${id}/complete`,
+                `${API_URL}/employee/tasks/${id}/complete`,
                 {},
                 {
                     headers: {
@@ -90,7 +90,7 @@ function EmployeeDashboard() {
                 localStorage.getItem("token");
 
             const res = await axios.get(
-                `http://localhost:8080/documents/request/${requestId}`,
+                `${API_URL}/documents/request/${requestId}`,
                 {
                     headers: {
                         Authorization:
@@ -132,7 +132,7 @@ function EmployeeDashboard() {
         );
 
         await axios.post(
-            "http://localhost:8080/employee/tasks/upload-result",
+            "${API_URL}/employee/tasks/upload-result",
             formData,
             {
                 headers: {

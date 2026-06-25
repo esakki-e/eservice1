@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { login } from "../../services/authService";
-
+import { API_URL } from "../../config";
 function Login() {
 
     const [phoneNumber, setPhoneNumber] = useState("");

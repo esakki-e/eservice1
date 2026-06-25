@@ -6,7 +6,7 @@ import CustomerNavbar from "../../components/CustomerNavbar";
 //import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import { API_URL } from "../../config";
 
 function ServiceDocuments() {
 
@@ -52,7 +52,7 @@ function ServiceDocuments() {
 
             const response =
                 await axios.post(
-                    "http://localhost:8080/requests",
+                    (`${API_URL}/requests`),
                     {
                         customerName,
                         phoneNumber:localStorage.getItem("customerPhone"),
@@ -80,7 +80,7 @@ function ServiceDocuments() {
 
                 }));
             await axios.post(
-                "http://localhost:8080/service-form-responses",
+                (`${API_URL}/service-form-responses`),
                 formResponses
             );
            // console.log(response.data);
@@ -101,7 +101,7 @@ function ServiceDocuments() {
                 );const token = localStorage.getItem("token");
 
                 await axios.post(
-                    "http://localhost:8080/documents/upload",
+                    (`${API_URL}/documents/upload`),
                     formData,
                     {
                         headers: {
@@ -147,7 +147,7 @@ function ServiceDocuments() {
             localStorage.getItem("token");
 
         axios.get(
-            `http://localhost:8080/services/${id}/documents`,
+            `${API_URL}/services/${id}/documents`,
 
             {
                 headers: {
@@ -169,7 +169,7 @@ function ServiceDocuments() {
     useEffect(() => {
 
         axios.get(
-            `http://localhost:8080/service-form-fields/service/${id}/active`
+            `${API_URL}/service-form-fields/service/${id}/active`
         )
             .then(res => {
 
@@ -204,7 +204,7 @@ function ServiceDocuments() {
             );
 
         axios.get(
-            `http://localhost:8080/customer-form-responses/autofill/${phoneNumber}`
+            `${API_URL}/customer-form-responses/autofill/${phoneNumber}`
         )
             .then(res => {
 

@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 import { useNavigate } from "react-router-dom";
+import { API_URL } from "../../config";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
 function CreateService() {
@@ -56,7 +57,7 @@ function CreateService() {
             documents
         });
         await axios.post(
-            "http://localhost:8080/admin/services",
+            (`${API_URL}/admin/services`),
             {
                 serviceName,
                 description,

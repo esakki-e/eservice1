@@ -1,6 +1,6 @@
 
 import { useEffect, useState } from "react";
-
+import { API_URL } from "../../config";
 
 import axios from "axios";
 
@@ -37,7 +37,7 @@ function CustomerProfileEdit() {
     useEffect(() => {
 
         axios.get(
-            "http://localhost:8080/customer-form-fields"
+            (`${API_URL}/customer-form-fields`)
         )
             .then(res => {
 
@@ -56,7 +56,7 @@ function CustomerProfileEdit() {
                 );
 
             await axios.post(
-                "http://localhost:8080/customer/profile",
+                (`${API_URL}/customer/profile`),
                 {
                     phoneNumber,
                     customerName,
@@ -66,7 +66,7 @@ function CustomerProfileEdit() {
             for (const fieldId in values) {
 
                 await axios.post(
-                    "http://localhost:8080/customer-form-responses",
+                    (`${API_URL}/customer-form-responses`),
                     {
                         fieldId,
                         phoneNumber,
@@ -112,7 +112,7 @@ function CustomerProfileEdit() {
             );
 
         axios.get(
-            `http://localhost:8080/customer/profile/${phoneNumber}`
+            `${API_URL}/customer/profile/${phoneNumber}`
         )
             .then(res => {
 
@@ -135,7 +135,7 @@ function CustomerProfileEdit() {
             );
 
         axios.get(
-            `http://localhost:8080/customer-form-responses/${phoneNumber}`
+            `${API_URL}/customer-form-responses/${phoneNumber}`
         )
             .then(res => {
 

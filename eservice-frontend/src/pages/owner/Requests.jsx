@@ -1,7 +1,7 @@
 import  { useEffect, useState } from "react";
 import axios from "axios";
 import {Link} from "react-router-dom";
-
+import { API_URL } from "../../config";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
 function Requests() {
@@ -41,7 +41,7 @@ function Requests() {
             localStorage.getItem("token");
 
         const res = await axios.get(
-            `http://localhost:8080/service-form-responses/request/${requestId}`,
+            `${API_URL}/service-form-responses/request/${requestId}`,
             {
                 headers: {
                     Authorization:
@@ -69,7 +69,7 @@ function Requests() {
             localStorage.getItem("token");
 
         await axios.post(
-            `http://localhost:8080/employee/tasks/${requestId}/assign/${employeeId}`,
+            `${API_URL}/employee/tasks/${requestId}/assign/${employeeId}`,
             {},
             {
                 headers: {
@@ -88,7 +88,7 @@ function Requests() {
             localStorage.getItem("token");
 
         axios.get(
-            "http://localhost:8080/admin/requests",
+            (`${API_URL}/admin/requests`),
             {
                 headers: {
                     Authorization:
@@ -107,7 +107,7 @@ function Requests() {
                 );
             });
         axios.get(
-            "http://localhost:8080/employees",
+            (`${API_URL}/employees`),
             {
                 headers: {
                     Authorization:
@@ -128,7 +128,7 @@ function Requests() {
             localStorage.getItem("token");
 
         await axios.post(
-            `http://localhost:8080/employee/tasks/${requestId}/self-assign`,
+            `${API_URL}/employee/tasks/${requestId}/self-assign`,
             {},
             {
                 headers: {

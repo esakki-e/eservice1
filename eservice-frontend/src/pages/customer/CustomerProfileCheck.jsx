@@ -16,7 +16,7 @@ function CustomerProfileCheck() {
             );
 
         axios.get(
-            `http://localhost:8080/customer/profile/${phoneNumber}`
+            `${API_URL}/customer/profile/${phoneNumber}`
         )
             .then(res => {
 

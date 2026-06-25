@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
-
+import { API_URL } from "../../config";
 function RequestDetails() {
 
     const { id } = useParams();
@@ -30,7 +30,7 @@ function RequestDetails() {
             localStorage.getItem("token");
 
         axios.get(
-            `http://localhost:8080/requests/${id}`,
+            `${API_URL}/requests/${id}`,
             {
                 headers: {
                     Authorization:
@@ -43,14 +43,14 @@ function RequestDetails() {
             });
 
         axios.get(
-            `http://localhost:8080/service-form-responses/request/${id}`
+            `${API_URL}/service-form-responses/request/${id}`
         )
             .then(res => {
                 setFormResponses(res.data);
             });
 
         axios.get(
-            `http://localhost:8080/documents/request/${id}`
+            `${API_URL}/documents/request/${id}`
         )
             .then(res => {
                 setDocuments(res.data);

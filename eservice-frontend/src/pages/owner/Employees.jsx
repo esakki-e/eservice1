@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../../components/Navbar";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
+import { API_URL } from "../../config";
 function Employees() {
 
     const [employees, setEmployees] =
@@ -20,7 +21,7 @@ function Employees() {
             localStorage.getItem("token");
 
         axios.get(
-            "http://localhost:8080/employees",
+            (`${API_URL}/employees`),
             {
                 headers: {
                     Authorization:

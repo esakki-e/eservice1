@@ -5,7 +5,7 @@ import {
     useParams,
     useNavigate,Link
 } from "react-router-dom";
-
+import { API_URL } from "../../config";
 function ServiceFieldManager() {
 
     const { serviceId } = useParams();
@@ -39,7 +39,7 @@ function ServiceFieldManager() {
 
         const response =
             await axios.get(
-                `http://localhost:8080/service-form-fields/service/${serviceId}`
+                `${API_URL}/service-form-fields/service/${serviceId}`
             );
 
         setFields(
@@ -52,7 +52,7 @@ function ServiceFieldManager() {
         if (editingId) {
 
             await axios.put(
-                `http://localhost:8080/service-form-fields/${editingId}`,
+                `${API_URL}/service-form-fields/${editingId}`,
                 {
                     serviceId,
                     fieldName,
@@ -64,7 +64,7 @@ function ServiceFieldManager() {
         } else {
 
             await axios.post(
-                "http://localhost:8080/service-form-fields",
+                (`${API_URL}/service-form-fields`),
                 {
                     serviceId,
                     fieldName,
@@ -110,7 +110,7 @@ function ServiceFieldManager() {
         }
 
         await axios.delete(
-            `http://localhost:8080/service-form-fields/${id}`
+            `${API_URL}/service-form-fields/${id}`
         );
 
         loadFields();

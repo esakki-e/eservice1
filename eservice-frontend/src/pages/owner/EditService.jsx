@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
+import { API_URL } from "../../config";
 
 function EditService() {
 
@@ -21,7 +22,7 @@ function EditService() {
             localStorage.getItem("token");
 
         axios.get(
-            "http://localhost:8080/admin/services",
+            (`${API_URL}/admin/services`),
             {
                 headers: {
                     Authorization:
@@ -58,7 +59,7 @@ function EditService() {
             localStorage.getItem("token");
 
         await axios.put(
-            `http://localhost:8080/admin/services/${id}`,
+            `${API_URL}/admin/services/${id}`,
             {
                 serviceName,
                 description,

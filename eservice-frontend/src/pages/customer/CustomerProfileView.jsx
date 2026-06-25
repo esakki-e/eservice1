@@ -1,7 +1,7 @@
 import CustomerNavbar
     from "../../components/CustomerNavbar";
 import "./CustomerProfileView.css";
-
+import { API_URL } from "../../config";
 import { useEffect, useState }
     from "react";
 
@@ -26,7 +26,7 @@ function CustomerProfileView() {
             );
 
         axios.get(
-            `http://localhost:8080/customer-form-responses/${phoneNumber}`
+            `${API_URL}/customer-form-responses/${phoneNumber}`
         )
             .then(res => {
 

@@ -3,6 +3,7 @@ import axios from "axios";
 import "./Dashboard.css";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
+import { API_URL } from "../../config";
 function Dashboard() {
 
     const [dashboard, setDashboard] =
@@ -28,7 +29,7 @@ function Dashboard() {
             localStorage.getItem("token");
 
         axios.get(
-            "http://localhost:8080/dashboard",
+            (`${API_URL}/dashboard`),
             {
                 headers: {
                     Authorization:
@@ -40,7 +41,7 @@ function Dashboard() {
             setDashboard(res.data);
         })
         axios.get(
-            "http://localhost:8080/dashboard/service-analytics",
+            (`${API_URL}/dashboard/service-analytics`),
             {
                 headers: {
                     Authorization:
