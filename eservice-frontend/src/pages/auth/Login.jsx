@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState } from "react";import { useNavigate } from "react-router-dom";
+
 import { login } from "../../services/authService";
 import { API_URL } from "../../config";
 function Login() {
-
+    const navigate = useNavigate();
     const [phoneNumber, setPhoneNumber] = useState("");
     const [password, setPassword] = useState("");
 
@@ -38,22 +39,20 @@ function Login() {
             }
             if (response.role === "OWNER") {
 
-                window.location.href =
-                    "/dashboard";
+                navigate("/dashboard");
 
             }
             else if (
                 response.role === "EMPLOYEE"
             ) {
 
-                window.location.href =
-                    "/employee-dashboard";
+                navigate("/employee-dashboard");
+
 
             }
             else {
 
-                window.location.href =
-                    "/customer-services";
+                navigate("/customer-services");
 
             }
 
