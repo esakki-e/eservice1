@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "../../components/Navbar";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
+import { Link } from "react-router-dom";
 import { API_URL } from "../../config";
 function Employees() {
 
@@ -111,15 +112,22 @@ function Employees() {
 
                             return (
 
-                                <div
+                                <Link
                                     key={employee.id}
+                                    to={`/employees/${employee.id}`}
                                     className="
-                                    bg-white
-                                    rounded-3xl
-                                    border
-                                    shadow-sm
-                                    p-6
-                                "
+        block
+        bg-white
+        rounded-3xl
+        border
+        shadow-sm
+        p-6
+        hover:shadow-xl
+        hover:-translate-y-1
+        transition-all
+        duration-300
+        cursor-pointer
+    "
                                 >
 
                                     <div className="
@@ -216,8 +224,7 @@ function Employees() {
                                         />
                                     </div>
 
-                                </div>
-
+                                </Link>
                             );
                         })}
 

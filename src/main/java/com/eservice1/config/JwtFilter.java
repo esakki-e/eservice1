@@ -54,6 +54,7 @@ public class JwtFilter extends OncePerRequestFilter {
         );
         String header =
                 request.getHeader("Authorization");
+        System.out.println("HEADER = " + header);
 
         if (header != null
                 && header.startsWith("Bearer ")) {
@@ -63,6 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
             if (jwtService.isValid(token)) {
                 System.out.println("JWT VALID");
+                System.out.println(jwtService.isValid(token));
                 String phoneNumber =
                         jwtService.extractPhoneNumber(token);
 

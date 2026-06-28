@@ -12,9 +12,12 @@ function Dashboard() {
         totalServices: 0,
         totalRequests: 0,
         totalEmployees: 0,
+        todayRequests: 0,
         pendingTasks: 0,
         completedTasks: 0,
-        todayRequests: 0
+        totalRevenue: 0,
+        paidRequests: 0,
+        unpaidRequests: 0
     });
     const [analytics,
         setAnalytics] =
@@ -96,7 +99,25 @@ function Dashboard() {
                 todayRequests:
                     prev.todayRequests < (dashboard.todayRequests || 0)
                         ? prev.todayRequests + 1
-                        : prev.todayRequests
+                        : prev.todayRequests,
+
+                totalRevenue:
+                    prev.totalRevenue < (dashboard.totalRevenue || 0)
+                        ? Math.min(
+                            prev.totalRevenue + 500,
+                            dashboard.totalRevenue
+                        )
+                        : prev.totalRevenue,
+
+                paidRequests:
+                    prev.paidRequests < (dashboard.paidRequests || 0)
+                        ? prev.paidRequests + 1
+                        : prev.paidRequests,
+
+                unpaidRequests:
+                    prev.unpaidRequests < (dashboard.unpaidRequests || 0)
+                        ? prev.unpaidRequests + 1
+                        : prev.unpaidRequests
 
             }));
 
@@ -105,7 +126,8 @@ function Dashboard() {
         return () => clearInterval(interval);
 
     }, [dashboard]);
-    return (<DashboardLayout>
+    return (
+        <DashboardLayout>
         <>
 
 
@@ -119,120 +141,282 @@ function Dashboard() {
                     </p>
                 </div>
 
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {/* Total Services */}
 
-                <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-blue-500">
 
-                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-blue-500">
                         <div className="flex justify-between items-start">
+
                             <div>
+
                                 <p className="text-slate-500 text-sm font-medium">
                                     Total Services
                                 </p>
 
-                                <h2 className="text-5xl font-bold mt-3 text-slate-900">
-                                    {animatedDashboard.totalServices}                                </h2>
+                                <h2 className="text-4xl font-bold mt-3 text-slate-900">
+                                    {animatedDashboard.totalServices}
+                                </h2>
 
                                 <p className="text-emerald-600 text-sm mt-2">
-                                    Active services
+                                    Active Services
                                 </p>
+
                             </div>
 
-                            <div className="text-5xl">
+                            <div className="text-4xl">
                                 🛠️
                             </div>
+
                         </div>
+
                     </div>
 
-                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-violet-500">
+                    {/* Total Requests */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-violet-500">
+
                         <div className="flex justify-between items-start">
+
                             <div>
+
                                 <p className="text-slate-500 text-sm font-medium">
                                     Total Requests
                                 </p>
 
-                                <h2 className="text-5xl font-bold mt-3 text-slate-900">
-                                    {animatedDashboard.totalRequests}                                </h2>
+                                <h2 className="text-4xl font-bold mt-3 text-slate-900">
+                                    {animatedDashboard.totalRequests}
+                                </h2>
 
                                 <p className="text-indigo-600 text-sm mt-2">
-                                    Applications received
+                                    Applications Received
                                 </p>
+
                             </div>
 
-                            <div className="text-5xl">
+                            <div className="text-4xl">
                                 📄
                             </div>
+
                         </div>
+
                     </div>
 
-                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-cyan-500">
+
+
+                    {/* Today's Requests */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-indigo-500">
+
                         <div className="flex justify-between items-start">
+
                             <div>
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Employees
-                                </p>
 
-                                <h2 className="text-5xl font-bold mt-3 text-slate-900">
-                                    {animatedDashboard.totalEmployees}                                </h2>
-
-                                <p className="text-cyan-600 text-sm mt-2">
-                                    Active workforce
-                                </p>
-                            </div>
-
-                            <div className="text-5xl">
-                                👨‍💼
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-indigo-500">
-                        <div className="flex justify-between items-start">
-                            <div>
                                 <p className="text-slate-500 text-sm font-medium">
                                     Today's Requests
                                 </p>
 
-                                <h2 className="text-5xl font-bold mt-3 text-indigo-600">
-                                    {animatedDashboard.todayRequests}                                </h2>
+                                <h2 className="text-4xl font-bold mt-3 text-indigo-600">
+                                    {animatedDashboard.todayRequests}
+                                </h2>
+
+                                <p className="text-indigo-600 text-sm mt-2">
+                                    Received Today
+                                </p>
+
                             </div>
 
-                            <div className="text-5xl">
+                            <div className="text-4xl">
                                 📅
                             </div>
+
                         </div>
+
                     </div>
-                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-orange-500">
+                    {/* Employees */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-cyan-500">
+
                         <div className="flex justify-between items-start">
+
                             <div>
+
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Employees
+                                </p>
+
+                                <h2 className="text-4xl font-bold mt-3 text-slate-900">
+                                    {animatedDashboard.totalEmployees}
+                                </h2>
+
+                                <p className="text-cyan-600 text-sm mt-2">
+                                    Active Workforce
+                                </p>
+
+                            </div>
+
+                            <div className="text-4xl">
+                                👨‍💼
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {/* Pending Tasks */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-orange-500">
+
+                        <div className="flex justify-between items-start">
+
+                            <div>
+
                                 <p className="text-slate-500 text-sm font-medium">
                                     Pending Tasks
                                 </p>
 
-                                <h2 className="text-5xl font-bold mt-3 text-orange-500">
-                                    {animatedDashboard.pendingTasks}                                </h2>
+                                <h2 className="text-4xl font-bold mt-3 text-orange-500">
+                                    {animatedDashboard.pendingTasks}
+                                </h2>
+
+                                <p className="text-orange-500 text-sm mt-2">
+                                    Awaiting Completion
+                                </p>
+
                             </div>
 
-                            <div className="text-5xl">
+                            <div className="text-4xl">
                                 ⏳
                             </div>
+
                         </div>
+
                     </div>
 
-                    <div className="bg-white rounded-3xl p-6 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-emerald-500">
+                    {/* Completed Tasks */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-emerald-500">
+
                         <div className="flex justify-between items-start">
+
                             <div>
+
                                 <p className="text-slate-500 text-sm font-medium">
                                     Completed Tasks
                                 </p>
 
-                                <h2 className="text-5xl font-bold mt-3 text-emerald-600">
-                                    {animatedDashboard.completedTasks}                                </h2>
+                                <h2 className="text-4xl font-bold mt-3 text-emerald-600">
+                                    {animatedDashboard.completedTasks}
+                                </h2>
+
+                                <p className="text-emerald-600 text-sm mt-2">
+                                    Successfully Finished
+                                </p>
+
                             </div>
 
-                            <div className="text-5xl">
+                            <div className="text-4xl">
                                 ✅
                             </div>
+
                         </div>
+
                     </div>
+
+
+
+                    {/* Paid Requests */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-teal-500">
+
+                        <div className="flex justify-between items-start">
+
+                            <div>
+
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Paid Requests
+                                </p>
+
+                                <h2 className="text-4xl font-bold mt-3 text-teal-600">
+                                    {animatedDashboard.paidRequests}
+                                </h2>
+
+                                <p className="text-teal-600 text-sm mt-2">
+                                    Payment Received
+                                </p>
+
+                            </div>
+
+                            <div className="text-4xl">
+                                💳
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {/* Pending Payments */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-red-500">
+
+                        <div className="flex justify-between items-start">
+
+                            <div>
+
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Pending Payments
+                                </p>
+
+                                <h2 className="text-4xl font-bold mt-3 text-red-500">
+                                    {animatedDashboard.unpaidRequests}
+                                </h2>
+
+                                <p className="text-red-500 text-sm mt-2">
+                                    Awaiting Payment
+                                </p>
+
+                            </div>
+
+                            <div className="text-4xl">
+                                💸
+                            </div>
+
+                        </div>
+
+                    </div>
+                    {/* Revenue */}
+
+                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-green-600">
+
+                        <div className="flex justify-between items-start">
+
+                            <div>
+
+                                <p className="text-slate-500 text-sm font-medium">
+                                    Revenue
+                                </p>
+
+                                <h2 className="text-4xl font-bold mt-3 text-green-600">
+                                    ₹{animatedDashboard.totalRevenue}
+                                </h2>
+
+                                <p className="text-green-600 text-sm mt-2">
+                                    Total Collection
+                                </p>
+
+                            </div>
+
+                            <div className="text-4xl">
+                                💰
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
 
 
 
@@ -405,9 +589,11 @@ cursor-pointer
 
 
 
-            </div>
-        </>
-        </DashboardLayout>
-    );
+
+    </>
+
+</DashboardLayout>
+
+);
 }
 export default Dashboard;

@@ -4,6 +4,7 @@ import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.repository.PortalServiceRepository;
 import com.eservice1.submission.dto.CustomerRequestDTO;
 import com.eservice1.submission.entity.CustomerRequest;
+import com.eservice1.submission.entity.PaymentStatus;
 import com.eservice1.submission.entity.RequestStatus;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,12 @@ public class CustomerRequestService {
         request.setPhoneNumber(dto.getPhoneNumber());
         request.setService(service);
         request.setStatus(RequestStatus.PENDING);
+        request.setPaymentStatus(
+                PaymentStatus.UNPAID
+        );
+
+        request.setAmount(0.0);
+        request.setPaymentDate(null);
 
         request.setCreatedAt(
                 LocalDateTime.now()
@@ -60,5 +67,58 @@ public class CustomerRequestService {
         taskRepository.save(task);
 
         return savedRequest;
+    }public CustomerRequest updatePayment(
+            Long requestId,
+            PaymentStatus paymentStatus,
+            Double amount
+    ) {
+
+        CustomerRequest request =
+                requestRepository
+                        .findById(requestId)
+                        .orElseThrow();
+        if(
+
+                paymentStatus==PaymentStatus.PAID
+
+                        &&
+
+                        amount<=0
+
+        ){
+
+            throw new RuntimeException(
+
+                    "Amount must be greater than zero."
+
+            );
+
+        }
+
+        request.setPaymentStatus(
+                paymentStatus
+        );
+
+        request.setAmount(amount);
+
+        if(
+                paymentStatus==
+                        PaymentStatus.PAID
+        ){
+
+            request.setPaymentDate(
+                    LocalDateTime.now()
+            );
+
+        }else{
+
+            request.setPaymentDate(
+                    null
+            );
+
+        }
+
+        return requestRepository.save(request);
+
     }
 }

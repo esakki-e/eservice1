@@ -1,51 +1,38 @@
-package com.eservice1.employee.entity;
-
-import jakarta.persistence.*;
+package com.eservice1.employee.dto;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "employees")
-public class Employee {
+public class EmployeeProfileDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
 
     private String phoneNumber;
 
-    private String username;
-
-    private String password;
-
-    @Column(name = "profile_image")
-    private String profileImage;
-
-    @Column(name = "dob")
     private LocalDate dob;
 
-    @Column(name = "gender")
     private String gender;
 
-    @Column(name = "email")
     private String email;
 
-    @Column(name = "address", columnDefinition = "TEXT")
     private String address;
 
-    @Column(name = "joined_date")
     private LocalDate joinedDate;
+
+    private String profileImage;
 
     private Boolean active;
 
-
-    public Employee() {
+    public EmployeeProfileDTO() {
     }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -62,30 +49,6 @@ public class Employee {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getProfileImage() {
-        return profileImage;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
     }
 
     public LocalDate getDob() {
@@ -126,6 +89,14 @@ public class Employee {
 
     public void setJoinedDate(LocalDate joinedDate) {
         this.joinedDate = joinedDate;
+    }
+
+    public String getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        this.profileImage = profileImage;
     }
 
     public Boolean getActive() {

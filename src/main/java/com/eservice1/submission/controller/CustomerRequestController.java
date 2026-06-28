@@ -6,7 +6,7 @@ import com.eservice1.submission.service.CustomerRequestService;
 import org.springframework.web.bind.annotation.*;
 
 import com.eservice1.submission.repository.CustomerRequestRepository;
-
+import com.eservice1.submission.entity.PaymentStatus;
 @RestController
 @RequestMapping("/requests")
 public class CustomerRequestController {
@@ -46,6 +46,24 @@ public class CustomerRequestController {
         return requestRepository
                 .findById(id)
                 .orElseThrow();
+    }
+    @PostMapping("/{id}/payment")
+    public CustomerRequest updatePayment(
+
+            @PathVariable Long id,
+
+            @RequestParam PaymentStatus status,
+
+            @RequestParam Double amount
+
+    ) {
+
+        return requestService.updatePayment(
+                id,
+                status,
+                amount
+        );
+
     }
 
 }

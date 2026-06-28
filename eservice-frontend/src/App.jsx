@@ -49,11 +49,13 @@ import ServiceFieldManager
     from "./pages/owner/ServiceFieldManager";
 import RequestDetails
     from "./pages/common/RequestDetails";
-import EmployeeLayout
-    from "./layouts/EmployeeLayout";
+import EmployeePerformance
+    from "./pages/owner/EmployeePerformance";
 import EmployeeRequests
     from "./pages/employee/EmployeeRequests";
-
+import EmployeeProfile from "./pages/employee/EmployeeProfile";
+import EmployeeProfileEdit
+    from "./pages/employee/EmployeeProfileEdit";
 
 function AnimatedRoutes() {
 
@@ -235,7 +237,30 @@ function AnimatedRoutes() {
                 path="/employee-requests"
                 element={<EmployeeRequests />}
             />
-
+                <Route
+                    path="/employees/:id"
+                    element={
+                        <ProtectedRoute>
+                            <EmployeePerformance />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/employee/profile"
+                    element={
+                        <ProtectedRoute>
+                            <EmployeeProfile />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/employee/profile/edit"
+                    element={
+                        <ProtectedRoute>
+                            <EmployeeProfileEdit />
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
 
         </AnimatePresence>

@@ -8,6 +8,9 @@ public class DashboardResponse {
     private long pendingTasks;
     private long completedTasks;
     private long todayRequests;
+    private double totalRevenue;
+    private long paidRequests;
+    private long unpaidRequests;
 
     public long getTotalServices() {
         return totalServices;
@@ -58,6 +61,29 @@ public class DashboardResponse {
 
         this.todayRequests =
                 todayRequests;
+    }
+    public double getTotalRevenue() {
+        return totalRevenue;
+    }
+
+    public void setTotalRevenue(double totalRevenue) {
+        this.totalRevenue = totalRevenue;
+    }
+
+    public long getPaidRequests() {
+        return paidRequests;
+    }
+
+    public void setPaidRequests(long paidRequests) {
+        this.paidRequests = paidRequests;
+    }
+
+    public long getUnpaidRequests() {
+        return unpaidRequests;
+    }
+
+    public void setUnpaidRequests(long unpaidRequests) {
+        this.unpaidRequests = unpaidRequests;
     }
 
 }

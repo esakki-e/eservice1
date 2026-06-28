@@ -93,6 +93,34 @@ public class DashboardService {
                                         end
                                 )
         );
+        response.setPaidRequests(
+
+                requestRepository
+                        .countByPaymentStatus(
+                                com.eservice1.submission.entity.PaymentStatus.PAID
+                        )
+
+        );
+
+        response.setUnpaidRequests(
+
+                requestRepository
+                        .countByPaymentStatus(
+                                com.eservice1.submission.entity.PaymentStatus.UNPAID
+                        )
+
+        );
+
+        Double revenue =
+                requestRepository.getTotalRevenue();
+
+        response.setTotalRevenue(
+
+                revenue == null
+                        ? 0
+                        : revenue
+
+        );
         return response;
     }
 }

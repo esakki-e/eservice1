@@ -11,4 +11,12 @@ public interface UploadedDocumentRepository
     List<UploadedDocument> findByRequest_Id(
             Long requestId
     );
+    List<UploadedDocument>
+    findByRequest_IdAndResultDocument(
+
+            Long requestId,
+
+            Boolean resultDocument
+
+    );
 }

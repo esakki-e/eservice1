@@ -16,6 +16,8 @@ public class UploadedDocument {
 
     private String filePath;
 
+    private Boolean resultDocument = false;
+
     @ManyToOne
     @JoinColumn(name = "request_id")
     private CustomerRequest request;
@@ -57,5 +59,13 @@ public class UploadedDocument {
 
     public void setRequest(CustomerRequest request) {
         this.request = request;
+    }
+
+    public Boolean getResultDocument() {
+        return resultDocument;
+    }
+
+    public void setResultDocument(Boolean resultDocument) {
+        this.resultDocument = resultDocument;
     }
 }

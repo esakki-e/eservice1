@@ -87,11 +87,12 @@ public class SecurityConfig {
                         .requestMatchers("/users/**")
                         .hasAuthority("OWNER")
 
+                        .requestMatchers("/employees/me/**")
+                        .hasAnyAuthority("EMPLOYEE", "OWNER")
+
                         .requestMatchers("/employees/**")
-                        .hasAnyAuthority(
-                                "OWNER",
-                                "EMPLOYEE"
-                        )
+                        .permitAll()
+
 
                         .requestMatchers("/employee/**")
                         .hasAnyAuthority(

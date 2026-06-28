@@ -40,10 +40,20 @@ public class DocumentController {
 
     @PostMapping("/upload")
     public String uploadFile(
+
             @RequestParam("file")
             MultipartFile file,
+
             @RequestParam("requestId")
-            Long requestId)
+            Long requestId,
+
+            @RequestParam(
+                    value = "isResult",
+                    defaultValue = "false"
+            )
+            Boolean isResult
+
+    )
             throws IOException {
 
         System.out.println(
@@ -94,6 +104,9 @@ public class DocumentController {
         document.setRequest(
                 request
         );
+        document.setResultDocument(
+                isResult
+        );
 
         documentRepository.save(
                 document
@@ -109,8 +122,31 @@ public class DocumentController {
     ) {
 
         return documentRepository
-                .findByRequest_Id(
-                        requestId
+                .findByRequest_IdAndResultDocument(
+
+                        requestId,
+
+                        false
+
                 );
+    }
+
+    @GetMapping("/request/{requestId}/results")
+    public java.util.List<UploadedDocument>
+    getResultDocuments(
+
+            @PathVariable Long requestId
+
+    ) {
+
+        return documentRepository
+                .findByRequest_IdAndResultDocument(
+
+                        requestId,
+
+                        true
+
+                );
+
     }
 }

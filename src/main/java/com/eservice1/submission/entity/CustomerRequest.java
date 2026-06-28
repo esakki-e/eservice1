@@ -16,7 +16,13 @@ public class CustomerRequest {
 
     private String phoneNumber;
 
+
     private LocalDateTime createdAt;
+    private Double amount;
+
+    @Enumerated(EnumType.STRING)
+    private PaymentStatus paymentStatus = PaymentStatus.UNPAID;
+    private LocalDateTime paymentDate;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status;
@@ -71,5 +77,27 @@ public class CustomerRequest {
 
     public void setService(PortalService service) {
         this.service = service;
+    }
+    public Double getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Double amount) {
+        this.amount = amount;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(PaymentStatus paymentStatus) {
+        this.paymentStatus = paymentStatus;
+    }
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(LocalDateTime paymentDate) {
+        this.paymentDate = paymentDate;
     }
 }
