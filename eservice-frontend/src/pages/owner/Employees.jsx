@@ -1,14 +1,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Navbar from "../../components/Navbar";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
 import { Link } from "react-router-dom";
 import { API_URL } from "../../config";
+import {
+    ResponsiveContainer,
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip
+} from "recharts";
 function Employees() {
 
     const [employees, setEmployees] =
         useState([]);
+    const [dashboard, setDashboard] = useState(null);
     const [searchName,
         setSearchName] =
         useState("");
@@ -35,9 +44,23 @@ function Employees() {
             })
             .catch(err => {
                 console.log(err);
-            });
+            }); axios.get(
+            `${API_URL}/employees/dashboard`,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            }
+        )
+            .then(res => {
+
+                setDashboard(res.data);
+
+            })
+            .catch(console.log);
 
     }, []);
+
     const filteredEmployees =
         employees.filter(employee => {
 
@@ -62,7 +85,7 @@ function Employees() {
     return (
         <DashboardLayout>
 
-            <div className="min-h-screen bg-slate-50 p-8">
+            <div className="min-h-screen bg-[#F5F7FB] p-8">
 
                 <div className="max-w-7xl mx-auto">
 
@@ -86,6 +109,197 @@ function Employees() {
                         </p>
 
                     </div>
+                    {dashboard && (
+
+                        <div
+                            className="
+bg-gradient-to-r
+from-amber-300
+via-yellow-400
+to-orange-500
+rounded-3xl
+text-white
+p-8
+mb-8
+shadow-xl
+hover:scale-[1.01]
+transition-all
+duration-300
+"
+                        >
+
+                            <div className="flex items-center gap-8">
+
+                                <img
+
+                                    src={
+                                        dashboard.employeeOfMonth?.profileImage
+                                            ?
+
+                                            `${API_URL}/uploads/employees/${dashboard.employeeOfMonth.profileImage}`
+
+                                            :
+
+                                            "/default-avatar.png"
+                                    }
+
+                                    className="
+w-28
+h-28
+rounded-full
+object-cover
+border-4
+border-white
+"
+                                />
+
+                                <div>
+
+                                    <h2 className="text-3xl font-bold">
+
+                                        🏆 Employee of the Month
+
+                                    </h2>
+
+                                    <h3 className="text-2xl mt-2 text-3xl
+font-bold
+tracking-tight">
+
+                                        {dashboard.employeeOfMonth?.name}
+
+                                    </h3>
+
+                                    <p className=" text-slate-500
+mt-3">
+
+                                        {dashboard.employeeOfMonth?.message}
+
+                                    </p>
+
+                                    <div className="flex gap-10 mt-5">
+
+                                        <div>
+
+                                            <h4 className="text-sm">
+
+                                                Revenue
+
+                                            </h4>
+
+                                            <p className="text-xl font-bold">
+
+                                                ₹{dashboard.employeeOfMonth?.revenue}
+
+                                            </p>
+
+                                        </div>
+
+                                        <div>
+
+                                            <h4 className="text-sm">
+
+                                                Completed
+
+                                            </h4>
+
+                                            <p className="text-xl font-bold">
+
+                                                {dashboard.employeeOfMonth?.completedTasks}
+
+                                            </p>
+
+                                        </div>
+
+                                        <div>
+
+                                            <h4 className="text-sm">
+
+                                                Completion
+
+                                            </h4>
+
+                                            <p className="text-xl font-bold">
+
+                                                {dashboard.employeeOfMonth?.completionPercentage}%
+
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    )}
+                    {dashboard && (
+
+                        <div
+                            className="
+bg-white
+rounded-3xl
+shadow-sm
+p-8
+mb-8
+"
+                        >
+
+                            <h2 className="text-2xl font-bold mb-6">
+
+                                Monthly Revenue Trend
+
+                            </h2>
+
+                            <div
+                                style={{
+                                    height:300
+                                }}
+                            >
+
+                                <ResponsiveContainer>
+
+                                    <LineChart
+
+                                        data={dashboard.monthlyRevenue}
+
+                                    >
+
+                                        <CartesianGrid
+                                            strokeDasharray="3 3"
+                                        />
+
+                                        <XAxis
+                                            dataKey="month"
+                                        />
+
+                                        <YAxis/>
+
+                                        <Tooltip/>
+
+                                        <Line
+
+                                            type="monotone"
+
+                                            dataKey="revenue"
+
+                                            stroke="#2563eb"
+
+                                            strokeWidth={4}
+
+                                        />
+
+                                    </LineChart>
+
+                                </ResponsiveContainer>
+
+                            </div>
+
+                        </div>
+
+                    )}
 
                     {/* Employee Summary Cards */}
 

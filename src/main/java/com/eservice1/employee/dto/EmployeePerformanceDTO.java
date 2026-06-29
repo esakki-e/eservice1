@@ -37,6 +37,11 @@ public class EmployeePerformanceDTO {
     private String bestMonth;
 
     private double bestMonthRevenue;
+    private List<MonthlyRevenueDTO> revenueTrend;
+
+    private List<MonthlyCompletedDTO> completedTrend;
+
+    private EmployeeOfMonthDTO employeeOfMonth;
 
     private List<RecentRequestDTO> recentRequests;
 
@@ -226,6 +231,35 @@ public class EmployeePerformanceDTO {
 
         this.recentRequests =
                 recentRequests;
+    }
+    public List<MonthlyRevenueDTO> getRevenueTrend() {
+        return revenueTrend;
+    }
+
+    public void setRevenueTrend(
+            List<MonthlyRevenueDTO> revenueTrend
+    ) {
+        this.revenueTrend = revenueTrend;
+    }
+
+    public List<MonthlyCompletedDTO> getCompletedTrend() {
+        return completedTrend;
+    }
+
+    public void setCompletedTrend(
+            List<MonthlyCompletedDTO> completedTrend
+    ) {
+        this.completedTrend = completedTrend;
+    }
+
+    public EmployeeOfMonthDTO getEmployeeOfMonth() {
+        return employeeOfMonth;
+    }
+
+    public void setEmployeeOfMonth(
+            EmployeeOfMonthDTO employeeOfMonth
+    ) {
+        this.employeeOfMonth = employeeOfMonth;
     }
 
 }

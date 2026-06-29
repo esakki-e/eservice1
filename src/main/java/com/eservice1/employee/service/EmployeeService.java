@@ -27,6 +27,11 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.io.IOException;
+import com.eservice1.employee.dto.MonthlyRevenueDTO;
+import com.eservice1.employee.dto.MonthlyCompletedDTO;
+import com.eservice1.employee.dto.EmployeeOfMonthDTO;
+import com.eservice1.employee.dto.EmployeeDashboardDTO;
+
 
 @Service
 public class EmployeeService {
@@ -315,6 +320,178 @@ public class EmployeeService {
                         ? "-"
                         : bestMonth.name()
         );
+        // Revenue Trend
+
+        List<MonthlyRevenueDTO> revenueTrend = new ArrayList<>();
+
+        for (Object[] row : taskRepository.getMonthlyRevenueTrend(employeeId)) {
+
+            MonthlyRevenueDTO item = new MonthlyRevenueDTO();
+
+            item.setMonth(String.valueOf(row[0]));
+
+            Number revenue = (Number) row[1];
+
+            item.setRevenue(
+                    revenue == null ? 0.0 : revenue.doubleValue()
+            );
+
+            revenueTrend.add(item);
+        }
+
+        dto.setRevenueTrend(revenueTrend);
+
+// Completed Trend
+        List<MonthlyCompletedDTO> completedTrend = new ArrayList<>();
+
+        for (Object[] row : taskRepository.getMonthlyCompletedTrend(employeeId)) {
+
+            MonthlyCompletedDTO item = new MonthlyCompletedDTO();
+
+            item.setMonth(String.valueOf(row[0]));
+
+            Number completed = (Number) row[1];
+
+            item.setCompleted(
+                    completed == null ? 0L : completed.longValue()
+            );
+
+            completedTrend.add(item);
+        }
+
+        dto.setCompletedTrend(completedTrend);
+
+// Employee Of Month
+
+        List<Employee> ranking =
+                employeeRepository.getEmployeeRanking();
+
+        Employee topEmployee = null;
+
+        if (!ranking.isEmpty()) {
+
+            topEmployee = ranking.get(0);
+
+        }
+
+        if (topEmployee != null) {
+
+            EmployeeOfMonthDTO top =
+                    new EmployeeOfMonthDTO();
+
+            top.setId(
+                    topEmployee.getId()
+            );
+
+            top.setName(
+                    topEmployee.getName()
+            );
+
+            top.setPhoneNumber(
+                    topEmployee.getPhoneNumber()
+            );
+
+            top.setProfileImage(
+                    topEmployee.getProfileImage()
+            );
+
+            Double topRevenue =
+                    taskRepository.getCurrentMonthRevenue(
+                            topEmployee.getId()
+                    );
+
+            if (topRevenue == null) {
+
+                topRevenue = 0.0;
+
+            }
+
+            top.setRevenue(
+                    topRevenue
+            );
+
+            Long completed =
+                    taskRepository.getCurrentMonthCompleted(
+                            topEmployee.getId()
+                    );
+
+            if (completed == null) {
+
+                completed = 0L;
+
+            }
+
+            top.setCompletedTasks(
+                    completed
+            );
+
+            long assigned =
+                    taskRepository.countByEmployeeId(
+                            topEmployee.getId()
+                    );
+
+            if (assigned == 0) {
+
+                top.setCompletionPercentage(
+                        0
+                );
+
+            }
+
+            else {
+
+                top.setCompletionPercentage(
+
+                        (int)
+
+                                (
+
+                                        completed
+
+                                                * 100
+
+                                                /
+
+                                                assigned
+
+                                )
+
+                );
+
+            }
+
+            String message;
+
+            if (topRevenue >= 100000) {
+
+                message =
+                        "🏆 Outstanding Performer! Keep inspiring the team.";
+
+            }
+
+            else if (topRevenue >= 50000) {
+
+                message =
+                        "🚀 Excellent Growth! Keep pushing forward.";
+
+            }
+
+            else {
+
+                message =
+                        "⭐ Great Progress! Every completed request matters.";
+
+            }
+
+            top.setMessage(
+                    message
+            );
+
+            dto.setEmployeeOfMonth(
+                    top
+            );
+
+        }
 
         dto.setBestMonthRevenue(bestRevenue);
 
@@ -546,6 +723,137 @@ public class EmployeeService {
                 recent
         );
 
+        return dto;
+
+    }
+    public EmployeeDashboardDTO
+    getEmployeeDashboard() {
+
+        EmployeeDashboardDTO dto =
+                new EmployeeDashboardDTO();
+
+        List<Employee> ranking =
+                employeeRepository.getEmployeeRanking();
+
+        if (!ranking.isEmpty()) {
+
+            Employee employee =
+                    ranking.get(0);
+
+            EmployeeOfMonthDTO top =
+                    new EmployeeOfMonthDTO();
+
+            top.setId(
+                    employee.getId()
+            );
+
+            top.setName(
+                    employee.getName()
+            );
+
+            top.setPhoneNumber(
+                    employee.getPhoneNumber()
+            );
+
+            top.setProfileImage(
+                    employee.getProfileImage()
+            );
+
+            Double revenue =
+                    taskRepository
+                            .getCurrentMonthRevenue(
+                                    employee.getId()
+                            );
+
+            if (revenue == null) {
+
+                revenue = 0.0;
+
+            }
+
+            top.setRevenue(
+                    revenue
+            );
+
+            Long completed =
+                    taskRepository
+                            .getCurrentMonthCompleted(
+                                    employee.getId()
+                            );
+
+            if (completed == null) {
+
+                completed = 0L;
+
+            }
+
+            top.setCompletedTasks(
+                    completed
+            );
+
+            long assigned =
+                    taskRepository
+                            .countByEmployeeId(
+                                    employee.getId()
+                            );
+
+            int percentage =
+                    assigned == 0
+
+                            ?
+
+                            0
+
+                            :
+
+                            (int)
+
+                            (
+
+                                    completed
+
+                                    * 100
+
+                                    /
+
+                                    assigned
+
+                            );
+
+            top.setCompletionPercentage(
+                    percentage
+            );
+
+            top.setMessage(
+
+                    "🏆 Outstanding Performer! Keep inspiring the team."
+
+            );
+
+            dto.setEmployeeOfMonth(
+                    top
+            );
+
+        }
+
+        List<MonthlyRevenueDTO> monthlyRevenue = new ArrayList<>();
+
+        for (Object[] row : taskRepository.getPortalRevenueTrend()) {
+
+            MonthlyRevenueDTO item = new MonthlyRevenueDTO();
+
+            item.setMonth(String.valueOf(row[0]));
+
+            Number revenue = (Number) row[1];
+
+            item.setRevenue(
+                    revenue == null ? 0.0 : revenue.doubleValue()
+            );
+
+            monthlyRevenue.add(item);
+        }
+
+        dto.setMonthlyRevenue(monthlyRevenue);
         return dto;
 
     }

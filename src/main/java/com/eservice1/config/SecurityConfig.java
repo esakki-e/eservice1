@@ -90,6 +90,12 @@ public class SecurityConfig {
                         .requestMatchers("/employees/me/**")
                         .hasAnyAuthority("EMPLOYEE", "OWNER")
 
+                        .requestMatchers("/employees/dashboard")
+                        .permitAll()
+
+                        .requestMatchers("/uploads/**")
+                        .permitAll()
+
                         .requestMatchers("/employees/**")
                         .permitAll()
 

@@ -1,17 +1,15 @@
 package com.eservice1.employee.controller;
 
+import com.eservice1.employee.dto.*;
 import com.eservice1.employee.entity.Employee;
 import com.eservice1.employee.repository.EmployeeRepository;
 import com.eservice1.employee.service.EmployeeService;
 import org.springframework.web.bind.annotation.*;
-import com.eservice1.employee.dto.EmployeeDTO;
 import com.eservice1.employee.repository.TaskRepository;
 import com.eservice1.employee.entity.TaskStatus;
-import com.eservice1.employee.dto.EmployeeProfileDTO;
-import com.eservice1.employee.dto.UpdateEmployeeProfileDTO;
 import org.springframework.security.core.Authentication;
 import java.util.List;
-import com.eservice1.employee.dto.EmployeePerformanceDTO;
+
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import org.springframework.security.core.Authentication;
@@ -141,6 +139,19 @@ public class EmployeeController {
                 authentication.getName(),
                 file
         );
+    }@GetMapping("/dashboard")
+    public EmployeeDashboardDTO getDashboard(
+            Authentication authentication
+    ) {
+        System.out.println("EMPLOYEE DASHBOARD API HIT");
+
+        System.out.println(authentication.getName());
+
+        authentication.getAuthorities()
+                .forEach(System.out::println);
+
+        return employeeService.getEmployeeDashboard();
+
     }
 
 

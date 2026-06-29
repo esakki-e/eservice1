@@ -7,6 +7,15 @@ import DashboardLayout
 
 import { API_URL }
     from "../../config";
+import {
+    ResponsiveContainer,
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip
+} from "recharts";
 
 function EmployeePerformance() {
 
@@ -16,6 +25,8 @@ function EmployeePerformance() {
     const [employee,
         setEmployee] =
         useState(null);
+
+    const [chartType, setChartType] = useState("revenue");
 
 
     useEffect(() => {
@@ -635,82 +646,132 @@ function EmployeePerformance() {
 
                     <div
                         className="
-                            bg-white
-                            rounded-3xl
-                            border
-                            shadow-sm
-                            p-8
-                            mb-8
-                        "
+        bg-white
+        rounded-3xl
+        border
+        shadow-sm
+        p-8
+        mb-8
+    "
                     >
 
-                        <h2
-                            className="
-                                text-2xl
-                                font-bold
-                                text-slate-800
-                                mb-6
-                            "
-                        >
-                            Performance Overview
-                        </h2>
+                        <div className="flex justify-between items-center mb-8">
 
-                        <div
-                            className="
-                                space-y-6
-                            "
-                        >
+                            <h2 className="text-3xl font-bold">
+                                Performance Trend
+                            </h2>
 
-                            {/* Completion */}
+                            <div
+                                className="
+                bg-slate-100
+                rounded-full
+                p-1
+                flex
+            "
+                            >
+
+                                <button
+                                    onClick={() => setChartType("revenue")}
+                                    className={`
+                    px-8
+                    py-3
+                    rounded-full
+                    transition
+
+                    ${chartType === "revenue"
+                                        ? "bg-blue-600 text-white"
+                                        : "text-slate-600"}
+                `}
+                                >
+                                    💰 Revenue
+                                </button>
+
+                                <button
+                                    onClick={() => setChartType("completed")}
+                                    className={`
+                    px-8
+                    py-3
+                    rounded-full
+                    transition
+
+                    ${chartType === "completed"
+                                        ? "bg-green-600 text-white"
+                                        : "text-slate-600"}
+                `}
+                                >
+                                    ✅ Completed
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        <div className="h-96">
+
+                            <ResponsiveContainer
+                                width="100%"
+                                height="100%"
+                            >
+
+                                <LineChart
+                                    data={
+                                        chartType === "revenue"
+                                            ? employee.revenueTrend
+                                            : employee.completedTrend
+                                    }
+                                >
+
+                                    <CartesianGrid strokeDasharray="3 3" />
+
+                                    <XAxis dataKey="month" />
+
+                                    <YAxis />
+
+                                    <Tooltip />
+
+                                    <Line
+                                        type="monotone"
+                                        dataKey={
+                                            chartType === "revenue"
+                                                ? "revenue"
+                                                : "completed"
+                                        }
+                                        stroke={
+                                            chartType === "revenue"
+                                                ? "#2563EB"
+                                                : "#16A34A"
+                                        }
+                                        strokeWidth={4}
+                                    />
+
+                                </LineChart>
+
+                            </ResponsiveContainer>
+
+                        </div>
+
+                        <div className="mt-10 space-y-8">
 
                             <div>
 
-                                <div
-                                    className="
-                                        flex
-                                        justify-between
-                                        mb-2
-                                    "
-                                >
+                                <div className="flex justify-between mb-2">
 
-                                    <span
-                                        className="
-                                            font-medium
-                                        "
-                                    >
-                                        Completion Rate
-                                    </span>
+                <span className="font-medium">
+                    Completion Rate
+                </span>
 
-                                    <span
-                                        className="
-                                            text-green-600
-                                            font-semibold
-                                        "
-                                    >
-                                        {
-                                            employee.completionPercentage
-                                        }%
-                                    </span>
+                                    <span className="text-green-600 font-semibold">
+                    {employee.completionPercentage}%
+                </span>
 
                                 </div>
 
-                                <div
-                                    className="
-                                        h-3
-                                        rounded-full
-                                        bg-slate-200
-                                    "
-                                >
+                                <div className="h-3 rounded-full bg-slate-200">
 
                                     <div
-                                        className="
-                                            h-3
-                                            rounded-full
-                                            bg-green-500
-                                        "
+                                        className="h-3 rounded-full bg-green-500"
                                         style={{
-                                            width:
-                                                `${employee.completionPercentage}%`
+                                            width: `${employee.completionPercentage}%`
                                         }}
                                     />
 
@@ -718,72 +779,40 @@ function EmployeePerformance() {
 
                             </div>
 
-                            {/* Progress to Best Month */}
-
                             <div>
 
-                                <div
-                                    className="
-            flex
-            justify-between
-            mb-2
-        "
-                                >
+                                <div className="flex justify-between mb-2">
 
-        <span className="font-medium">
-            Progress to Best Month
-        </span>
+                <span className="font-medium">
+                    Progress to Best Month
+                </span>
 
-                                    <span
-                                        className="
-                text-blue-600
-                font-semibold
-            "
-                                    >
-            {revenueProgress.toFixed(0)}%
-        </span>
+                                    <span className="text-blue-600 font-semibold">
+                    {revenueProgress.toFixed(0)}%
+                </span>
 
                                 </div>
 
-                                <div
-                                    className="
-            h-3
-            rounded-full
-            bg-slate-200
-        "
-                                >
+                                <div className="h-3 rounded-full bg-slate-200">
 
                                     <div
-                                        className="
-                h-3
-                rounded-full
-                bg-blue-500
-                transition-all
-            "
+                                        className="h-3 rounded-full bg-blue-500"
                                         style={{
-                                            width: `${Math.min(revenueProgress, 100)}%`
+                                            width: `${Math.min(revenueProgress,100)}%`
                                         }}
                                     />
 
                                 </div>
 
-                                <div
-                                    className="
-            flex
-            justify-between
-            mt-3
-            text-sm
-            text-slate-500
-        "
-                                >
+                                <div className="flex justify-between mt-3 text-sm text-slate-500">
 
-        <span>
-            Current : ₹{currentRevenue}
-        </span>
+                <span>
+                    Current : ₹{currentRevenue}
+                </span>
 
                                     <span>
-            Best : ₹{bestRevenue}
-        </span>
+                    Best : ₹{bestRevenue}
+                </span>
 
                                 </div>
 
@@ -792,6 +821,16 @@ function EmployeePerformance() {
                         </div>
 
                     </div>
+
+
+
+
+
+
+
+
+
+
 
                     {/* Monthly Statistics */}
 

@@ -471,31 +471,21 @@ function EmployeeProfileEdit() {
                         </button>
 
                         <button
-                            disabled={saving}
                             onClick={handleSave}
+                            disabled={saving}
                             className="
-                                h-14
-                                px-8
-                                rounded-2xl
-                                bg-gradient-to-r
-                                from-blue-600
-                                to-indigo-600
-                                text-white
-                                font-semibold
-                                shadow-lg
-                                hover:scale-105
-                                transition
-                            "
+        bg-blue-600
+        hover:bg-blue-700
+        disabled:bg-blue-400
+        text-white
+        px-8
+        py-3
+        rounded-xl
+        font-semibold
+        transition
+    "
                         >
-                            saving
-
-                            ?
-
-                            "Saving..."
-
-                            :
-
-                            "✔ Save Changes"
+                            {saving ? "Saving..." : "✔ Save Changes"}
                         </button>
 
                     </div>

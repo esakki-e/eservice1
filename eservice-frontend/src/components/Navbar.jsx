@@ -237,8 +237,7 @@ function Navbar() {
                                 Profile
                             </Link>
 
-                            <Link
-                                to="/employee/profile?edit=true"
+                            <Link to="/employee/profile/edit"
                                 onClick={() => setOpen(false)}
                                 className="
                                     block
