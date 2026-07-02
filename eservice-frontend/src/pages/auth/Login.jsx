@@ -1,6 +1,8 @@
 import { useState } from "react";import { useNavigate } from "react-router-dom";
 
 import { login } from "../../services/authService";
+import "./Logincss.css";
+
 import { API_URL } from "../../config";
 function Login() {
     const navigate = useNavigate();
@@ -63,140 +65,69 @@ function Login() {
     };
 
     return (
-        <div
-            className="
-        min-h-screen
-        bg-gradient-to-br
-        from-slate-50
-        via-white
-        to-blue-100
-        flex
-        items-center
-        justify-center
-        px-4
-    "
-        >
-            <div className="w-full max-w-md">
 
-                <div
-                    className="
-                bg-white/95
-                backdrop-blur-md
-                rounded-[32px]
-                border
-                border-slate-100
-                p-10
-                shadow-[0_20px_60px_rgba(59,130,246,0.15)]
-            "
-                >
+        <div className="page-bg">
 
-                    {/* Icon */}
+            <div className="login-page">
 
-                    <div className="flex justify-center mb-6">
+                <div className="login-container">
 
-                        <div
-                            className="
-                        w-20
-                        h-20
-                        rounded-3xl
-                        bg-gradient-to-br
-                        from-blue-100
-                        to-indigo-100
-                        flex
-                        items-center
-                        justify-center
-                        text-4xl
-                        shadow-lg
-                    "
-                        >
-                            🛡️
+                    <div className="login-card">
+
+                        {/* Icon */}
+
+                        <div className="login-icon-wrapper">
+
+                            <div className="login-icon">
+
+                                🛡️
+
+                            </div>
+
                         </div>
 
-                    </div>
+                        {/* Heading */}
 
-                    {/* Heading */}
+                        <h1 className="login-title">
 
-                    <h1
-                        className="
-                    text-5xl
-                    font-extrabold
-                    text-center
-                    text-slate-900
-                    mb-3
-                "
-                    >
-                        Staff Login
-                    </h1>
+                            Staff Login
 
-                    <p
-                        className="
-                    text-center
-                    text-slate-500
-                    text-lg
-                    mb-8
-                "
-                    >
-                        Employee & Administrator Access
-                    </p>
+                        </h1>
 
-                    {/* Phone */}
+                        <p className="login-subtitle">
 
-                    <div className="mb-4">
+                            Employee & Administrator Access
 
-                        <input
-                            type="text"
-                            value={phoneNumber}
-                            onChange={(e) =>
-                                setPhoneNumber(
-                                    e.target.value
-                                )
-                            }
-                            placeholder="Enter Phone Number"
-                            className="
-                            w-full
-                            h-14
-                            px-5
-                            rounded-2xl
-                            border
-                            border-slate-200
-                            bg-white
-                            text-slate-800
-                            placeholder-slate-400
-                            focus:outline-none
-                            focus:ring-4
-                            focus:ring-blue-100
-                        "
-                        />
+                        </p>
 
-                    </div>
+                        {/* Phone */}
 
-                    {/* Password */}
+                        <div className="login-input-group phone-group">
 
-                    <div className="mb-6">
+                            <input
+                                type="text"
+                                value={phoneNumber}
+                                onChange={(e) =>
+                                    setPhoneNumber(e.target.value)
+                                }
+                                placeholder="Enter Phone Number"
+                                className="login-input"
+                            />
 
-                        <input
-                            type="password"
-                            value={password}
-                            onChange={(e) =>
-                                setPassword(
-                                    e.target.value
-                                )
-                            }
-                            placeholder="Enter Password"
-                            className="
-                            w-full
-                            h-14
-                            px-5
-                            rounded-2xl
-                            border
-                            border-slate-200
-                            bg-white
-                            text-slate-800
-                            placeholder-slate-400
-                            focus:outline-none
-                            focus:ring-4
-                            focus:ring-blue-100
-                        "
+                        </div>
+
+                        {/* Password */}
+                        <div className="login-input-group password-group">
+
+                            <input
+                                type="password"
+
+                        value={password}
+                        onChange={(e) =>
+                        setPassword(e.target.value)
+                    }
+                        placeholder="Enter Password"
+                        className="login-input"
                         />
 
                     </div>
@@ -205,35 +136,17 @@ function Login() {
 
                     <button
                         onClick={handleLogin}
-                        className="
-                        w-full
-                        h-14
-                        rounded-2xl
-                        text-lg
-                        font-semibold
-                        text-white
-                        bg-gradient-to-r
-                        from-blue-600
-                        via-blue-500
-                        to-indigo-600
-                        shadow-lg
-                        hover:shadow-xl
-                        hover:scale-[1.02]
-                        transition-all
-                        duration-300
-                    "
+                        className="login-button"
                     >
+
                         Login →
+
                     </button>
 
-                    <div
-                        className="
-                    text-center
-                    text-slate-500
-                    mt-6
-                "
-                    >
+                    <div className="login-footer">
+
                         🔒 Secure Staff Authentication
+
                     </div>
 
                 </div>
@@ -241,7 +154,11 @@ function Login() {
             </div>
 
         </div>
-    );
+
+</div>
+
+)
+    ;
 }
 
 export default Login;

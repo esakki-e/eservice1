@@ -12,3 +12,19 @@
     --text:#0f172a;
     --muted:#64748b;
 }
+.page-bg{
+
+    min-height:100vh;
+
+    background-image:
+            linear-gradient(
+                    rgba(247,250,255,.55),
+                    rgba(247,250,255,.55)
+            ),
+            url("/images/img.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}

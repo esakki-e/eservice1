@@ -13,7 +13,9 @@ function LandingPage() {
 
     return (
         <PageTransition>
-        <div className="landing-page">
+            <div className="page-bg">
+
+            <div className="landing-page">
 
             <div className="hero-container">
 
@@ -39,23 +41,47 @@ function LandingPage() {
                     </p>
                     <div className="hero-stats">
 
-                        <div>
-                            <h3>25+</h3>
-                            <p>Services</p>
+                        <div className="stat-card">
+
+
+
+                            <div>
+
+                                <h3>25+</h3>
+
+                                <p>Services</p>
+
+                            </div>
+
                         </div>
 
-                        <div>
-                            <h3>24/7</h3>
-                            <p>Availability</p>
+                        <div className="stat-card">
+
+
+                            <div>
+
+                                <h3>24/7</h3>
+
+                                <p>Availability</p>
+
+                            </div>
+
                         </div>
 
-                        <div>
-                            <h3>100%</h3>
-                            <p>Digital</p>
+                        <div className="stat-card">
+
+
+                            <div>
+
+                                <h3>100%</h3>
+
+                                <p>Digital</p>
+
+                            </div>
+
                         </div>
 
                     </div>
-
                     <div className="hero-buttons">
                         <motion.button
                             whileHover={{
@@ -92,15 +118,29 @@ function LandingPage() {
                     </div>
                     <div className="trust-row">
 
-                        🔒 Secure
+                        <div className="trust-item">
 
-                        <span>•</span>
+                            🔒
 
-                        📱 Mobile Friendly
+                            <span>Secure</span>
 
-                        <span>•</span>
+                        </div>
 
-                        ⚡ Instant Tracking
+                        <div className="trust-item">
+
+                            📱
+
+                            <span>Mobile Friendly</span>
+
+                        </div>
+
+                        <div className="trust-item">
+
+                            ✈️
+
+                            <span>Instant Tracking</span>
+
+                        </div>
 
                     </div>
                 </div>
@@ -135,27 +175,63 @@ function LandingPage() {
                     <div className="service-preview">
 
                         <div className="preview-header">
-                            Available Services
+
+        <span>
+            Available Services
+        </span>
 
                             <span className="service-count">
-                25+
-            </span>
+            25+
+        </span>
+
                         </div>
 
                         <div className="preview-item">
-                            📜 Community Certificate
+
+                            <div className="preview-icon">
+                                📜
+                            </div>
+
+                            <span>
+            Community Certificate
+        </span>
+
                         </div>
 
                         <div className="preview-item">
-                            💰 Income Certificate
+
+                            <div className="preview-icon">
+                                🪙
+                            </div>
+
+                            <span>
+            Income Certificate
+        </span>
+
                         </div>
 
                         <div className="preview-item">
-                            🏠 Nativity Certificate
+
+                            <div className="preview-icon">
+                                🏠
+                            </div>
+
+                            <span>
+            Nativity Certificate
+        </span>
+
                         </div>
 
                         <div className="preview-item">
-                            👶 Birth Certificate
+
+                            <div className="preview-icon">
+                                👶
+                            </div>
+
+                            <span>
+            Birth Certificate
+        </span>
+
                         </div>
 
                     </div>
@@ -164,7 +240,7 @@ function LandingPage() {
         </div>
 
         </div>
-
+            </div>
             </PageTransition>);
 }
 

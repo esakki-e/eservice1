@@ -5,6 +5,7 @@ import "./CustomerProfile.css";
 import PageTransition from "../../components/PageTransition";
 import { motion } from "framer-motion";
 import { API_URL } from "../../config";
+import profileIcon from "../../assets/gearicon.png";
 function CustomerProfile() {
 
     const [customerName,
@@ -52,9 +53,9 @@ function CustomerProfile() {
     return (
 
         <PageTransition>
+            <div className="page-bg">
 
             <div className="customer-profile-page">
-
                 <motion.div
                     className="profile-card"
                     initial={{
@@ -71,7 +72,13 @@ function CustomerProfile() {
                 >
 
                     <div className="profile-icon">
-                        👤
+
+                        <img
+                            src={profileIcon}
+                            alt="Profile"
+                            className="profile-icon-image"
+                        />
+
                     </div>
 
 
@@ -100,28 +107,32 @@ function CustomerProfile() {
 
                     </div>
 
-                    <div className="profile-label">
-                        Full Name
-                    </div>
+                    <div className="input-wrapper">
 
-                    <input
-                        className="profile-input"
-                        placeholder="Enter Full Name"
+    <span className="input-icon">
+        👤
+    </span>
+
+                        <input
+                            className="profile-input"
+                            placeholder="Enter Full Name"
                         value={customerName}
                         onChange={(e) =>
                             setCustomerName(
                                 e.target.value
                             )
                         }
-                    />
+                        /></div>
 
-                    <div className="profile-label">
-                        Date of Birth
-                    </div>
+                    <div className="input-wrapper">
 
-                    <input
-                        type="date"
-                        className="profile-input"
+    <span className="input-icon">
+        📅
+    </span>
+
+                        <input
+                            type="date"
+                            className="profile-input"
                         value={dob}
                         onChange={(e) =>
                             setDob(
@@ -129,7 +140,7 @@ function CustomerProfile() {
                             )
                         }
                     />
-
+                    </div>
                     <button
                         className="save-profile-btn"
                         onClick={saveProfile}
@@ -140,7 +151,7 @@ function CustomerProfile() {
                 </motion.div>
 
             </div>
-
+            </div>
         </PageTransition>
     );
 

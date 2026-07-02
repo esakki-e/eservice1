@@ -51,11 +51,9 @@ function CustomerLogin() {
     return (
 
         <PageTransition>
+            <div className="page-bg">
 
             <div className="customer-login-page">
-
-                <div className="login-bg-circle circle1"></div>
-                <div className="login-bg-circle circle2"></div>
 
                 <motion.div
                     className="login-card"
@@ -142,7 +140,7 @@ function CustomerLogin() {
                 </motion.div>
 
             </div>
-
+            </div>
         </PageTransition>
     );
 }
