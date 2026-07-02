@@ -11,12 +11,18 @@ import org.springframework.data.repository.query.Param;
 import java.time.LocalDateTime;
 import com.eservice1.employee.dto.MonthlyRevenueDTO;
 import com.eservice1.employee.dto.MonthlyCompletedDTO;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface TaskRepository
-        extends JpaRepository<Task, Long> {
+        extends JpaRepository<Task, Long>,
+        JpaSpecificationExecutor<Task> {
 
     List<Task> findByEmployeeId(Long employeeId);
 
     Task findByRequestId(Long requestId);
+
+    List<Task> findByRequestIdIn(List<Long> requestIds);
 
     long countByEmployeeId(
             Long employeeId
@@ -28,7 +34,58 @@ public interface TaskRepository
     List<Task> findByEmployeeIdOrderByIdDesc(
             Long employeeId
     );
+    @Query("""
+SELECT t
+FROM Task t
 
+WHERE t.employee.id = :employeeId
+
+AND
+(
+    :search IS NULL
+
+    OR
+
+    LOWER(t.request.customerName)
+    LIKE LOWER(CONCAT('%',:search,'%'))
+)
+
+AND
+(
+    :phone IS NULL
+
+    OR
+
+    t.request.phoneNumber
+    LIKE CONCAT('%',:phone,'%')
+)
+
+AND
+(
+    :status IS NULL
+
+    OR
+
+    t.status = :status
+)
+""")
+    Page<Task> searchEmployeeTasks(
+
+            @Param("employeeId")
+            Long employeeId,
+
+            @Param("search")
+            String search,
+
+            @Param("phone")
+            String phone,
+
+            @Param("status")
+            TaskStatus status,
+
+            Pageable pageable
+
+    );
 
 
     @Query("""

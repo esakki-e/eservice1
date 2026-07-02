@@ -2,16 +2,102 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 import { API_URL } from "../../config";
+import Pagination from "../../components/Pagination";
+import DashboardLayout from "../../layouts/DashboardLayout.jsx";
 function EmployeeRequests() {
 
     const [requests, setRequests] = useState([]);
     const [searchName, setSearchName] = useState("");
     const [searchPhone, setSearchPhone] = useState("");
+    const [debouncedSearchName, setDebouncedSearchName] =
+
+        useState("");
+
+    const [debouncedSearchPhone, setDebouncedSearchPhone] =
+
+        useState("");
     const [statusFilter, setStatusFilter] = useState("ALL");
+    const [page, setPage] = useState(0);
+
+    const [size, setSize] = useState(10);
+
+    const [totalPages, setTotalPages] = useState(0);
+
+    const [totalElements, setTotalElements] = useState(0);
+
+    const [loading, setLoading] = useState(false);
+    const [stats, setStats] = useState({
+
+        totalRequests: 0,
+
+        pendingRequests: 0,
+
+        assignedRequests: 0,
+
+        inProgressRequests: 0,
+
+        completedRequests: 0
+
+    });
     useEffect(() => {
         loadRequests();
-    }, []);
+        const token =
+            localStorage.getItem("token");
 
+        axios.get(
+
+            `${API_URL}/admin/dashboard/stats`,
+
+            {
+
+                headers: {
+
+                    Authorization:
+                        `Bearer ${token}`
+
+                }
+
+            }
+
+        )
+
+            .then(res => {
+
+                setStats(res.data);
+
+            });
+    }, [
+
+        page,
+
+        size,
+
+        debouncedSearchName,
+
+        debouncedSearchPhone,
+
+        statusFilter
+
+    ]);
+    useEffect(() => {
+
+        const timer = setTimeout(() => {
+
+            setDebouncedSearchName(searchName);
+
+            setDebouncedSearchPhone(searchPhone);
+
+        }, 400);
+
+        return () => clearTimeout(timer);
+
+    }, [
+
+        searchName,
+
+        searchPhone
+
+    ]);
     const loadRequests = async () => {
 
         try {
@@ -19,26 +105,83 @@ function EmployeeRequests() {
             const token =
                 localStorage.getItem("token");
 
+            const params =
+                new URLSearchParams();
+
+            params.append("page", page);
+
+            params.append("size", size);
+
+            if (debouncedSearchName.trim()) {
+
+                params.append(
+                    "search",
+                    debouncedSearchName.trim()
+                );
+
+            }
+
+            if (debouncedSearchPhone.trim()) {
+
+                params.append(
+                    "phone",
+                    debouncedSearchPhone.trim()
+                );
+
+            }
+
+            if (statusFilter !== "ALL") {
+
+                params.append(
+                    "status",
+                    statusFilter
+                );
+
+            }
+
+            setLoading(true);
+
             const response =
+
                 await axios.get(
-                    (`${API_URL}/admin/requests`),
+
+                    `${API_URL}/admin/requests?${params.toString()}`,
+
                     {
                         headers: {
                             Authorization:
                                 `Bearer ${token}`
                         }
                     }
+
                 );
 
             setRequests(
-                [...response.data].sort(
-                    (a, b) => b.id - a.id
-                )
+                response.data.content
             );
-        } catch (error) {
+
+            setTotalPages(
+                response.data.totalPages
+            );
+
+            setTotalElements(
+                response.data.totalElements
+            );
+
+        }
+
+        catch (error) {
 
             console.error(error);
+
         }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
     };
 
     const selfAssign = async (requestId) => {
@@ -59,14 +202,57 @@ function EmployeeRequests() {
                 }
             );
 
-            loadRequests();
 
+            loadRequests();
+            alert("Request assigned successfully");
         } catch (error) {
 
-            console.error(error);
-            alert("Unable to self assign");
+            alert(
+
+                error.response?.data
+
+                ||
+
+                "Unable to self assign"
+
+            );
+            loadRequests();
         }
     };
+    useEffect(() => {
+
+        setPage(0);
+
+    }, [
+
+        searchName,
+
+        searchPhone,
+
+        statusFilter
+
+    ]);
+    if (loading) {
+
+        return (
+            <DashboardLayout>
+
+                <div className="flex justify-center items-center h-96">
+
+                    <div className="animate-spin
+                    rounded-full
+                    h-12
+                    w-12
+                    border-4
+                    border-indigo-500
+                    border-t-transparent">
+                    </div>
+
+                </div>
+            </DashboardLayout>
+        );
+
+    }
 
     return (
         <>
@@ -89,9 +275,7 @@ function EmployeeRequests() {
 
                         <h3 className="text-4xl font-bold mt-2">
                             {
-                                requests.filter(
-                                    r => r.status === "PENDING"
-                                ).length
+                                stats.pendingRequests
                             }
                         </h3>
                     </div>
@@ -111,9 +295,7 @@ function EmployeeRequests() {
 
                         <h3 className="text-4xl font-bold mt-2">
                             {
-                                requests.filter(
-                                    r => r.status === "ASSIGNED"
-                                ).length
+                                stats.assignedRequests
                             }
                         </h3>
                     </div>
@@ -133,9 +315,7 @@ function EmployeeRequests() {
 
                         <h3 className="text-4xl font-bold mt-2">
                             {
-                                requests.filter(
-                                    r => r.status === "IN_PROGRESS"
-                                ).length
+                                stats.inProgressRequests
                             }
                         </h3>
                     </div>
@@ -155,9 +335,7 @@ function EmployeeRequests() {
 
                         <h3 className="text-4xl font-bold mt-2">
                             {
-                                requests.filter(
-                                    r => r.status === "COMPLETED"
-                                ).length
+                                stats.completedRequests
                             }
                         </h3>
                     </div>
@@ -260,36 +438,29 @@ function EmployeeRequests() {
 
                     <tbody>
 
-                    {  requests
-                    .filter(request => {
+                    {
 
-                        const nameMatch =
-                        request.customerName
-                        ?.toLowerCase()
-                        .includes(
-                        searchName.toLowerCase()
-                        );
+                        requests.length === 0 ?
 
-                        const phoneMatch =
-                        request.phoneNumber
-                        ?.includes(
-                        searchPhone
-                        );
+                            (
 
-                        const statusMatch =
-                        statusFilter === "ALL"
-                        ||
-                        request.status ===
-                        statusFilter;
+                                <tr>
 
-                        return (
-                        nameMatch &&
-                        phoneMatch &&
-                        statusMatch
-                        );
+                                    <td
+                                        colSpan="6"
+                                        className="text-center py-10 text-slate-500"
+                                    >
 
-                    })
-                    .map(request => (
+                                        No requests found.
+
+                                    </td>
+
+                                </tr>
+
+                            )
+
+                            :
+                    requests.map(request => (
                         <tr key={request.id}>
 
                             <td>
@@ -333,8 +504,10 @@ function EmployeeRequests() {
         }
         `}
     >
-        {request.status.replace("_", " ")}
-    </span>
+{request.status
+    ? request.status.replaceAll("_", " ")
+    : "-"
+}    </span>
                             </td>
 
                             <td style={{ width: "220px" }}>
@@ -387,6 +560,27 @@ function EmployeeRequests() {
                     </tbody>
 
                 </table>
+                    <Pagination
+
+                        page={page}
+
+                        totalPages={totalPages}
+
+                        totalElements={totalElements}
+
+                        pageSize={size}
+
+                        onPageChange={setPage}
+
+                        onPageSizeChange={(newSize) => {
+
+                            setSize(newSize);
+
+                            setPage(0);
+
+                        }}
+
+                    />
                 </div>
 
             </div>

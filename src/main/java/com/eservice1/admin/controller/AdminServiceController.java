@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import com.eservice1.service.dto.CreateServiceRequest;
 
 import java.util.List;
-
+import com.eservice1.common.dto.PageResponseDTO;
 @RestController
 @RequestMapping("/admin/services")
 public class AdminServiceController {
@@ -26,11 +26,24 @@ public class AdminServiceController {
         );
     }
 
-    @GetMapping
-    public List<PortalService> getAllServices() {
-        return service.getAll();
-    }
 
+    @GetMapping
+    public PageResponseDTO<PortalService> getAllServices(
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size
+
+    ) {
+
+        return service.getAll(
+                page,
+                size
+        );
+
+    }
     @DeleteMapping("/{id}")
     public void deleteService(@PathVariable Long id) {
         service.delete(id);

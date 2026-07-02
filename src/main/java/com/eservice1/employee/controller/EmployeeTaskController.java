@@ -1,5 +1,7 @@
 package com.eservice1.employee.controller;
 
+import com.eservice1.employee.dto.EmployeeDashboardStatsDTO;
+import com.eservice1.employee.entity.Employee;
 import com.eservice1.employee.entity.Priority;
 import com.eservice1.employee.entity.Task;
 import com.eservice1.employee.service.TaskService;
@@ -9,7 +11,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import org.springframework.web.bind.annotation.RequestBody;
-
+import com.eservice1.common.dto.PageResponseDTO;
 @RestController
 @RequestMapping("/employee/tasks")
 public class EmployeeTaskController {
@@ -36,10 +38,44 @@ public class EmployeeTaskController {
     }
 
     @GetMapping("/{employeeId}")
-    public List<Task> getTasks(
-            @PathVariable Long employeeId) {
+    public PageResponseDTO<Task> getTasks(
 
-        return taskService.getTasks(employeeId);
+            @PathVariable
+            Long employeeId,
+
+            @RequestParam(defaultValue = "0")
+            int page,
+
+            @RequestParam(defaultValue = "10")
+            int size,
+
+            @RequestParam(required = false)
+            String search,
+
+            @RequestParam(required = false)
+            String phone,
+
+            @RequestParam(required = false)
+            String status
+
+    ) {
+
+        return taskService.getTasks(
+
+                employeeId,
+
+                page,
+
+                size,
+
+                search,
+
+                phone,
+
+                status
+
+        );
+
     }
 
     @PostMapping("/{taskId}/accept")
@@ -107,5 +143,15 @@ public class EmployeeTaskController {
         );
 
         return "SUCCESS";
+    }
+    @GetMapping("/dashboard/stats")
+    public EmployeeDashboardStatsDTO getDashboardStats(
+            Authentication authentication
+    ) {
+
+        return taskService.getDashboardStats(
+                authentication.getName()
+        );
+
     }
 }

@@ -5,29 +5,48 @@ import { API_URL } from "../../config";
 import { Link } from "react-router-dom";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
-
+import Pagination from "../../components/Pagination";
 function Services() {
 
     const [services, setServices] = useState([]);
 
-    useEffect(() => {
+    const [page, setPage] = useState(0);
+
+    const [size, setSize] = useState(10);
+
+    const [totalPages, setTotalPages] = useState(0);
+
+    const [totalElements, setTotalElements] = useState(0);
+    const loadServices = async () => {
 
         const token = localStorage.getItem("token");
 
-        axios.get(
-            (`${API_URL}/services`),
+        const response = await axios.get(
+
+            (`${API_URL}/admin/services?page=${page}&size=${size}`),
+
             {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
             }
-        )
-            .then(res => {
-                setServices(res.data);
-            })
+
+        );
+        console.log(response.data);
+
+        setServices(response.data.content);
+
+        setTotalPages(response.data.totalPages);
+
+        setTotalElements(response.data.totalElements);
+
+    };
+    useEffect(() => {
+
+        loadServices()
             .catch(console.error);
 
-    }, []);
+    }, [page, size]);
     const deleteService = async (id) => {
         try {
             const token = localStorage.getItem("token");
@@ -40,12 +59,22 @@ function Services() {
                     }
                 }
             );
+            if (
 
-            setServices(
-                services.filter(
-                    service => service.id !== id
-                )
-            );
+                services.length === 1
+
+                &&
+
+                page > 0
+
+            ) {
+
+                setPage(page - 1);
+
+                return;
+
+            }
+            await loadServices();
 
         } catch (error) {
             alert(
@@ -90,7 +119,8 @@ function Services() {
 
                 </div>
 
-                {/* Services Table */}
+                {/* Se
+                rvices Table */}
                 <div
                     className="
                     bg-white
@@ -311,6 +341,21 @@ function Services() {
                         </tbody>
 
                     </table>
+                    <Pagination
+
+                        page={page}
+
+                        totalPages={totalPages}
+
+                        totalElements={totalElements}
+
+                        pageSize={size}
+
+                        onPageChange={setPage}
+
+                        onPageSizeChange={setSize}
+
+                    />
 
                 </div>
 

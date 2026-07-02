@@ -1,5 +1,7 @@
 package com.eservice1.admin.dto;
 
+import java.time.LocalDateTime;
+
 public class AdminRequestDTO {
 
     private Long id;
@@ -16,6 +18,7 @@ public class AdminRequestDTO {
 
     private String assignedEmployeeName;
 
+    private LocalDateTime createdAt;
     public AdminRequestDTO() {
     }
 
@@ -74,4 +77,15 @@ public class AdminRequestDTO {
     public void setAssignedEmployeeName(String assignedEmployeeName) {
         this.assignedEmployeeName = assignedEmployeeName;
     }
+
+    public void setCreatedAt(
+            LocalDateTime createdAt
+    ) {
+        this.createdAt = createdAt;
+    }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+
 }

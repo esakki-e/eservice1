@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import axios from "axios";
 import {Link} from "react-router-dom";
+import Pagination from "../../components/Pagination";
 import { useNavigate } from "react-router-dom";import { API_URL } from "../../config";
 
-function EmployeeDashboard() {
 
+
+function EmployeeDashboard() {
     const [tasks, setTasks] = useState([]);
-    const [documents, setDocuments] = useState({});
+   // const [documents, setDocuments] = useState({});
     const navigate = useNavigate();
     const [selectedTask, setSelectedTask] = useState(null);
 
@@ -16,84 +18,207 @@ function EmployeeDashboard() {
     const [paymentAmount, setPaymentAmount] = useState("");
     const [paymentStatus, setPaymentStatus] = useState("UNPAID");
 
+    const [showNotifyModal, setShowNotifyModal] = useState(false);
+
+    const [completedTask, setCompletedTask] = useState(null);
+    const [page, setPage] = useState(0);
+
+    const [size, setSize] = useState(10);
+
+    const [totalPages, setTotalPages] = useState(0);
+
+    const [totalElements, setTotalElements] = useState(0);
+
+    const [searchName, setSearchName] = useState("");
+
+    const [searchPhone, setSearchPhone] = useState("");
+
+    const [statusFilter, setStatusFilter] = useState("ALL");
+
+    const [debouncedSearchName, setDebouncedSearchName] = useState("");
+
+    const [debouncedSearchPhone, setDebouncedSearchPhone] = useState("");
+
+    const [loading, setLoading] = useState(false);
+    const [stats, setStats] = useState({
+
+        pendingTasks: 0,
+
+        assignedTasks: 0,
+
+        inProgressTasks: 0,
+
+        completedTasks: 0
+
+    });
     useEffect(() => {
 
-        const token = localStorage.getItem("token");
+        const timer = setTimeout(() => {
 
-        const employeeId =
-            localStorage.getItem(
-                "employeeId"
-            );
+            setDebouncedSearchName(searchName);
 
-        axios.get(
-            `${API_URL}/employee/tasks/${employeeId}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
-            .then(res => {
-                console.log(
-                    "TASKS FROM API:",
-                    res.data
+        }, 500);
+
+        return () => clearTimeout(timer);
+
+    }, [searchName]);
+    useEffect(() => {
+
+        const timer = setTimeout(() => {
+
+            setDebouncedSearchPhone(searchPhone);
+
+        }, 400);
+
+        return () => clearTimeout(timer);
+
+    }, [searchPhone]);
+    const loadTasks = async () => {
+
+        try {
+
+            const token = localStorage.getItem("token");
+
+            const employeeId =
+
+                localStorage.getItem("employeeId");
+
+            const params = new URLSearchParams();
+
+            params.append("page", String(page));
+            params.append("size", String(size));
+
+            if (debouncedSearchName.trim()) {
+
+                params.append(
+
+                    "search",
+
+                    debouncedSearchName.trim()
+
                 );
 
-                setTasks(res.data);
-            })
-            .catch(console.error);
-
-    }, []);
-
-    const acceptTask = async (id) => {
-
-        const token = localStorage.getItem("token");
-
-        await axios.post(
-            `${API_URL}/employee/tasks/${id}/accept`,
-            {},
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
             }
-        );
 
-        setTasks(
-            tasks.map(task =>
-                task.id === id
-                    ? {
-                        ...task,
-                        status: "ACCEPTED"
+            if (debouncedSearchPhone.trim()) {
+
+                params.append(
+
+                    "phone",
+
+                    debouncedSearchPhone.trim()
+
+                );
+
+            }
+
+            if (statusFilter !== "ALL") {
+
+                params.append(
+
+                    "status",
+
+                    statusFilter
+
+                );
+
+            }
+
+            setLoading(true);
+
+            const response = await axios.get(
+
+                `${API_URL}/employee/tasks/${employeeId}?${params.toString()}`,
+
+                {
+
+                    headers: {
+
+                        Authorization:
+
+                            `Bearer ${token}`
+
                     }
-                    : task
-            )
-        );
+
+                }
+
+            );
+            setTasks(response.data.content ?? []);
+            setTotalPages(response.data.totalPages);
+
+            setTotalElements(response.data.totalElements);
+
+        }
+
+        catch (err) {
+
+            console.error(err);
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
     };
+    const loadStats = async () => {
 
-
-        const loadDocuments = async (
-            requestId
-        ) => {
+        try {
 
             const token =
                 localStorage.getItem("token");
 
-            const res = await axios.get(
-                `${API_URL}/documents/request/${requestId}`,
+            const response = await axios.get(
+
+                `${API_URL}/employee/tasks/dashboard/stats`,
+
                 {
                     headers: {
-                        Authorization:
-                            `Bearer ${token}`
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+
+            );
+
+            setStats(response.data);
+
+        }
+
+        catch (err) {
+
+            console.error(err);
+
+        }
+
+    };
+    const acceptTask = async (id) => {
+
+        const token = localStorage.getItem("token");
+        try {
+            await axios.post(
+                `${API_URL}/employee/tasks/${id}/accept`,
+                {},
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
                     }
                 }
             );
+            await loadTasks();
 
-            setDocuments(prev=>({
-                ...prev,
-                [requestId]: res.data
-            }));
-        };
+            await loadStats();
+
+        }catch(err){
+
+            console.error(err);
+
+            alert("Unable to accept task.");
+
+        }
+    };
+
     const uploadResultAndComplete = async () => {
 
         if (!resultFile) {
@@ -111,10 +236,7 @@ function EmployeeDashboard() {
         const formData =
             new FormData();
 
-        formData.append(
-            "file",
-            resultFile
-        );
+        formData.append("file",resultFile);
 
         //formData.append(
           //  "taskId",
@@ -122,12 +244,12 @@ function EmployeeDashboard() {
         //);
         formData.append(
             "requestId",
-            selectedTask.request.id
+            String(selectedTask.request.id)
         );
 
         formData.append(
             "isResult",
-            true
+            "true"
         );
         await axios.post(
             `${API_URL}/documents/upload`,
@@ -141,6 +263,7 @@ function EmployeeDashboard() {
                 }
             }
         );
+
         await axios.post(
 
             `${API_URL}/employee/tasks/${selectedTask.id}/complete`,
@@ -159,14 +282,18 @@ function EmployeeDashboard() {
             }
 
         );
+        await loadTasks();
 
-        alert(
-            "Request completed"
-        );
+        await loadStats();
+        setCompletedTask(selectedTask);
 
         setSelectedTask(null);
 
-        window.location.reload();
+        setResultFile(null);
+
+        setShowNotifyModal(true);
+
+        console.log(selectedTask);
     };const savePayment = async () => {
 
         if (
@@ -201,7 +328,7 @@ function EmployeeDashboard() {
                     amount:
                         paymentAmount === ""
                             ? 0
-                            : paymentAmount
+                            : Number(paymentAmount)
 
                 },
 
@@ -215,6 +342,9 @@ function EmployeeDashboard() {
             }
 
         );
+        await loadTasks();
+
+        await loadStats();
 
         alert(
             "Payment Updated"
@@ -222,10 +352,94 @@ function EmployeeDashboard() {
 
         setPaymentTask(null);
 
-        window.location.reload();
+        loadTasks();
+    };
+    const getWhatsappMessage = () => {
+
+        return `🎉 Vinayaga E-Service
+
+Dear ${completedTask.request.customerName},
+
+Your request for "${completedTask?.request?.service?.serviceName}" has been completed successfully.
+
+Please login to download your result.
+
+${window.location.origin}/customer-login
+
+Thank you.`;
+
+    };
+    const openWhatsApp = () => {
+
+        const phone = completedTask.request.phoneNumber
+            .replace(/\D/g, "");
+
+        const fullPhone = phone.startsWith("91")
+            ? phone
+            : `91${phone}`;
+
+        const message = encodeURIComponent(getWhatsappMessage());
+
+        window.open(
+            `https://web.whatsapp.com/send?phone=${fullPhone}&text=${message}`,
+            "_blank"
+        );
+    };
+
+    const copyMessage = async () => {
+
+        await navigator.clipboard.writeText(
+            getWhatsappMessage()
+        );
+
+        alert("Message copied.");
 
     };
 
+    const closeNotifyModal = () => {
+
+        setShowNotifyModal(false);
+
+        setCompletedTask(null);
+
+        void loadTasks();
+    };
+    useEffect(() => {
+
+        void loadTasks();
+
+
+    }, [
+
+        page,
+
+        size,
+
+        debouncedSearchName,
+
+        debouncedSearchPhone,
+
+        statusFilter
+
+    ]);
+    useEffect(() => {
+
+        setPage(0);
+
+    }, [
+
+        debouncedSearchName,
+
+        debouncedSearchPhone,
+
+        statusFilter
+
+    ]);
+    useEffect(() => {
+
+        void loadStats();
+
+    }, []);
     return (
         <>
             <Navbar />
@@ -261,7 +475,8 @@ function EmployeeDashboard() {
                     <div className="
                     grid
                     grid-cols-1
-                    md:grid-cols-3
+                    md:grid-cols-2
+                    xl:grid-cols-4
                     gap-6
                     mb-8
                 ">
@@ -275,7 +490,26 @@ function EmployeeDashboard() {
                         shadow-sm
                     ">
                             <div className="text-3xl font-bold text-slate-800">
-                                {tasks.length}
+                                {stats.pendingTasks}
+                            </div>
+
+                            <div className="text-slate-500 mt-2">
+                                Pending Tasks
+                            </div>
+                        </div>
+
+                        <div className="
+                        bg-white
+                        rounded-3xl
+                        border
+                        border-slate-200
+                        p-6
+                        shadow-sm
+                    ">
+                            <div className="text-3xl font-bold text-violet-600">
+
+                                    {stats.assignedTasks}
+
                             </div>
 
                             <div className="text-slate-500 mt-2">
@@ -291,39 +525,69 @@ function EmployeeDashboard() {
                         p-6
                         shadow-sm
                     ">
-                            <div className="text-3xl font-bold text-violet-600">
-                                {
-                                    tasks.filter(
-                                        t => t.status === "ACCEPTED"
-                                    ).length
-                                }
+                            <div className="text-3xl font-bold text-emerald-600">
+
+                                    {stats.inProgressTasks}
+
                             </div>
 
                             <div className="text-slate-500 mt-2">
                                 In Progress
                             </div>
                         </div>
-
                         <div className="
-                        bg-white
-                        rounded-3xl
-                        border
-                        border-slate-200
-                        p-6
-                        shadow-sm
-                    ">
+bg-white
+rounded-3xl
+border
+border-slate-200
+p-6
+shadow-sm
+">
                             <div className="text-3xl font-bold text-emerald-600">
-                                {
-                                    tasks.filter(
-                                        t => t.status === "COMPLETED"
-                                    ).length
-                                }
+                                {stats.completedTasks}
                             </div>
 
                             <div className="text-slate-500 mt-2">
                                 Completed
                             </div>
                         </div>
+
+                    </div>
+                    <div className="grid md:grid-cols-3 gap-4 mb-6">
+
+                        <input
+                            type="text"
+                            placeholder="Search Customer"
+                            value={searchName}
+                            onChange={(e) => setSearchName(e.target.value)}
+                            className="border rounded-xl px-4 py-3"
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Search Phone"
+                            value={searchPhone}
+                            onChange={(e) => setSearchPhone(e.target.value)}
+                            className="border rounded-xl px-4 py-3"
+                        />
+
+                        <select
+                            value={statusFilter}
+                            onChange={(e) => setStatusFilter(e.target.value)}
+                            className="border rounded-xl px-4 py-3"
+                        >
+
+                            <option value="ALL">All Status</option>
+
+                            <option value="PENDING">Pending</option>
+
+                            <option value="ACCEPTED">Accepted</option>
+
+                            <option value="IN_PROGRESS">In Progress</option>
+
+                            <option value="COMPLETED">Completed</option>
+
+                        </select>
 
                     </div>
 
@@ -384,6 +648,22 @@ function EmployeeDashboard() {
                             </thead>
 
                             <tbody>
+
+                            {loading && (
+                                <tr>
+                                    <td colSpan="9" className="text-center py-8">
+                                        Loading...
+                                    </td>
+                                </tr>
+                            )}
+
+                            {!loading && tasks.length === 0 && (
+                                <tr>
+                                    <td colSpan="9" className="text-center py-8">
+                                        No tasks found.
+                                    </td>
+                                </tr>
+                            )}
 
                             {tasks.map(task => (
 
@@ -645,7 +925,21 @@ function EmployeeDashboard() {
                             </tbody>
 
                         </table>
+                        <Pagination
 
+                            page={page}
+
+                            totalPages={totalPages}
+
+                            size={size}
+
+                            setPage={setPage}
+
+                            setSize={setSize}
+
+                            totalElements={totalElements}
+
+                        />
                     </div>
 
                 </div>
@@ -745,7 +1039,7 @@ function EmployeeDashboard() {
                                     onChange={(e)=>
 
                                         setResultFile(
-                                            e.target.files[0]
+                                            e.target.files?.[0] || null
                                         )
 
                                     }
@@ -962,6 +1256,178 @@ function EmployeeDashboard() {
 
                                 >
                                     Save Payment
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                )
+            }
+            {
+                showNotifyModal && completedTask && (
+
+                    <div
+                        className="
+                fixed
+                inset-0
+                bg-black/50
+                flex
+                items-center
+                justify-center
+                z-50
+            "
+                    >
+
+                        <div
+                            className="
+                    bg-white
+                    rounded-3xl
+                    shadow-2xl
+                    w-full
+                    max-w-lg
+                    p-8
+                "
+                        >
+
+                            <div className="text-center">
+
+                                <div className="text-6xl mb-4">
+                                    ✅
+                                </div>
+
+                                <h2 className="text-3xl font-bold">
+
+                                    Request Completed
+
+                                </h2>
+
+                                <p className="text-slate-500 mt-3">
+
+                                    The result has been uploaded successfully.
+
+                                </p>
+
+                            </div>
+
+                            <div
+                                className="
+                        bg-slate-50
+                        rounded-2xl
+                        p-5
+                        mt-8
+                        mb-8
+                    "
+                            >
+
+                                <p>
+
+                        <span className="font-bold">
+
+                            Customer
+
+                        </span>
+
+                                    <br/>
+
+                                    {completedTask.request.customerName}
+
+                                </p>
+
+                                <hr className="my-4"/>
+
+                                <p>
+
+                        <span className="font-bold">
+
+                            Phone
+
+                        </span>
+
+                                    <br/>
+
+                                    {completedTask.request.phoneNumber}
+
+                                </p>
+
+                                <hr className="my-4"/>
+
+                                <p>
+
+                        <span className="font-bold">
+
+                            Service
+
+                        </span>
+
+                                    <br/>
+
+                                    {completedTask?.request?.service?.serviceName}
+
+                                </p>
+
+                            </div>
+
+                            <div className="space-y-3">
+
+                                <button
+
+                                    onClick={openWhatsApp}
+
+                                    className="
+                            w-full
+                            py-3
+                            rounded-2xl
+                            bg-green-600
+                            hover:bg-green-700
+                            text-white
+                            font-bold
+                        "
+
+                                >
+
+                                    📱 Open WhatsApp
+
+                                </button>
+
+                                <button
+
+                                    onClick={copyMessage}
+
+                                    className="
+                            w-full
+                            py-3
+                            rounded-2xl
+                            bg-blue-600
+                            hover:bg-blue-700
+                            text-white
+                            font-bold
+                        "
+
+                                >
+
+                                    📋 Copy Message
+
+                                </button>
+
+                                <button
+
+                                    onClick={closeNotifyModal}
+
+                                    className="
+                            w-full
+                            py-3
+                            rounded-2xl
+                            border
+                            hover:bg-slate-100
+                        "
+
+                                >
+
+                                    Close
+
                                 </button>
 
                             </div>

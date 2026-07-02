@@ -118,6 +118,27 @@ no-underline
                         >
                             Create Service
                         </Link>
+                        <Link
+                            to="/service-categories"
+                            className="
+group
+flex
+items-center
+gap-3
+px-4
+py-3
+rounded-2xl
+text-slate-400
+hover:text-white
+hover:bg-slate-900
+transition-all
+duration-300
+font-medium
+no-underline
+"
+                        >
+                            Service Categories
+                        </Link>
 
                         <Link
                             to="/employees"

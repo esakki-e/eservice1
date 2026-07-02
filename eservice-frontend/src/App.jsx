@@ -56,7 +56,8 @@ import EmployeeRequests
 import EmployeeProfile from "./pages/employee/EmployeeProfile";
 import EmployeeProfileEdit
     from "./pages/employee/EmployeeProfileEdit";
-
+import ServiceCategories
+    from "./pages/owner/ServiceCategories";
 function AnimatedRoutes() {
 
     const location =
@@ -258,6 +259,15 @@ function AnimatedRoutes() {
                     element={
                         <ProtectedRoute>
                             <EmployeeProfileEdit />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+
+                    path="/service-categories"
+                    element={
+                        <ProtectedRoute>
+                            <ServiceCategories/>
                         </ProtectedRoute>
                     }
                 />

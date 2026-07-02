@@ -110,6 +110,11 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/services/**"
                         ).permitAll()
+                        .requestMatchers("/service-categories/active")
+                        .permitAll()
+
+                        .requestMatchers("/service-categories/**")
+                        .hasAuthority("OWNER")
                         .requestMatchers("/customer-form-fields/**")
                         .permitAll()
 
@@ -135,7 +140,10 @@ public class SecurityConfig {
 
                         .permitAll()
                         .requestMatchers("/requests/**")
-                        .permitAll().anyRequest()
+                        .permitAll()
+                        .requestMatchers("/feedback/**")
+                        .permitAll()
+                        .anyRequest()
                         .authenticated()
 
                 );

@@ -7,7 +7,12 @@ import com.eservice1.service.dto.CreateServiceRequest;
 import com.eservice1.document.entity.RequiredDocument;
 import com.eservice1.document.repository.RequiredDocumentRepository;
 import java.util.List;
-
+import com.eservice1.common.dto.PageResponseDTO;
+import com.eservice1.common.util.PaginationMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 @Service
 public class PortalServiceService {
     private final PortalServiceRepository repository;
@@ -76,10 +81,74 @@ public class PortalServiceService {
         return savedService;
     }
 
-    public List<PortalService> getAll() {
-        return repository.findAll();
-    }
+    public PageResponseDTO<PortalService> getAll(
 
+            int page,
+
+            int size,
+
+            String search
+
+    ) {
+
+        if (search != null) {
+
+            search = search.trim();
+
+            if (search.isBlank()) {
+
+                search = null;
+
+            }
+
+        }
+
+        Pageable pageable =
+
+                PageRequest.of(
+
+                        page,
+
+                        size,
+
+                        Sort.by("id").descending()
+
+                );
+
+        Page<PortalService> services =
+
+                repository.searchServices(
+
+                        search,
+
+                        pageable
+
+                );
+
+        return PaginationMapper.toResponse(
+                services
+        );
+
+    }
+    public PageResponseDTO<PortalService> getAll(
+
+            int page,
+
+            int size
+
+    ) {
+
+        return getAll(
+
+                page,
+
+                size,
+
+                null
+
+        );
+
+    }
     public void delete(Long id) {
         repository.deleteById(id);
     }

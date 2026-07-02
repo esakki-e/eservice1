@@ -1,5 +1,6 @@
 package com.eservice1.employee.service;
 
+import com.eservice1.employee.dto.EmployeeDashboardStatsDTO;
 import com.eservice1.employee.entity.Employee;
 import com.eservice1.employee.entity.Priority;
 import com.eservice1.employee.entity.Task;
@@ -16,7 +17,12 @@ import java.io.IOException;
 import com.eservice1.submission.entity.UploadedDocument;
 import com.eservice1.submission.repository.UploadedDocumentRepository;
 import java.util.List;
-
+import com.eservice1.common.dto.PageResponseDTO;
+import com.eservice1.common.util.PaginationMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 @Service
 public class TaskService {
 
@@ -85,6 +91,97 @@ public class TaskService {
     public List<Task> getAllTasks() {
 
         return taskRepository.findAll();
+    }
+    public PageResponseDTO<Task> getTasks(
+
+            Long employeeId,
+
+            int page,
+
+            int size,
+
+            String search,
+
+            String phone,
+
+            String status
+
+    ) {
+
+        if (search != null) {
+
+            search = search.trim();
+
+            if (search.isBlank()) {
+
+                search = null;
+
+            }
+
+        }
+
+        if (phone != null) {
+
+            phone = phone.trim();
+
+            if (phone.isBlank()) {
+
+                phone = null;
+
+            }
+
+        }
+
+        if (status != null) {
+
+            status = status.trim();
+
+            if (status.isBlank() || status.equalsIgnoreCase("ALL")) {
+
+                status = null;
+
+            }
+
+        }
+
+        Pageable pageable =
+
+                PageRequest.of(
+
+                        page,
+
+                        size,
+
+                        Sort.by("request.createdAt").descending()
+
+                );
+
+        TaskStatus taskStatus = null;
+
+        if (status != null) {
+
+            taskStatus = TaskStatus.valueOf(status);
+
+        }
+
+        Page<Task> tasks =
+
+                taskRepository.searchEmployeeTasks(
+
+                        employeeId,
+
+                        search,
+
+                        phone,
+
+                        taskStatus,
+
+                        pageable
+
+                );
+
+        return PaginationMapper.toResponse(tasks);
+
     }
     public List<Task> getTasks(Long employeeId) {
 
@@ -264,5 +361,38 @@ public class TaskService {
 
         taskRepository.save(task);
     }
+    public EmployeeDashboardStatsDTO getDashboardStats(
+            String phoneNumber
+    ) {
 
+        Employee employee =
+                employeeRepository.findByPhoneNumber(
+                        phoneNumber
+                );
+
+        return new EmployeeDashboardStatsDTO(
+
+                taskRepository.countByEmployeeIdAndStatus(
+                        employee.getId(),
+                        TaskStatus.PENDING
+                ),
+
+                taskRepository.countByEmployeeIdAndStatus(
+                        employee.getId(),
+                        TaskStatus.ACCEPTED
+                ),
+
+                taskRepository.countByEmployeeIdAndStatus(
+                        employee.getId(),
+                        TaskStatus.IN_PROGRESS
+                ),
+
+                taskRepository.countByEmployeeIdAndStatus(
+                        employee.getId(),
+                        TaskStatus.COMPLETED
+                )
+
+        );
+
+    }
 }

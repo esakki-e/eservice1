@@ -31,30 +31,39 @@ public class AdminDashboardController {
                 employeeRepository.count();
 
         long pendingRequests =
-                requestRepository
-                        .findAll()
-                        .stream()
-                        .filter(r ->
-                                r.getStatus() ==
-                                        RequestStatus.PENDING
-                        )
-                        .count();
+                requestRepository.countByStatus(
+                        RequestStatus.PENDING
+                );
+
+        long assignedRequests =
+                requestRepository.countByStatus(
+                        RequestStatus.ASSIGNED
+                );
+
+        long inProgressRequests =
+                requestRepository.countByStatus(
+                        RequestStatus.IN_PROGRESS
+                );
 
         long completedRequests =
-                requestRepository
-                        .findAll()
-                        .stream()
-                        .filter(r ->
-                                r.getStatus() ==
-                                        RequestStatus.COMPLETED
-                        )
-                        .count();
+                requestRepository.countByStatus(
+                        RequestStatus.COMPLETED
+                );
 
         return new DashboardStatsDTO(
+
                 totalRequests,
+
                 totalEmployees,
+
                 pendingRequests,
+
+                assignedRequests,
+
+                inProgressRequests,
+
                 completedRequests
+
         );
     }
 }

@@ -4,80 +4,74 @@ import com.eservice1.submission.entity.CustomerRequest;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.web.bind.annotation.*;
 import com.eservice1.admin.dto.AdminRequestDTO;
-import com.eservice1.employee.entity.Task;
-import com.eservice1.employee.repository.TaskRepository;
-
+import com.eservice1.admin.service.AdminRequestService;
+import com.eservice1.common.dto.PageResponseDTO;
+import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
 @RestController
 @RequestMapping("/admin/requests")
 public class AdminRequestController {
 
-    private final CustomerRequestRepository
-            requestRepository;
-    private final TaskRepository taskRepository;
-    public AdminRequestController(
-            CustomerRequestRepository requestRepository,
-            TaskRepository taskRepository) {
+    private final AdminRequestService
+            adminRequestService;
 
-        this.requestRepository = requestRepository;
-        this.taskRepository = taskRepository;
+    private final CustomerRequestRepository
+            requestRepository;public AdminRequestController(
+
+            AdminRequestService adminRequestService,
+
+            CustomerRequestRepository requestRepository
+
+    ) {
+
+        this.adminRequestService =
+                adminRequestService;
+
+        this.requestRepository =
+                requestRepository;
+
     }
 
     @GetMapping
-    public java.util.List<AdminRequestDTO> getAllRequests() {
+    public PageResponseDTO<AdminRequestDTO> getAllRequests(
 
-        java.util.List<CustomerRequest> requests =
-                requestRepository.findAll();
+            @RequestParam(defaultValue = "0")
+            int page,
 
-        return requests.stream()
-                .map(request -> {
+            @RequestParam(defaultValue = "10")
+            int size,
 
-                    AdminRequestDTO dto =
-                            new AdminRequestDTO();
+            @RequestParam(required = false)
+            String search,
 
-                    dto.setId(
-                            request.getId()
-                    );
+            @RequestParam(required = false)
+            String phone,
 
-                    dto.setCustomerName(
-                            request.getCustomerName()
-                    );
+            @RequestParam(required = false)
+            String status,
 
-                    dto.setPhoneNumber(
-                            request.getPhoneNumber()
-                    );
+            @RequestParam(required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+            LocalDate date
 
-                    dto.setServiceName(
-                            request.getService().getServiceName()                    );
+    ) {
 
-                    dto.setStatus(
-                            request.getStatus().name()
-                    );
+        return adminRequestService.getAllRequests(
 
-                    Task task =
-                            taskRepository.findByRequestId(
-                                    request.getId()
-                            );
+                page,
 
-                    if (
-                            task != null &&
-                                    task.getEmployee() != null
-                    ) {
+                size,
 
-                        dto.setAssignedEmployeeId(
-                                task.getEmployee().getId()
-                        );
+                search,
 
-                        dto.setAssignedEmployeeName(
-                                task.getEmployee().getName()
-                        );
-                    }
+                phone,
 
-                    return dto;
+                status,
 
-                })
-                .toList();
+                date
+
+        );
     }
-
     @GetMapping("/{id}")
     public CustomerRequest getRequest(
             @PathVariable Long id) {

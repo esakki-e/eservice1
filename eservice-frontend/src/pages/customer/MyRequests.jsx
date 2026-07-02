@@ -1,53 +1,93 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import CustomerNavbar from "../../components/CustomerNavbar.jsx";
+import CustomerNavbar from "../../components/CustomerNavbar";
 import {Link} from "react-router-dom";
 import { API_URL } from "../../config";
+import Pagination from "../../components/Pagination";
 function MyRequests() {
 
     const [requests, setRequests] = useState([]);
     const [documents,
         setDocuments] =
         useState({});
+    const [showFeedback, setShowFeedback] = useState(false);
 
-    const [showRating,
-        setShowRating] =
-        useState(false);
+    const [selectedRequest, setSelectedRequest] = useState(null);
 
-    const [rating,
-        setRating] =
-        useState(5);
+    const [rating, setRating] = useState(5);
 
-    const [feedback,
-        setFeedback] =
-        useState("");
+    const [comment, setComment] = useState("");
+    const [page,setPage]=useState(0);
+
+    const [size,setSize]=useState(10);
+
+    const [totalPages,setTotalPages]=useState(0);
+
+    const [totalElements,setTotalElements]=useState(0);
+
+    const [loading,setLoading]=useState(false);
     useEffect(() => {
 
         const token = localStorage.getItem("token");
         const phoneNumber =
             localStorage.getItem("customerPhone");
 
-        console.log("Phone:", phoneNumber);
-        axios.get(
-            `${API_URL}/requests/phone/${phoneNumber}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-            }
-        )
-            .then(res => {
-                setRequests(
-                    res.data.sort(
-                        (a, b) =>
-                            new Date(b.createdAt)
-                            -
-                            new Date(a.createdAt)
-                    )
-                );            })
-            .catch(console.error);
+        setLoading(true);
 
-    }, []);
+        axios.get(
+
+            `${API_URL}/requests/phone/${phoneNumber}?page=${page}&size=${size}`,
+
+            {
+
+                headers:{
+
+                    Authorization:`Bearer ${token}`
+
+                }
+
+            }
+
+        )
+
+            .then(res=>{
+
+                setRequests(
+
+                    res.data.content
+
+                );
+
+                setTotalPages(
+
+                    res.data.totalPages
+
+                );
+
+                setTotalElements(
+
+                    res.data.totalElements
+
+                );
+
+            })
+
+
+            .catch(console.error)
+
+             .finally(()=>{
+
+            setLoading(false);
+
+        });
+
+    }, [
+
+        page,
+
+        size
+
+    ]);
     const loadDocuments = async (
         requestId
     ) => {
@@ -65,20 +105,67 @@ function MyRequests() {
             }
         );
 
-        setDocuments({
-            ...documents,
-            [requestId]: res.data
-        });
-    };
-    const downloadResult = (id) => {
+        setDocuments(prev => ({
 
-        window.open(
-            `${API_URL}/documents/download/${id}`,
-            "_blank"
+            ...prev,
+
+            [requestId]: res.data
+
+        }));
+    };
+    const submitFeedback = async () => {
+
+        try {
+
+            await axios.post(
+                `${API_URL}/feedback`,
+                {
+                    requestId: selectedRequest.id,
+                    rating,
+                    comment
+                }
+            );
+
+            alert("Feedback submitted!");
+
+            setShowFeedback(false);
+
+            setRating(5);
+
+            setComment("");
+            setSelectedRequest(null);
+
+        }
+
+        catch (err) {
+
+            alert(
+                err.response?.data ||
+                "Unable to submit feedback."
+            );
+
+        }
+
+    };
+    if (loading) {
+
+        return (
+
+            <>
+
+                <CustomerNavbar/>
+
+                <div className="flex justify-center items-center h-96">
+
+                    Loading...
+
+                </div>
+
+            </>
+
         );
 
-        setShowRating(true);
-    };
+    }
     return (
         <>
             <CustomerNavbar />
@@ -140,7 +227,31 @@ function MyRequests() {
 
                     <div className="space-y-4">
 
-                        {requests.map(request => (
+                        {
+
+                            requests.length===0 ?
+
+                                (
+
+                                    <div className="
+
+text-center
+
+py-16
+
+text-slate-500
+
+">
+
+                                        No requests found.
+
+                                    </div>
+
+                                )
+
+                                :
+
+                                requests.map(request => (
 
                             <div
                                 key={request.id}
@@ -192,7 +303,7 @@ function MyRequests() {
                                             font-bold
                                             text-slate-800
                                         ">
-                                                {request.service?.serviceName}
+                                                {request.serviceName}
                                             </h3>
                                         </div>
 
@@ -259,17 +370,51 @@ function MyRequests() {
                                         )}
 
                                         {request.status === "COMPLETED" && (
-                                            <span className="
-                                            px-3
-                                            py-1.5
-                                            rounded-full
-                                            bg-emerald-100
-                                            text-emerald-700
-                                            text-sm
-                                            font-semibold
-                                        ">
-                                            🎉 Completed
-                                        </span>
+
+                                            <>
+
+                                                <button
+                                                    className="
+                mt-4
+                px-5
+                py-2
+                rounded-xl
+                bg-yellow-500
+                text-white
+                font-semibold
+                hover:bg-yellow-600
+            "
+                                                    onClick={() => {
+
+                                                        setSelectedRequest(request);
+
+                                                        setShowFeedback(true);
+
+                                                    }}
+                                                >
+
+                                                    ⭐ Rate Service
+
+                                                </button>
+
+                                                <span
+                                                    className="
+                px-3
+                py-1.5
+                rounded-full
+                bg-emerald-100
+                text-emerald-700
+                text-sm
+                font-semibold
+            "
+                                                >
+
+            🎉 Completed
+
+        </span>
+
+                                            </>
+
                                         )}
 
                                         {request.status === "REJECTED" && (
@@ -345,7 +490,7 @@ function MyRequests() {
 
                                                 <a
                                                     key={doc.id}
-                                                    href={`http://localhost:8080/documents/download/${doc.id}`}
+                                                    href={`${API_URL}/documents/download/${doc.id}`}
                                                     target="_blank"
                                                     rel="noreferrer"
                                                     className="
@@ -359,7 +504,7 @@ function MyRequests() {
                                                     transition
                                                 "
                                                 >
-                                                    📄 {doc.documentName}
+                                                    📄 {doc.name}
                                                 </a>
 
 
@@ -380,6 +525,186 @@ function MyRequests() {
                 </div>
 
             </div>
+            {
+                showFeedback &&
+
+                <div
+                    className="
+fixed
+inset-0
+bg-black/50
+flex
+items-center
+justify-center
+z-50
+"
+                >
+
+                    <div
+                        className="
+bg-white
+rounded-3xl
+p-8
+w-[500px]
+"
+                    >
+
+                        <h2
+                            className="
+text-2xl
+font-bold
+mb-6
+"
+                        >
+
+                            Rate Service
+
+                        </h2>
+
+                        <div className="flex gap-3 mb-6">
+
+                            {
+
+                                [1,2,3,4,5].map(star=>
+
+                                    <button
+
+                                        key={star}
+
+                                        onClick={()=>
+                                            setRating(star)
+                                        }
+
+                                        className="
+text-4xl
+"
+
+                                    >
+
+                                        {
+
+                                            star<=rating
+
+                                                ?
+
+                                                "⭐"
+
+                                                :
+
+                                                "☆"
+
+                                        }
+
+                                    </button>
+
+                                )
+
+                            }
+
+                        </div>
+
+                        <textarea
+
+                            value={comment}
+
+                            onChange={(e)=>
+                                setComment(e.target.value)
+                            }
+
+                            rows={5}
+
+                            placeholder="Write your feedback..."
+
+                            className="
+w-full
+border
+rounded-xl
+p-4
+mb-6
+"
+
+                        />
+
+                        <div className="flex justify-end gap-4">
+
+                            <button
+
+                                onClick={() => {
+
+                                    setShowFeedback(false);
+
+                                    setComment("");
+
+                                    setRating(5);
+
+                                    setSelectedRequest(null);
+
+                                }}
+
+                                className="
+px-6
+py-2
+border
+rounded-xl
+"
+
+                            >
+
+                                Cancel
+
+                            </button>
+
+                            <button
+
+                                disabled={comment.trim() === ""}
+
+                                onClick={submitFeedback}
+
+                                className="
+px-6
+py-2
+bg-blue-600
+text-white
+rounded-xl
+disabled:opacity-50
+disabled:cursor-not-allowed
+"
+
+                            >
+
+                                Submit
+
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+            }
+            <Pagination
+
+                page={page}
+
+                totalPages={totalPages}
+
+                totalElements={totalElements}
+
+                pageSize={size}
+
+                onPageChange={setPage}
+
+                onPageSizeChange={(newSize)=>{
+
+                    setSize(newSize);
+
+                    setPage(0);
+
+                }}
+
+            />
 
         </>
     );

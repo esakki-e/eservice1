@@ -3,26 +3,116 @@ import axios from "axios";
 import CustomerNavbar from "../../components/CustomerNavbar";
 import { useNavigate } from "react-router-dom";
 import { API_URL } from "../../config";
+import {
+    getActiveCategories
+} from "../../services/serviceCategoryService";
+import Pagination from "../../components/Pagination";
+
 function CustomerServices() {
 
     const [services, setServices] =
         useState([]);
-    const [searchTerm, setSearchTerm] = useState("");
+    const [categories, setCategories] = useState([]);
 
+    const [selectedCategory,
+        setSelectedCategory] = useState(null);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [page, setPage] = useState(0);
+
+    const [size, setSize] = useState(9);
+    const [debouncedSearch, setDebouncedSearch] = useState(searchTerm);
+    const [totalPages, setTotalPages] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [totalElements, setTotalElements] = useState(0);
     const navigate =
         useNavigate();
 
     useEffect(() => {
 
-        axios.get(
-            (`${API_URL}/services`)
-        )
-            .then(res => {
-                setServices(res.data);
-            })
-            .catch(console.error);
+        const timer = setTimeout(() => {
 
-    }, []);
+            setDebouncedSearch(searchTerm);
+
+            setPage(0);
+
+        }, 400);
+
+        return () => clearTimeout(timer);
+
+    }, [searchTerm]);
+    const loadData = async () => {
+
+        try {
+
+            const params = new URLSearchParams();
+
+            params.append("page", page);
+
+            params.append("size", size);
+
+            if (debouncedSearch.trim()) {
+
+                params.append(
+
+                    "search",
+
+                    debouncedSearch.trim()
+
+                );
+
+            }
+
+            const serviceResponse =
+
+                await axios.get(
+
+                    `${API_URL}/services?${params.toString()}`
+
+                );
+            console.log(serviceResponse.data);
+            setServices(serviceResponse.data.content);
+
+            setTotalPages(serviceResponse.data.totalPages);
+
+            setTotalElements(serviceResponse.data.totalElements);            const categoryResponse =
+                await getActiveCategories();
+
+            setCategories(categoryResponse.data);
+
+        }
+
+        catch (e) {
+
+            console.error(e);
+
+        }
+
+    };
+    useEffect(() => {
+
+        loadData();
+
+    }, [
+
+        page,
+
+        size,
+
+        debouncedSearch
+
+    ]);
+    if (loading) {
+
+        return (
+            <>
+                <CustomerNavbar />
+                <div className="flex justify-center items-center h-96">
+                    Loading...
+                </div>
+            </>
+        );
+
+    }
 
     return (
         <>
@@ -88,6 +178,89 @@ function CustomerServices() {
                     ">
                             Choose a service and begin your application process.
                         </p>
+                        <div
+                            className="
+        flex
+        flex-wrap
+        gap-3
+        mt-8
+        mb-10
+    "
+                        >
+
+                            <button
+
+                                onClick={() =>
+                                    setSelectedCategory(null)
+                                }
+
+                                className={`
+            px-5
+            py-2
+            rounded-full
+            transition
+
+            ${selectedCategory == null
+
+                                    ?
+
+                                    "bg-indigo-600 text-white"
+
+                                    :
+
+                                    "bg-white border"
+
+                                }
+
+        `}
+                            >
+
+                                All
+
+                            </button>
+
+                            {
+
+                                categories.map(category => (
+
+                                    <button
+
+                                        key={category.id}
+
+                                        onClick={() =>
+                                            setSelectedCategory(category)
+                                        }
+
+                                        className={`
+                    px-5
+                    py-2
+                    rounded-full
+                    transition
+
+                    ${selectedCategory?.id === category.id
+
+                                            ?
+
+                                            "bg-indigo-600 text-white"
+
+                                            :
+
+                                            "bg-white border"
+
+                                        }
+
+                `}
+                                    >
+
+                                        {category.name}
+
+                                    </button>
+
+                                ))
+
+                            }
+
+                        </div>
 
                     </div>
 
@@ -102,11 +275,17 @@ function CustomerServices() {
                 ">
 
                         {services
-                            .filter(service =>
-                                service.serviceName
-                                    .toLowerCase()
-                                    .includes(searchTerm.toLowerCase())
-                            )
+                            .filter(service => {
+
+                                if (selectedCategory == null) {
+
+                                    return true;
+
+                                }
+
+                                return selectedCategory.serviceIds?.includes(service.id) || false;
+
+                            })
                             .map(service => (
                             <div
                                 key={service.id}
@@ -201,8 +380,30 @@ function CustomerServices() {
                     </div>
 
                 </div>
+                <Pagination
 
+                    page={page}
+
+                    totalPages={totalPages}
+
+                    totalElements={totalElements}
+
+                    pageSize={size}
+
+                    onPageChange={setPage}
+
+                    onPageSizeChange={(newSize)=>{
+
+                        setSize(newSize);
+
+                        setPage(0);
+
+                    }}
+
+                />
             </div>
+
+
         </>
     );
 }

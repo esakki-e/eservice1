@@ -14,6 +14,13 @@ import com.eservice1.employee.entity.Task;
 import com.eservice1.employee.entity.TaskStatus;
 import com.eservice1.employee.repository.TaskRepository;
 import java.time.LocalDateTime;
+import com.eservice1.admin.dto.AdminRequestDTO;
+import com.eservice1.common.dto.PageResponseDTO;
+import com.eservice1.common.util.PaginationMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 @Service
 public class CustomerRequestService {
 
@@ -119,6 +126,131 @@ public class CustomerRequestService {
         }
 
         return requestRepository.save(request);
+
+    }
+    public PageResponseDTO<AdminRequestDTO> getAllRequests(
+
+            int page,
+
+            int size
+
+    ) {
+
+        Pageable pageable =
+
+                PageRequest.of(
+
+                        page,
+
+                        size,
+
+                        Sort.by("createdAt").descending()
+
+                );
+
+        Page<CustomerRequest> requests =
+
+                requestRepository.findAll(pageable);
+
+        Page<AdminRequestDTO> dtoPage =
+
+                requests.map(request -> {
+
+                    AdminRequestDTO dto =
+                            new AdminRequestDTO();
+
+                    dto.setId(
+                            request.getId()
+                    );
+
+                    dto.setCustomerName(
+                            request.getCustomerName()
+                    );
+
+                    dto.setPhoneNumber(
+                            request.getPhoneNumber()
+                    );
+
+                    dto.setServiceName(
+                            request.getService().getServiceName()
+                    );
+
+                    dto.setStatus(
+                            request.getStatus().name()
+                    );
+
+                    dto.setCreatedAt(
+                            request.getCreatedAt()
+                    );
+
+                    Task task =
+                            taskRepository.findByRequestId(
+                                    request.getId()
+                            );
+
+                    if (
+
+                            task != null &&
+
+                                    task.getEmployee() != null
+
+                    ) {
+
+                        dto.setAssignedEmployeeId(
+                                task.getEmployee().getId()
+                        );
+
+                        dto.setAssignedEmployeeName(
+                                task.getEmployee().getName()
+                        );
+
+                    }
+
+                    return dto;
+
+                });
+
+        return PaginationMapper.toResponse(
+                dtoPage
+        );
+
+    }
+    public PageResponseDTO<CustomerRequest> getRequests(
+
+            String phoneNumber,
+
+            int page,
+
+            int size
+
+    ) {
+
+        Pageable pageable =
+
+                PageRequest.of(
+
+                        page,
+
+                        size,
+
+                        Sort.by("createdAt").descending()
+
+                );
+
+        Page<CustomerRequest> requests =
+
+                requestRepository
+                        .findByPhoneNumberOrderByCreatedAtDesc(
+
+                                phoneNumber,
+
+                                pageable
+
+                        );
+
+        return PaginationMapper.toResponse(
+                requests
+        );
 
     }
 }

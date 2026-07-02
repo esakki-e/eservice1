@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import { API_URL } from "../../config";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
+import Pagination from "../../components/Pagination";
 function Requests() {
 
     const [requests, setRequests] =
@@ -26,6 +27,11 @@ function Requests() {
     const [searchPhone,
         setSearchPhone] =
         useState("");
+    const [debouncedSearchName, setDebouncedSearchName] =
+        useState("");
+
+    const [debouncedSearchPhone, setDebouncedSearchPhone] =
+        useState("");
 
     const [statusFilter,
         setStatusFilter] =
@@ -33,28 +39,140 @@ function Requests() {
     const [dateFilter,
         setDateFilter] =
         useState("");
-    const loadFormResponses = async (
-        requestId
-    ) => {
+    const [page, setPage] = useState(0);
+
+    const [size, setSize] = useState(10);
+    const [totalPages, setTotalPages] = useState(0);
+
+    const [totalElements, setTotalElements] = useState(0);
+    const [stats, setStats] = useState({
+        totalRequests: 0,
+        pendingRequests: 0,
+        assignedRequests: 0,
+        inProgressRequests: 0,
+        completedRequests: 0
+    });
+    const [loading, setLoading] = useState(false);
+            const loadFormResponses = async (
+                requestId
+            ) => {
+
+                const token =
+                    localStorage.getItem("token");
+
+                const res = await axios.get(
+                    `${API_URL}/service-form-responses/request/${requestId}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`
+                        }
+                    }
+                );
+
+                setFormResponses(prev => ({
+                    ...prev,
+                    [requestId]: res.data
+                }));
+            };
+    const loadRequests = () => {
 
         const token =
             localStorage.getItem("token");
 
-        const res = await axios.get(
-            `${API_URL}/service-form-responses/request/${requestId}`,
+        const params = new URLSearchParams();
+
+        params.append("page", page);
+
+        params.append("size", size);
+
+        if (debouncedSearchName.trim()) {
+
+            params.append(
+                "search",
+                debouncedSearchName.trim()
+            );
+
+        }
+
+        if (debouncedSearchPhone.trim()) {
+
+            params.append(
+                "phone",
+                debouncedSearchPhone.trim()
+            );
+
+        }
+
+        if (statusFilter !== "ALL") {
+
+            params.append(
+                "status",
+                statusFilter
+            );
+
+        }
+
+        if (dateFilter) {
+
+            params.append(
+                "date",
+                dateFilter
+            );
+
+        }
+
+        setLoading(true);
+
+        axios.get(
+
+            `${API_URL}/admin/requests?${params.toString()}`,
+
             {
                 headers: {
                     Authorization:
                         `Bearer ${token}`
                 }
             }
-        );
 
-        setFormResponses(prev => ({
-            ...prev,
-            [requestId]: res.data
-        }));
+        )
+
+            .then(res => {
+
+                setRequests(res.data.content);
+
+                setTotalPages(res.data.totalPages);
+
+                setTotalElements(res.data.totalElements);
+
+            })
+
+            .finally(() => {
+
+                setLoading(false);
+
+            });
+
     };
+    useEffect(() => {
+
+        const timer = setTimeout(() => {
+
+            setDebouncedSearchName(searchName);
+
+            setDebouncedSearchPhone(searchPhone);
+
+        }, 400);
+
+        return () => clearTimeout(timer);
+
+    }, [
+
+        searchName,
+
+        searchPhone
+
+    ]);
     const assignEmployee = async (requestId) => {
 
         const employeeId =
@@ -68,6 +186,7 @@ function Requests() {
         const token =
             localStorage.getItem("token");
 
+
         await axios.post(
             `${API_URL}/employee/tasks/${requestId}/assign/${employeeId}`,
             {},
@@ -80,31 +199,28 @@ function Requests() {
         );
 
         alert("Assigned Successfully");
-        window.location.reload();
+        loadRequests();
+
     };
     useEffect(() => {
-
         const token =
             localStorage.getItem("token");
-
+        loadRequests();
         axios.get(
-            (`${API_URL}/admin/requests`),
+
+            `${API_URL}/admin/dashboard/stats`,
+
             {
                 headers: {
-                    Authorization:
-                        `Bearer ${token}`
+                    Authorization: `Bearer ${token}`
                 }
             }
+
         )
             .then(res => {
-                setRequests(
-                    res.data.sort(
-                        (a, b) =>
-                            new Date(b.createdAt)
-                            -
-                            new Date(a.createdAt)
-                    )
-                );
+
+                setStats(res.data);
+
             });
         axios.get(
             (`${API_URL}/employees`),
@@ -119,8 +235,21 @@ function Requests() {
                 setEmployees(res.data);
             });
 
-    }, []);
+    }, [
 
+        page,
+
+        size,
+
+        debouncedSearchName,
+
+        debouncedSearchPhone,
+
+        statusFilter,
+
+        dateFilter
+
+    ]);
 
     const acceptRequest = async (requestId) => {
 
@@ -144,62 +273,33 @@ function Requests() {
         ]);
 
         alert("Request Accepted");
+        loadRequests();
     };
-    const filteredRequests =
-        requests.filter(request => {
 
-            const matchesName =
-                request.customerName
-                    .toLowerCase()
-                    .includes(
-                        searchName
-                            .toLowerCase()
-                    );
+    const totalRequests = stats.totalRequests;
 
-            const matchesPhone =
-                request.phoneNumber
-                    .includes(
-                        searchPhone
-                    );
+    const pendingCount = stats.pendingRequests;
 
-            const matchesStatus =
-                statusFilter === "ALL"
-                ||
-                request.status ===
-                statusFilter;
+    const assignedCount = stats.assignedRequests;
 
-            const matchesDate =
-                !dateFilter
-                ||
-                request.createdAt
-                    ?.substring(0, 10)
-                === dateFilter;
+    const inProgressCount = stats.inProgressRequests;
 
-            return matchesName
-                &&
-                matchesPhone
-                &&
-                matchesStatus
-                &&
-                matchesDate;
-        });
-    const totalRequests = requests.length;
+    const completedCount = stats.completedRequests;
+    useEffect(() => {
 
-    const pendingCount = requests.filter(
-        r => r.status === "PENDING"
-    ).length;
+        setPage(0);
 
-    const assignedCount = requests.filter(
-        r => r.status === "ASSIGNED"
-    ).length;
+    }, [
 
-    const inProgressCount = requests.filter(
-        r => r.status === "IN_PROGRESS"
-    ).length;
+        searchName,
 
-    const completedCount = requests.filter(
-        r => r.status === "COMPLETED"
-    ).length;
+        searchPhone,
+
+        statusFilter,
+
+        dateFilter
+
+    ]);
     return (<DashboardLayout>
         <>
 
@@ -352,7 +452,44 @@ mb-6
 
                     <tbody>
 
-                    {filteredRequests.map(request => (
+                    {
+
+                        loading ?
+
+                            <tr>
+
+                                <td
+                                    colSpan="10"
+                                    className="text-center py-12"
+                                >
+
+                                    Loading Requests...
+
+                                </td>
+
+                            </tr>
+
+                            :
+
+                            requests.length===0 ?
+
+                                <tr>
+
+                                    <td
+                                        colSpan="10"
+                                        className="text-center py-12 text-slate-500"
+                                    >
+
+                                        No requests found
+
+                                    </td>
+
+                                </tr>
+
+                                :
+
+                                requests.map(request=>(
+
                         <tr
                             key={request.id}
                             className="
@@ -548,6 +685,21 @@ mb-6
                     </tbody>
 
                 </table>
+                    <Pagination
+
+                        page={page}
+
+                        totalPages={totalPages}
+
+                        totalElements={totalElements}
+
+                        pageSize={size}
+
+                        onPageChange={setPage}
+
+                        onPageSizeChange={setSize}
+
+                    />
                 </div>
 
             </div>

@@ -1,5 +1,6 @@
 package com.eservice1.service.controller;
 
+import com.eservice1.common.dto.PageResponseDTO;
 import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.service.PortalServiceService;
 import org.springframework.web.bind.annotation.*;
@@ -23,9 +24,29 @@ public class ServiceController {
     }
 
     @GetMapping
-    public List<PortalService> getServices() {
+    public PageResponseDTO<PortalService> getAll(
 
-        return service.getAll();
+            @RequestParam(defaultValue="0")
+            int page,
+
+            @RequestParam(defaultValue="9")
+            int size,
+
+            @RequestParam(required=false)
+            String search
+
+    ) {
+
+        return service.getAll(
+
+                page,
+
+                size,
+
+                search
+
+        );
+
     }
 
     @GetMapping("/{serviceId}/documents")

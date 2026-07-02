@@ -1,5 +1,6 @@
 package com.eservice1.submission.controller;
 
+import com.eservice1.common.dto.PageResponseDTO;
 import com.eservice1.submission.dto.CustomerRequestDTO;
 import com.eservice1.submission.entity.CustomerRequest;
 import com.eservice1.submission.service.CustomerRequestService;
@@ -30,14 +31,29 @@ public class CustomerRequestController {
         return requestService.createRequest(dto);
     }
     @GetMapping("/phone/{phoneNumber}")
-    public java.util.List<CustomerRequest>
-    getByPhoneNumber(
-            @PathVariable String phoneNumber) {
 
-        return requestRepository
-                .findByPhoneNumberOrderByCreatedAtDesc(
-                        phoneNumber
-                );
+    public PageResponseDTO<CustomerRequest> getByPhoneNumber(
+
+            @PathVariable String phoneNumber,
+
+            @RequestParam(defaultValue="0")
+            int page,
+
+            @RequestParam(defaultValue="10")
+            int size
+
+    ) {
+
+        return requestService.getRequests(
+
+                phoneNumber,
+
+                page,
+
+                size
+
+        );
+
     }
     @GetMapping("/{id}")
     public CustomerRequest getRequest(
