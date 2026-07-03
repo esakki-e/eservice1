@@ -18,6 +18,7 @@ import {
 import axios from "axios";
 import { API_URL } from "../../config";
 
+import "./ServiceCategories.css"
 function ServiceCategories() {
 
     const [categories,
@@ -184,369 +185,293 @@ catch (e) {
         await loadData();
 
     };
-
     return (
+
         <DashboardLayout>
+
             <>
 
-            <div className="p-8">
+                <div className="page-bg">
 
-                <h1
-                    className="
-                        text-4xl
-                        font-bold
-                        mb-8
-                    "
-                >
+                    <div className="category-page">
 
-                    Service Categories
+                        <h1 className="category-page-title">
 
-                </h1>
+                            Service Categories
 
-                <div
-                    className="
-                        bg-white
-                        rounded-3xl
-                        shadow
-                        p-8
-                        mb-8
-                    "
-                >
+                        </h1>
 
-                    <h2
-                        className="
-                            text-2xl
-                            font-semibold
-                            mb-6
-                        "
-                    >
+                        {/* Create Category */}
 
-                        Create Category
+                        <div className="category-card">
 
-                    </h2>
+                            <h2 className="category-card-title">
 
-                    <input
+                                Create Category
 
-                        placeholder="Category Name"
+                            </h2>
 
-                        value={name}
+                            <input
 
-                        onChange={(e)=>
+                                placeholder="Category Name"
 
-                            setName(
-                                e.target.value
-                            )
+                                value={name}
 
-                        }
+                                onChange={(e)=>
 
-                        className="
-                            w-full
-                            border
-                            rounded-xl
-                            p-3
-                            mb-6
-                        "
+                                    setName(
+                                        e.target.value
+                                    )
 
-                    />
+                                }
 
-                    <h3
-                        className="
-                            font-semibold
-                            mb-4
-                        "
-                    >
+                                className="category-input"
 
-                        Select Services
+                            />
 
-                    </h3>
+                            <h3 className="category-section-title">
 
-                    <div
-                        className="
-                            grid
-                            grid-cols-2
-                            gap-3
-                        "
-                    >
+                                Select Services
 
-                        {
+                            </h3>
 
-                            services.map(service=>(
+                            <div className="services-selection-grid">
 
-                                <label
+                                {
 
-                                    key={service.id}
+                                    services.map(service => (
 
-                                    className="
-                                        flex
-                                        gap-3
-                                        border
-                                        rounded-xl
-                                        p-3
-                                    "
+                                        <label
 
-                                >
+                                            key={service.id}
 
-                                    <input
+                                            className="service-option"
 
-                                        type="checkbox"
+                                        >
 
-                                        checked={
-                                            selectedServices.includes(
-                                                service.id
-                                            )
-                                        }
+                                            <input
 
-                                        onChange={()=>
+                                                type="checkbox"
 
-                                            toggleService(
-                                                service.id
-                                            )
+                                                checked={
+                                                    selectedServices.includes(
+                                                        service.id
+                                                    )
+                                                }
 
-                                        }
+                                                onChange={()=>
 
-                                    />
-
-                                    {service.serviceName}
-                                </label>
-
-                            ))
-
-                        }
-
-                    </div>
-                    <div className="mt-8">
-                        <p className="text-sm text-slate-500 mb-4">
-
-                            Selected Services:
-
-                            {selectedServices.length}
-
-                        </p>
-                        <button
-                            disabled={
-                                name.trim()===""
-                            }
-                            onClick={saveCategory}
-
-                            className="
-            bg-blue-600
-            hover:bg-blue-700
-            text-white
-            px-8
-            py-3
-            rounded-xl
-            disabled:opacity-50
-disabled:cursor-not-allowed
-        "
-
-                        >
-
-                            {
-
-                                editingId == null
-
-                                    ?
-
-                                    "Create Category"
-
-                                    :
-
-                                    "Update Category"
-
-                            }
-
-                        </button>
-
-                    </div>
-
-                </div>
-
-                <div
-                    className="
-                        bg-white
-                        rounded-3xl
-                        shadow
-                        p-8
-                    "
-                >
-
-                    <h2
-                        className="
-                            text-2xl
-                            font-semibold
-                            mb-6
-                        "
-                    >
-
-                        Existing Categories
-
-                    </h2>
-
-
-
-                        {
-
-                            categories.length === 0
-
-                                ?
-
-                                <p className="text-slate-500">
-
-                                    No categories created.
-
-                                </p>
-
-                                :
-
-                                categories.map(category=>(
-
-                            <div
-
-                                key={category.id}
-
-                                className="
-                                    border-b
-                                    py-5
-                                    flex
-                                    justify-between
-                                "
-
-                            >
-
-                                <div>
-
-                                    <h3
-                                        className="
-                                            text-xl
-                                            font-semibold
-                                        "
-                                    >
-
-                                        {category.name}
-
-                                    </h3>
-
-                                    <p>
-
-                                        {
-
-                                            category.serviceIds?.length || 0
-
-                                        }
-
-                                        {" "}Services
-
-                                    </p>
-
-                                </div>
-
-                                <div
-                                    className="
-                                        flex
-                                        gap-3
-                                    "
-                                >
-
-                                    <button
-
-                                        onClick={()=>{
-
-                                            setEditingId(
-
-                                                category.id
-
-                                            );
-
-                                            setName(
-
-                                                category.name
-
-                                            );
-
-                                            setSelectedServices(
-
-                                                category.serviceIds || []
-
-                                            );
-
-                                            window.scrollTo({
-
-                                                top:0,
-
-                                                behavior:"smooth"
-
-                                            });
-
-                                        }}
-
-                                        className="
-bg-blue-500
-text-white
-px-4
-rounded-lg
-"
-
-                                    >
-
-                                        Edit
-
-                                    </button>
-
-                                    <button
-
-                                        onClick={async()=>{
-
-                                            if(
-
-                                                window.confirm(
-
-                                                    "Delete this category?"
-
-                                                )
-
-                                            ){
-
-                                                try{
-
-                                                    await deleteCategory(category.id);
-
-                                                    await loadData();
+                                                    toggleService(
+                                                        service.id
+                                                    )
 
                                                 }
 
-                                                catch(e){
+                                            />
 
-                                                    alert("Unable to delete category");
+                                            {service.serviceName}
 
-                                                }
-                                            }
+                                        </label>
 
-                                        }}
+                                    ))
 
-                                        className="
-bg-red-500
-text-white
-px-4
-rounded-lg
-"
-
-                                    >
-
-                                        Delete
-
-                                    </button>
-
-                                </div>
+                                }
 
                             </div>
 
-                        ))
+                            <div className="category-actions">
 
-                    }
+                                <p className="selected-count">
+
+                                    Selected Services:
+
+                                    {selectedServices.length}
+
+                                </p>
+
+                                <button
+
+                                    disabled={
+                                        name.trim()===""
+                                    }
+
+                                    onClick={saveCategory}
+
+                                    className="save-category-button"
+
+                                >
+
+                                    {
+
+                                        editingId == null
+
+                                            ?
+
+                                            "Create Category"
+
+                                            :
+
+                                            "Update Category"
+
+                                    }
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                        {/* Existing Categories */}
+
+                        <div className="category-card">
+
+                            <h2 className="category-card-title">
+
+                                Existing Categories
+
+                            </h2>
+
+                            {
+
+                                categories.length === 0
+
+                                    ?
+
+                                    <p className="empty-category">
+
+                                        No categories created.
+
+                                    </p>
+
+                                    :
+
+                                    categories.map(category => (
+
+                                        <div
+
+                                            key={category.id}
+
+                                            className="category-item"
+
+                                        >
+
+                                            <div>
+
+                                                <h3 className="category-name">
+
+                                                    {category.name}
+
+                                                </h3>
+
+                                                <p className="category-service-count">
+
+                                                    {
+
+                                                        category.serviceIds?.length || 0
+
+                                                    }
+
+                                                    {" "}Services
+
+                                                </p>
+
+                                            </div>
+
+                                            <div className="category-buttons">
+
+                                                <button
+
+                                                    onClick={()=>{
+
+                                                        setEditingId(
+
+                                                            category.id
+
+                                                        );
+
+                                                        setName(
+
+                                                            category.name
+
+                                                        );
+
+                                                        setSelectedServices(
+
+                                                            category.serviceIds || []
+
+                                                        );
+
+                                                        window.scrollTo({
+
+                                                            top:0,
+
+                                                            behavior:"smooth"
+
+                                                        });
+
+                                                    }}
+
+                                                    className="edit-category-button"
+
+                                                >
+
+                                                    Edit
+
+                                                </button>
+
+                                                <button
+
+                                                    onClick={async()=>{
+
+                                                        if(
+
+                                                            window.confirm(
+
+                                                                "Delete this category?"
+
+                                                            )
+
+                                                        ){
+
+                                                            try{
+
+                                                                await deleteCategory(category.id);
+
+                                                                await loadData();
+
+                                                            }
+
+                                                            catch(e){
+
+                                                                alert("Unable to delete category");
+
+                                                            }
+
+                                                        }
+
+                                                    }}
+
+                                                    className="delete-category-button"
+
+                                                >
+
+                                                    Delete
+
+                                                </button>
+
+                                            </div>
+
+                                        </div>
+
+                                    ))
+
+                            }
+
+                        </div>
+
+                    </div>
 
                 </div>
-
-            </div>
 
             </>
 

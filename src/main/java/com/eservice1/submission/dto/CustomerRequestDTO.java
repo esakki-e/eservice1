@@ -7,6 +7,15 @@ public class CustomerRequestDTO {
     private String phoneNumber;
 
     private Long serviceId;
+    private boolean feedbackSubmitted;
+
+    public boolean isFeedbackSubmitted() {
+        return feedbackSubmitted;
+    }
+
+    public void setFeedbackSubmitted(boolean feedbackSubmitted) {
+        this.feedbackSubmitted = feedbackSubmitted;
+    }
 
     public String getCustomerName() {
         return customerName;

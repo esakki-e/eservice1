@@ -1,0 +1,184 @@
+/* ==========================
+   LAYOUT
+========================== */
+
+.dashboard-layout{
+    display:flex;
+    height:100vh;
+    overflow:hidden;
+    background:#f4f7fb;
+}
+
+/* ==========================
+   SIDEBAR
+========================== */
+
+.dashboard-sidebar{
+    width:260px;
+    flex-shrink:0;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    background:#070b1d;
+    color:#fff;
+
+    padding:28px 18px;
+
+    position:fixed;
+    left:0;
+    top:0;
+    bottom:0;
+
+    z-index:1000;
+
+    border-right:1px solid rgba(255,255,255,.08);
+
+    box-shadow:
+            8px 0 30px rgba(0,0,0,.15);
+}
+
+/* ==========================
+   LOGO
+========================== */
+
+.sidebar-logo{
+    font-size:2.1rem;
+    font-weight:700;
+    line-height:1.05;
+    margin-bottom:40px;
+}
+
+.sidebar-logo-highlight{
+    display:block;
+    color:#5f8cff;
+}
+
+/* ==========================
+   NAVIGATION
+========================== */
+
+.sidebar-nav{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.sidebar-link{
+    color:#d8dde9;
+    text-decoration:none;
+    padding:13px 16px;
+    border-radius:14px;
+    transition:.25s;
+    font-weight:500;
+}
+
+.sidebar-link:hover{
+    background:#11182f;
+    color:#fff;
+}
+
+.sidebar-link.active{
+    background:#1b2551;
+    color:#fff;
+}
+
+/* ==========================
+   FOOTER
+========================== */
+
+.sidebar-footer{
+    padding-top:20px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.sidebar-logout-button{
+    width:100%;
+    padding:14px;
+    border-radius:14px;
+    border:1px solid rgba(255,255,255,.18);
+
+    background:#12182d;
+    color:#ff6868;
+
+    font-weight:600;
+
+    cursor:pointer;
+    transition:.3s;
+}
+
+.sidebar-logout-button:hover{
+    background:#d83a3a;
+    color:#fff;
+}
+
+/* ==========================
+   CONTENT
+========================== */
+
+.dashboard-content{
+    margin-left:260px;
+
+    width:calc(100% - 260px);
+
+    height:100vh;
+
+    overflow-y:auto;
+    overflow-x:hidden;
+
+    padding:36px;
+
+    background:#f5f8fc;
+}
+
+/* nice scrollbar */
+
+.dashboard-content::-webkit-scrollbar{
+    width:8px;
+}
+
+.dashboard-content::-webkit-scrollbar-thumb{
+    background:#b8c2d8;
+    border-radius:20px;
+}
+
+/* ==========================
+   MOBILE
+========================== */
+
+@media(max-width:900px){
+
+    .dashboard-sidebar{
+        position:relative;
+        width:220px;
+    }
+
+    .dashboard-content{
+        margin-left:220px;
+        width:calc(100% - 220px);
+    }
+
+}
+
+@media(max-width:768px){
+
+    .dashboard-layout{
+        flex-direction:column;
+        height:auto;
+    }
+
+    .dashboard-sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+    }
+
+    .dashboard-content{
+        margin-left:0;
+        width:100%;
+        height:auto;
+        overflow:visible;
+    }
+
+}

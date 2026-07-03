@@ -13,6 +13,8 @@ import {
     CartesianGrid,
     Tooltip
 } from "recharts";
+
+import "./Employees.css"
 function Employees() {
 
     const [employees, setEmployees] =
@@ -44,7 +46,8 @@ function Employees() {
             })
             .catch(err => {
                 console.log(err);
-            }); axios.get(
+            });
+        axios.get(
             `${API_URL}/employees/dashboard`,
             {
                 headers: {
@@ -85,144 +88,118 @@ function Employees() {
     return (
         <DashboardLayout>
 
-            <div className="min-h-screen bg-[#F5F7FB] p-8">
+            <div className="page-bg">
 
-                <div className="max-w-7xl mx-auto">
+                <div className="employees-page">
 
-                    {/* Header */}
+                    <div className="employees-container">
 
-                    <div className="mb-8">
+                        {/* Header */}
 
-                        <h1 className="
-                        text-4xl
-                        font-bold
-                        text-slate-800
-                    ">
-                            Employees
-                        </h1>
+                        <div className="employees-header">
 
-                        <p className="
-                        text-slate-500
-                        mt-2
-                    ">
-                            Track workload and performance across your team
-                        </p>
+                            <h1 className="employees-title">
 
-                    </div>
-                    {dashboard && (
+                                Employees
 
-                        <div
-                            className="
-bg-gradient-to-r
-from-amber-300
-via-yellow-400
-to-orange-500
-rounded-3xl
-text-white
-p-8
-mb-8
-shadow-xl
-hover:scale-[1.01]
-transition-all
-duration-300
-"
-                        >
+                            </h1>
 
-                            <div className="flex items-center gap-8">
+                            <p className="employees-subtitle">
 
-                                <img
+                                Track workload and performance across your team
 
-                                    src={
-                                        dashboard.employeeOfMonth?.profileImage
-                                            ?
+                            </p>
 
-                                            `${API_URL}/uploads/employees/${dashboard.employeeOfMonth.profileImage}`
+                        </div>
 
-                                            :
+                        {/* Employee of the Month */}
 
-                                            "/default-avatar.png"
-                                    }
+                        {dashboard && (
 
-                                    className="
-w-28
-h-28
-rounded-full
-object-cover
-border-4
-border-white
-"
-                                />
+                            <div className="employee-highlight-card">
 
-                                <div>
+                                <div className="employee-highlight-content">
 
-                                    <h2 className="text-3xl font-bold">
+                                    <img
+                                        src={
+                                            dashboard.employeeOfMonth?.profileImage
+                                                ?
+                                                `${API_URL}/uploads/employees/${dashboard.employeeOfMonth.profileImage}`
+                                                :
+                                                "/default-avatar.png"
+                                        }
+                                        className="employee-highlight-image"
+                                    />
 
-                                        🏆 Employee of the Month
+                                    <div>
 
-                                    </h2>
+                                        <h2 className="employee-highlight-title">
 
-                                    <h3 className="text-2xl mt-2 text-3xl
-font-bold
-tracking-tight">
+                                            🏆 Employee of the Month
 
-                                        {dashboard.employeeOfMonth?.name}
+                                        </h2>
 
-                                    </h3>
+                                        <h3 className="employee-highlight-name">
 
-                                    <p className=" text-slate-500
-mt-3">
+                                            {dashboard.employeeOfMonth?.name}
 
-                                        {dashboard.employeeOfMonth?.message}
+                                        </h3>
 
-                                    </p>
+                                        <p className="employee-highlight-message">
 
-                                    <div className="flex gap-10 mt-5">
+                                            {dashboard.employeeOfMonth?.message}
 
-                                        <div>
+                                        </p>
 
-                                            <h4 className="text-sm">
+                                        <div className="employee-highlight-stats">
 
-                                                Revenue
+                                            <div>
 
-                                            </h4>
+                                                <h4 className="highlight-label">
 
-                                            <p className="text-xl font-bold">
+                                                    Revenue
 
-                                                ₹{dashboard.employeeOfMonth?.revenue}
+                                                </h4>
 
-                                            </p>
+                                                <p className="highlight-value">
 
-                                        </div>
+                                                    ₹{dashboard.employeeOfMonth?.revenue}
 
-                                        <div>
+                                                </p>
 
-                                            <h4 className="text-sm">
+                                            </div>
 
-                                                Completed
+                                            <div>
 
-                                            </h4>
+                                                <h4 className="highlight-label">
 
-                                            <p className="text-xl font-bold">
+                                                    Completed
 
-                                                {dashboard.employeeOfMonth?.completedTasks}
+                                                </h4>
 
-                                            </p>
+                                                <p className="highlight-value">
 
-                                        </div>
+                                                    {dashboard.employeeOfMonth?.completedTasks}
 
-                                        <div>
+                                                </p>
 
-                                            <h4 className="text-sm">
+                                            </div>
 
-                                                Completion
+                                            <div>
 
-                                            </h4>
+                                                <h4 className="highlight-label">
 
-                                            <p className="text-xl font-bold">
+                                                    Completion
 
-                                                {dashboard.employeeOfMonth?.completionPercentage}%
+                                                </h4>
 
-                                            </p>
+                                                <p className="highlight-value">
+
+                                                    {dashboard.employeeOfMonth?.completionPercentage}%
+
+                                                </p>
+
+                                            </div>
 
                                         </div>
 
@@ -232,387 +209,251 @@ mt-3">
 
                             </div>
 
-                        </div>
+                        )}
 
-                    )}
-                    {dashboard && (
+                        {/* Revenue Chart */}
 
-                        <div
-                            className="
-bg-white
-rounded-3xl
-shadow-sm
-p-8
-mb-8
-"
-                        >
+                        {dashboard && (
 
-                            <h2 className="text-2xl font-bold mb-6">
+                            <div className="revenue-chart-card">
 
-                                Monthly Revenue Trend
+                                <h2 className="chart-title">
 
-                            </h2>
+                                    Monthly Revenue Trend
 
-                            <div
-                                style={{
-                                    height:300
-                                }}
-                            >
+                                </h2>
 
-                                <ResponsiveContainer>
+                                <div className="chart-container">
 
-                                    <LineChart
+                                    <ResponsiveContainer>
 
-                                        data={dashboard.monthlyRevenue}
+                                        <LineChart data={dashboard.monthlyRevenue}>
 
-                                    >
+                                            <CartesianGrid strokeDasharray="3 3"/>
 
-                                        <CartesianGrid
-                                            strokeDasharray="3 3"
-                                        />
+                                            <XAxis dataKey="month"/>
 
-                                        <XAxis
-                                            dataKey="month"
-                                        />
+                                            <YAxis/>
 
-                                        <YAxis/>
+                                            <Tooltip/>
 
-                                        <Tooltip/>
+                                            <Line
+                                                type="monotone"
+                                                dataKey="revenue"
+                                                stroke="#2563eb"
+                                                strokeWidth={4}
+                                            />
 
-                                        <Line
+                                        </LineChart>
 
-                                            type="monotone"
+                                    </ResponsiveContainer>
 
-                                            dataKey="revenue"
-
-                                            stroke="#2563eb"
-
-                                            strokeWidth={4}
-
-                                        />
-
-                                    </LineChart>
-
-                                </ResponsiveContainer>
+                                </div>
 
                             </div>
 
-                        </div>
+                        )}
 
-                    )}
+                        {/* Summary Cards */}
 
-                    {/* Employee Summary Cards */}
+                        <div className="employee-summary-grid">
 
-                    <div className="
-                    grid
-                    grid-cols-1
-                    md:grid-cols-2
-                    xl:grid-cols-3
-                    gap-6
-                    mb-8
-                ">
+                            {filteredEmployees.map(employee => {
 
-                        {filteredEmployees.map(employee => {
+                                const completion =
+                                    employee.taskCount > 0
+                                        ? Math.round(
+                                            (employee.completedTasks / employee.taskCount) * 100
+                                        )
+                                        : 0;
 
-                            const completion =
-                                employee.taskCount > 0
-                                    ? Math.round(
-                                        (
-                                            employee.completedTasks /
-                                            employee.taskCount
-                                        ) * 100
-                                    )
-                                    : 0;
+                                return (
 
-                            return (
+                                    <Link
+                                        key={employee.id}
+                                        to={`/employees/${employee.id}`}
+                                        className="employee-summary-card"
+                                    >
 
-                                <Link
-                                    key={employee.id}
-                                    to={`/employees/${employee.id}`}
-                                    className="
-        block
-        bg-white
-        rounded-3xl
-        border
-        shadow-sm
-        p-6
-        hover:shadow-xl
-        hover:-translate-y-1
-        transition-all
-        duration-300
-        cursor-pointer
-    "
-                                >
+                                        <div className="employee-card-header">
 
-                                    <div className="
-                                    flex
-                                    justify-between
-                                    items-start
-                                    mb-4
-                                ">
+                                            <div>
 
-                                        <div>
+                                                <h3 className="employee-name">
 
-                                            <h3 className="
-                                            font-bold
-                                            text-lg
-                                            text-slate-800
-                                        ">
-                                                {employee.name}
-                                            </h3>
+                                                    {employee.name}
 
-                                            <p className="
-                                            text-sm
-                                            text-slate-500
-                                        ">
-                                                {employee.phoneNumber}
-                                            </p>
+                                                </h3>
+
+                                                <p className="employee-phone">
+
+                                                    {employee.phoneNumber}
+
+                                                </p>
+
+                                            </div>
+
+                                            <span
+                                                className={
+                                                    employee.active
+                                                        ? "employee-status active-status"
+                                                        : "employee-status inactive-status"
+                                                }
+                                            >
+
+                                            {employee.active ? "Active" : "Inactive"}
+
+                                        </span>
 
                                         </div>
 
-                                        <span
-                                            className={
-                                                employee.active
-                                                    ? `
-                                                px-3
-                                                py-1
-                                                rounded-full
-                                                text-xs
-                                                font-semibold
-                                                bg-emerald-100
-                                                text-emerald-700
-                                                `
-                                                    : `
-                                                px-3
-                                                py-1
-                                                rounded-full
-                                                text-xs
-                                                font-semibold
-                                                bg-red-100
-                                                text-red-700
-                                                `
-                                            }
-                                        >
-                                        {employee.active
-                                            ? "Active"
-                                            : "Inactive"}
-                                    </span>
+                                        <div className="employee-progress-info">
 
-                                    </div>
+                                        <span>
 
-                                    <div className="
-                                    flex
-                                    justify-between
-                                    text-sm
-                                    mb-2
-                                ">
-                                    <span>
-                                        {employee.completedTasks}
-                                        /
-                                        {employee.taskCount}
-                                        {" "}
-                                        completed
-                                    </span>
+                                            {employee.completedTasks}/{employee.taskCount} completed
 
-                                        <span className="font-semibold">
-                                        {completion}%
-                                    </span>
-                                    </div>
+                                        </span>
 
-                                    <div className="
-                                    w-full
-                                    bg-slate-200
-                                    rounded-full
-                                    h-2
-                                ">
-                                        <div
-                                            className="
-                                            bg-emerald-500
-                                            h-2
-                                            rounded-full
-                                        "
-                                            style={{
-                                                width:
-                                                    `${completion}%`
-                                            }}
-                                        />
-                                    </div>
+                                            <span className="progress-percentage">
 
-                                </Link>
-                            );
-                        })}
+                                            {completion}%
 
-                    </div>
+                                        </span>
 
-                    {/* Search */}
+                                        </div>
 
-                    <div className="
-                    grid
-                    md:grid-cols-2
-                    gap-4
-                    mb-6
-                ">
+                                        <div className="progress-bar">
 
-                        <input
-                            type="text"
-                            placeholder="Search by Name"
-                            value={searchName}
-                            onChange={(e) =>
-                                setSearchName(
-                                    e.target.value
-                                )
-                            }
-                            className="
-                            h-14
-                            px-4
-                            rounded-2xl
-                            border
-                            border-slate-200
-                            bg-white
-                        "
-                        />
+                                            <div
+                                                className="progress-fill"
+                                                style={{
+                                                    width: `${completion}%`
+                                                }}
+                                            />
 
-                        <input
-                            type="text"
-                            placeholder="Search by Phone"
-                            value={searchPhone}
-                            onChange={(e) =>
-                                setSearchPhone(
-                                    e.target.value
-                                )
-                            }
-                            className="
-                            h-14
-                            px-4
-                            rounded-2xl
-                            border
-                            border-slate-200
-                            bg-white
-                        "
-                        />
+                                        </div>
 
-                    </div>
+                                    </Link>
 
-                    {/* Table */}
+                                );
 
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    border
-                    shadow-sm
-                    overflow-hidden
-                ">
+                            })}
 
-                        <table className="w-full">
+                        </div>
 
-                            <thead className="bg-slate-50">
+                        {/* Search */}
 
-                            <tr>
+                        <div className="employee-search-grid">
 
-                                <th className="p-4 text-left">
-                                    ID
-                                </th>
+                            <input
+                                type="text"
+                                placeholder="Search by Name"
+                                value={searchName}
+                                onChange={(e)=>setSearchName(e.target.value)}
+                                className="employee-search-input"
+                            />
 
-                                <th className="p-4 text-left">
-                                    Name
-                                </th>
+                            <input
+                                type="text"
+                                placeholder="Search by Phone"
+                                value={searchPhone}
+                                onChange={(e)=>setSearchPhone(e.target.value)}
+                                className="employee-search-input"
+                            />
 
-                                <th className="p-4 text-left">
-                                    Phone
-                                </th>
+                        </div>
 
-                                <th className="p-4 text-left">
-                                    Tasks
-                                </th>
+                        {/* Table */}
 
-                                <th className="p-4 text-left">
-                                    Completed
-                                </th>
+                        <div className="employee-table-card">
 
-                                <th className="p-4 text-left">
-                                    Status
-                                </th>
+                            <table className="employee-table">
 
-                            </tr>
+                                <thead className="employee-table-header">
 
-                            </thead>
+                                <tr>
 
-                            <tbody>
+                                    <th className="table-heading">ID</th>
 
-                            {filteredEmployees.map(
-                                employee => (
+                                    <th className="table-heading">Name</th>
+
+                                    <th className="table-heading">Phone</th>
+
+                                    <th className="table-heading">Tasks</th>
+
+                                    <th className="table-heading">Completed</th>
+
+                                    <th className="table-heading">Status</th>
+
+                                </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                {filteredEmployees.map(employee => (
 
                                     <tr
                                         key={employee.id}
-                                        className="
-                                        border-t
-                                        hover:bg-slate-50
-                                    "
+                                        className="employee-row"
                                     >
 
-                                        <td className="p-4">
+                                        <td className="table-cell">
+
                                             {employee.id}
+
                                         </td>
 
-                                        <td className="
-                                        p-4
-                                        font-medium
-                                    ">
+                                        <td className="table-cell employee-name-cell">
+
                                             {employee.name}
+
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="table-cell">
+
                                             {employee.phoneNumber}
+
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="table-cell">
+
                                             {employee.taskCount}
+
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="table-cell">
+
                                             {employee.completedTasks}
+
                                         </td>
 
-                                        <td className="p-4">
+                                        <td className="table-cell">
 
-                                        <span
-                                            className={
-                                                employee.active
-                                                    ? `
-                                                    px-3
-                                                    py-1
-                                                    rounded-full
-                                                    text-xs
-                                                    font-semibold
-                                                    bg-emerald-100
-                                                    text-emerald-700
-                                                    `
-                                                    : `
-                                                    px-3
-                                                    py-1
-                                                    rounded-full
-                                                    text-xs
-                                                    font-semibold
-                                                    bg-red-100
-                                                    text-red-700
-                                                    `
-                                            }
-                                        >
-                                            {employee.active
-                                                ? "Active"
-                                                : "Inactive"}
-                                        </span>
+                                            <span
+                                                className={
+                                                    employee.active
+                                                        ? "employee-status active-status"
+                                                        : "employee-status inactive-status"
+                                                }
+                                            >
+
+                                                {employee.active ? "Active" : "Inactive"}
+
+                                            </span>
 
                                         </td>
 
                                     </tr>
 
-                                )
-                            )}
+                                ))}
 
-                            </tbody>
+                                </tbody>
 
-                        </table>
+                            </table>
+
+                        </div>
 
                     </div>
 

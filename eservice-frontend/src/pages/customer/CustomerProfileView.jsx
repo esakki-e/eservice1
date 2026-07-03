@@ -44,274 +44,218 @@ function CustomerProfileView() {
         <>
             <CustomerNavbar />
 
-            <div className="
-            min-h-screen
-            bg-gradient-to-b
-            from-blue-400/70
-            via-slate-50
-            to-white
-            py-10
-            px-4
-        ">
+            <div className="customer-profile-page">
 
-                <div className="
-                max-w-4xl
-                mx-auto
-                space-y-6
-            ">
+                <div className="profile-container">
 
-                    {/* Profile Card */}
+                    {/* Main Card */}
 
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    shadow-xl
-                    overflow-hidden
-                ">
+                    <div className="profile-main-card">
 
-                        <div className="
-                        h-36
-                        bg-gradient-to-r
-                        from-indigo-600
-                        via-blue-500
-                        to-cyan-500
-                    ">
+                        {/* Header */}
+
+                        <div className="profile-header">
                         </div>
 
-                        <div className="
-                        px-8
-                        pb-8
-                        -mt-14
-                    ">
+                        {/* Avatar */}
 
-                            <div className="
-                            flex
-                            flex-col
-                            md:flex-row
-                            md:items-center
-                            md:justify-between
-                            gap-4
-                        ">
+                        <div className="profile-avatar">
 
-                                <div className="
-                                flex
-                                items-center
-                                gap-5
-                            ">
+                            <img
+                                src="/images/profile.png"
+                                alt="Profile"
+                            />
 
-                                    <div className="
-                                    w-28
-                                    h-28
-                                    rounded-3xl
-                                    bg-white
-                                    shadow-lg
-                                    flex
-                                    items-center
-                                    justify-center
-                                    text-5xl
-                                    border-4
-                                    border-white
-                                ">
-                                        👤
-                                    </div>
+                        </div>
 
-                                    <div><p></p>
+                        {/* User Information */}
 
-                                        <h2 className="
-                                        text-4xl
-                                        font-bold
-                                        text-slate-800
-                                    ">
-                                            {
-                                                localStorage.getItem(
-                                                    "customerName"
-                                                )
-                                            }
-                                        </h2>
+                        <div className="profile-info">
 
-                                        <p className="
-                                        text-slate-500
-                                        mt-1
-                                    ">
-                                            Citizen Profile
-                                        </p>
+                            <h2 className="profile-name">
 
-                                        <span className="
-                                        inline-block
-                                        mt-2
-                                        px-3
-                                        py-1
-                                        rounded-full
-                                        bg-green-100
-                                        text-green-700
-                                        text-sm
-                                        font-medium
-                                    ">
-                                        ✓ Verified Citizen
-                                    </span>
+                                {
+                                    localStorage.getItem(
+                                        "customerName"
+                                    )
+                                }
 
-                                    </div>
+                            </h2>
 
-                                </div>
+                            <p className="profile-role">
+
+                                Citizen Profile
+
+                            </p>
+
+                            <div className="verified-badge">
+
+                                ✓ Verified Citizen
+
+                            </div>
+                            <div className="edit-profile-wrapper">
 
                                 <button
-                                    onClick={() =>
-                                        navigate(
-                                            "/customer-profile-edit"
-                                        )
-                                    }
-                                    className="
-                                    px-5
-                                    py-3
-                                    rounded-xl
-                                    bg-slate-900
-                                    text-white
-                                    font-medium
-                                    hover:bg-slate-800
-                                    transition
-                                "
+                                    onClick={() => navigate("/customer-profile-edit")}
+                                    className="edit-profile-btn"
                                 >
                                     ✏️ Edit Profile
                                 </button>
 
                             </div>
 
-                            <div className="
-                            grid
-                            md:grid-cols-2
-                            gap-4
-                            mt-8
-                        ">
+                        </div>
 
-                                <div className="
-                                bg-slate-50
-                                border
-                                rounded-2xl
-                                p-5
-                            ">
-                                    <p className="
-                                    text-sm
-                                    text-slate-500
-                                ">
-                                        Phone Number
-                                    </p>
+                        {/* Content */}
 
-                                    <p className="
-                                    text-xl
-                                    font-semibold
-                                    text-slate-800
-                                ">
-                                        {
-                                            localStorage.getItem(
-                                                "customerPhone"
-                                            )
-                                        }
-                                    </p>
+                        <div className="profile-content">
+
+                            <div className="profile-info-grid">
+
+                                {/* Phone */}
+
+                                <div className="profile-info-card">
+
+                                    <div className="info-content">
+
+                                        <div className="info-label">
+
+                                            Phone Number
+
+                                        </div>
+
+                                        <div className="info-value">
+
+                                            📞
+
+                                            <span>
+
+                                            {
+                                                localStorage.getItem(
+                                                    "customerPhone"
+                                                )
+                                            }
+
+                                        </span>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="info-icon">
+
+                                        📱
+
+                                    </div>
+
                                 </div>
 
-                                <div className="
-                                bg-slate-50
-                                border
-                                rounded-2xl
-                                p-5
-                            ">
-                                    <p className="
-                                    text-sm
-                                    text-slate-500
-                                ">
-                                        Date Of Birth
-                                    </p>
+                                {/* DOB */}
 
-                                    <p className="
-                                    text-xl
-                                    font-semibold
-                                    text-slate-800
-                                ">
-                                        {
-                                            localStorage.getItem(
-                                                "customerDob"
-                                            )
-                                        }
-                                    </p>
+                                <div className="profile-info-card">
+
+                                    <div className="info-content">
+
+                                        <div className="info-label">
+
+                                            Date of Birth
+
+                                        </div>
+
+                                        <div className="info-value">
+
+                                            🎂
+
+                                            <span>
+
+                                            {
+                                                localStorage.getItem(
+                                                    "customerDob"
+                                                )
+                                            }
+
+                                        </span>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div className="info-icon">
+
+                                        🎉
+
+                                    </div>
+
                                 </div>
 
                             </div>
 
-                        </div>
+                            {/* Additional Information */}
 
-                    </div>
+                            <div className="additional-info-card">
 
-                    {/* Additional Information */}
+                                <h3 className="additional-info-title">
 
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    shadow-lg
-                    p-8
-                ">
+                                    Additional Information
 
-                        <h3 className="
-                        text-2xl
-                        font-bold
-                        text-slate-800
-                        mb-6
-                    ">
-                            Additional Information
-                        </h3>
+                                </h3>
 
-                        {
-                            details.length === 0 && (
+                                {
 
-                                <div className="
-                                text-center
-                                py-8
-                                text-slate-500
-                            ">
-                                    No additional details added yet.
-                                </div>
+                                    details.length === 0 ? (
 
-                            )
-                        }
+                                        <div className="additional-empty">
 
-                        <div className="space-y-4">
+                                            No additional details added yet.
 
-                            {
-                                details.map(detail => (
+                                        </div>
 
-                                    <div
-                                        key={detail.id}
-                                        className="
-                                        flex
-                                        justify-between
-                                        items-center
-                                        border-b
-                                        border-slate-100
-                                        pb-4
-                                    "
-                                    >
+                                    ) : (
 
-                                    <span className="
-                                        text-slate-500
-                                        font-medium
-                                    ">
-                                        {
-                                            detail.field.fieldName
-                                        }
-                                    </span>
+                                        <div className="additional-info-content">
 
-                                        <span className="
-                                        text-slate-800
-                                        font-semibold
-                                    ">
-                                        {
-                                            detail.value
-                                        }
-                                    </span>
+                                            {
 
-                                    </div>
+                                                details.map(detail => (
 
-                                ))
-                            }
+                                                    <div
+                                                        key={detail.id}
+                                                        className="additional-item"
+                                                    >
+
+                                                        <div className="additional-label">
+
+                                                            {
+
+                                                                detail.field.fieldName
+
+                                                            }
+
+                                                        </div>
+
+                                                        <div className="additional-value">
+
+                                                            {
+
+                                                                detail.value
+
+                                                            }
+
+                                                        </div>
+
+                                                    </div>
+
+                                                ))
+
+                                            }
+
+                                        </div>
+
+                                    )
+
+                                }
+
+                            </div>
 
                         </div>
 
@@ -320,6 +264,7 @@ function CustomerProfileView() {
                 </div>
 
             </div>
+
         </>
     );
 }

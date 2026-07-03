@@ -1,0 +1,656 @@
+/*=========================================
+CUSTOMER NAVBAR
+=========================================*/
+
+.customer-navbar{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:1000;
+
+    background:#131a31;
+
+    border-bottom:2px solid rgba(197,155,71,.35);
+
+    box-shadow:
+            0 10px 35px rgba(0,0,0,.18);
+
+}
+
+.navbar-container{
+
+    max-width:1440px;
+
+    margin:auto;
+
+    height:78px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:0 26px;
+
+}
+
+.navbar-left{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:16px;
+
+}
+
+/*=========================================
+MENU BUTTON
+=========================================*/
+
+.menu-toggle{
+
+    width:48px;
+
+    height:48px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#26314f;
+
+    color:#fff;
+
+    font-size:22px;
+
+    cursor:pointer;
+
+    transition:.30s;
+
+}
+
+.menu-toggle:hover{
+
+    background:#344166;
+
+    transform:translateY(-2px);
+
+}
+
+/*=========================================
+LOGO
+=========================================*/
+
+.navbar-brand{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+
+.brand-logo{
+
+    width:48px;
+
+    height:48px;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    border-radius:16px;
+
+    background:linear-gradient(135deg,#5b3df6,#4d74ff);
+
+    color:#fff;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    box-shadow:
+            0 12px 25px rgba(91,61,246,.35);
+
+}
+
+.brand-title{
+
+    margin:0;
+
+    color:#fff;
+
+    font-size:30px;
+
+    font-weight:700;
+
+    font-family:
+            "Inter",
+            "Segoe UI",
+            sans-serif;
+
+}
+
+/*=========================================
+DESKTOP LINKS
+=========================================*/
+
+.navbar-links{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:42px;
+
+}
+
+.navbar-link{
+
+    position:relative;
+
+    color:#dbe3ff;
+
+    text-decoration:none;
+
+    font-size:16px;
+
+    font-weight:600;
+
+    transition:.30s;
+
+}
+
+.navbar-link:hover{
+
+    color:#ffffff;
+
+}
+
+.navbar-link::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    bottom:-8px;
+
+    width:0;
+
+    height:2px;
+
+    background:#d5a03f;
+
+    transition:.30s;
+
+}
+
+.navbar-link:hover::after{
+
+    width:100%;
+
+}
+/*=========================================
+MOBILE MENU
+=========================================*/
+
+.navbar-menu{
+
+    position:absolute;
+
+    top:92px;
+
+    left:24px;
+
+    width:360px;
+
+    padding:26px;
+
+    border-radius:28px;
+
+    background:rgba(255,255,255,.82);
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+    border:2px solid rgba(205,163,76,.55);
+
+    box-shadow:
+            0 25px 60px rgba(18,30,58,.22);
+
+    animation:menuFade .28s ease;
+
+}
+
+/*=========================================
+MOBILE LINKS CONTAINER
+=========================================*/
+
+.mobile-links{
+
+    display:none;
+
+}
+
+/*=========================================
+MENU LINKS
+=========================================*/
+
+.menu-link{
+
+    width:100%;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 22px;
+
+    margin-bottom:14px;
+
+    text-decoration:none;
+
+    border-radius:20px;
+
+    background:#ffffff;
+
+    border:2px solid transparent;
+
+    color:#22304d;
+
+    font-size:21px;
+
+    font-weight:700;
+
+    font-family:
+            "Inter",
+            "Segoe UI",
+            sans-serif;
+
+    transition:
+            transform .25s,
+            box-shadow .25s,
+            border-color .25s;
+
+}
+
+.menu-link:hover{
+
+    transform:translateY(-3px);
+
+    border-color:#d1a24b;
+
+    box-shadow:
+            0 15px 35px rgba(209,162,75,.18);
+
+}
+
+/*=========================================
+MENU ICONS
+=========================================*/
+
+.menu-link::after{
+
+    font-size:28px;
+
+}
+
+.menu-services::after{
+
+    content:"🗂️";
+
+}
+
+.menu-requests::after{
+
+    content:"📋";
+
+}
+
+.menu-profile::after{
+
+    content:"👤";
+
+}
+
+.menu-edit::after{
+
+    content:"✏️";
+
+}
+
+/*=========================================
+ACTIVE CARD
+=========================================*/
+
+.menu-link.active,
+
+.menu-link:first-child{
+
+    border-color:#d1a24b;
+
+    box-shadow:
+            0 10px 24px rgba(209,162,75,.15);
+
+}
+
+/*=========================================
+DIVIDER
+=========================================*/
+
+.menu-divider{
+
+    margin:20px 0;
+
+    border:none;
+
+    height:1px;
+
+    background:linear-gradient(
+            90deg,
+            transparent,
+            rgba(209,162,75,.65),
+            transparent
+    );
+
+}
+
+/*=========================================
+LOGOUT BUTTON
+=========================================*/
+
+.logout-button{
+
+    width:100%;
+
+    height:64px;
+
+    border:none;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+            135deg,
+            #d11d47,
+            #ab1638
+    );
+
+    color:#ffffff;
+
+    font-size:22px;
+
+    font-weight:700;
+
+    font-family:
+            "Inter",
+            "Segoe UI",
+            sans-serif;
+
+    transition:
+            transform .25s,
+            box-shadow .25s;
+
+    box-shadow:
+            0 18px 34px rgba(209,29,71,.28);
+
+}
+
+.logout-button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+            0 24px 42px rgba(209,29,71,.36);
+
+}
+
+/*=========================================
+ANIMATION
+=========================================*/
+
+@keyframes menuFade{
+
+    from{
+
+        opacity:0;
+
+        transform:translateY(-10px);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+/*=========================================
+TABLET
+=========================================*/
+
+@media (max-width:768px){
+
+    .navbar-links{
+
+        display:none;
+
+    }
+
+    .mobile-links{
+
+        display:block;
+
+    }
+
+    .navbar-container{
+
+        padding:0 18px;
+
+    }
+
+    .brand-title{
+
+        font-size:22px;
+
+    }
+
+    .navbar-menu{
+
+        width:min(380px,92vw);
+
+        left:50%;
+
+        transform:translateX(-50%);
+
+    }
+
+}
+
+/*=========================================
+MOBILE
+=========================================*/
+
+@media (max-width:480px){
+
+    .navbar-container{
+
+        height:72px;
+
+        padding:0 14px;
+
+    }
+
+    .navbar-left{
+
+        gap:12px;
+
+    }
+
+    .menu-toggle{
+
+        width:44px;
+
+        height:44px;
+
+        font-size:20px;
+
+    }
+
+    .brand-logo{
+
+        width:42px;
+
+        height:42px;
+
+        border-radius:14px;
+
+        font-size:20px;
+
+    }
+
+    .brand-title{
+
+        font-size:18px;
+
+        white-space:nowrap;
+
+    }
+
+    .navbar-menu{
+
+        top:84px;
+
+        width:calc(100vw - 24px);
+
+        left:50%;
+
+        transform:translateX(-50%);
+
+        padding:22px;
+
+        border-radius:24px;
+
+    }
+
+    .menu-link{
+
+        padding:18px;
+
+        font-size:18px;
+
+        border-radius:18px;
+
+    }
+
+    .menu-link::after{
+
+        font-size:24px;
+
+    }
+
+    .logout-button{
+
+        height:56px;
+
+        font-size:20px;
+
+        border-radius:18px;
+
+    }
+
+}
+
+/*=========================================
+SMALL DEVICES
+=========================================*/
+
+@media (max-width:360px){
+
+    .brand-title{
+
+        font-size:16px;
+
+    }
+
+    .navbar-menu{
+
+        padding:18px;
+
+    }
+
+    .menu-link{
+
+        font-size:17px;
+
+        padding:16px;
+
+    }
+
+    .logout-button{
+
+        font-size:18px;
+
+    }
+
+}
+
+/*=========================================
+ACCESSIBILITY
+=========================================*/
+
+.menu-toggle:focus,
+
+.menu-link:focus,
+
+.logout-button:focus{
+
+    outline:3px solid rgba(77,111,255,.35);
+
+    outline-offset:3px;
+
+}
+.navbar-menu{
+
+    animation:menuOpen .25s ease;
+
+    transform-origin:top left;
+
+}
+
+@keyframes menuOpen{
+
+    from{
+
+        opacity:0;
+
+        transform:translateX(-50%) scale(.96);
+
+    }
+
+    to{
+
+        opacity:1;
+
+        transform:translateX(-50%) scale(1);
+
+    }
+
+}

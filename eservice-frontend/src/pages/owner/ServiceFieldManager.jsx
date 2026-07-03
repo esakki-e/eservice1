@@ -5,6 +5,7 @@ import {
     useParams,
     useNavigate,Link
 } from "react-router-dom";
+import "./ServiceFieldManager.css"
 import { API_URL } from "../../config";
 function ServiceFieldManager() {
 
@@ -115,273 +116,252 @@ function ServiceFieldManager() {
 
         loadFields();
     };
-
     return (
-        <div className="max-w-6xl mx-auto px-6 py-8">
 
-            <button
-                onClick={() => navigate("/services")}
-                className="
-                mb-6
-                px-4
-                py-2
-                rounded-xl
-                bg-slate-700
-                text-white
-                hover:bg-slate-800
-                transition
-            "
-            >
-                ← Back to Services
-            </button>
+        <div className="page-bg">
 
-            <div
-                className="
-                bg-white
-                rounded-3xl
-                border
-                shadow-sm
-                p-8
-                mb-6
-            "
-            >
-                <h1
-                    className="
-                    text-3xl
-                    font-bold
-                    text-slate-800
-                    mb-6
-                "
+            <div className="field-manager-page">
+
+                <button
+                    onClick={() => navigate("/services")}
+                    className="back-button"
                 >
-                    Manage Service Fields
-                </h1>
+                    ← Back to Services
+                </button>
 
-                <div className="grid md:grid-cols-4 gap-4">
+                {/* Create / Edit Field */}
 
-                    <input
-                        className="
-                        border
-                        rounded-xl
-                        px-4
-                        py-3
-                        focus:outline-none
-                        focus:ring-2
-                        focus:ring-blue-500
-                    "
-                        placeholder="Field Name"
-                        value={fieldName}
-                        onChange={(e) =>
-                            setFieldName(e.target.value)
-                        }
-                    />
+                <div className="field-card">
 
-                    <select
-                        className="
-                        border
-                        rounded-xl
-                        px-4
-                        py-3
-                    "
-                        value={fieldType}
-                        onChange={(e) =>
-                            setFieldType(e.target.value)
-                        }
-                    >
-                        <option value="TEXT">
-                            Text
-                        </option>
+                    <h1 className="field-page-title">
 
-                        <option value="NUMBER">
-                            Number
-                        </option>
+                        Manage Service Fields
 
-                        <option value="DATE">
-                            Date
-                        </option>
-                    </select>
+                    </h1>
 
-                    <label
-                        className="
-                        flex
-                        items-center
-                        gap-2
-                        px-4
-                        py-3
-                        border
-                        rounded-xl
-                    "
-                    >
+                    <div className="field-form-grid">
+
                         <input
-                            type="checkbox"
-                            checked={requiredField}
+                            className="field-input"
+                            placeholder="Field Name"
+                            value={fieldName}
                             onChange={(e) =>
-                                setRequiredField(
-                                    e.target.checked
-                                )
+                                setFieldName(e.target.value)
                             }
                         />
 
-                        Required
-                    </label>
-
-                    <div className="flex gap-2">
-
-                        <button
-                            onClick={saveField}
-                            className="
-                            flex-1
-                            bg-blue-600
-                            text-white
-                            rounded-xl
-                            px-4
-                            py-3
-                            hover:bg-blue-700
-                        "
+                        <select
+                            className="field-select"
+                            value={fieldType}
+                            onChange={(e) =>
+                                setFieldType(e.target.value)
+                            }
                         >
-                            {editingId
-                                ? "Update Field"
-                                : "Add Field"}
-                        </button>
 
-                        {editingId && (
+                            <option value="TEXT">
+
+                                Text
+
+                            </option>
+
+                            <option value="NUMBER">
+
+                                Number
+
+                            </option>
+
+                            <option value="DATE">
+
+                                Date
+
+                            </option>
+
+                        </select>
+
+                        <label className="required-checkbox">
+
+                            <input
+                                type="checkbox"
+                                checked={requiredField}
+                                onChange={(e) =>
+                                    setRequiredField(
+                                        e.target.checked
+                                    )
+                                }
+                            />
+
+                            Required
+
+                        </label>
+
+                        <div className="field-action-buttons">
+
                             <button
-                                onClick={() => {
-                                    setEditingId(null);
-                                    setFieldName("");
-                                    setFieldType("TEXT");
-                                    setRequiredField(true);
-                                }}
-                                className="
-                                bg-slate-500
-                                text-white
-                                rounded-xl
-                                px-4
-                                py-3
-                            "
+                                onClick={saveField}
+                                className="save-field-button"
                             >
-                                Cancel
+
+                                {
+
+                                    editingId
+
+                                        ?
+
+                                        "Update Field"
+
+                                        :
+
+                                        "Add Field"
+
+                                }
+
                             </button>
-                        )}
 
-                    </div>
+                            {
 
-                </div>
-            </div>
+                                editingId && (
 
-            <div
-                className="
-                bg-white
-                rounded-3xl
-                border
-                shadow-sm
-                overflow-hidden
-            "
-            >
+                                    <button
 
-                <div className="p-6 border-b">
-                    <h2
-                        className="
-                        text-xl
-                        font-bold
-                        text-slate-800
-                    "
-                    >
-                        Configured Fields
-                    </h2>
-                </div>
+                                        onClick={() => {
 
-                {fields.length === 0 ? (
+                                            setEditingId(null);
 
-                    <div className="p-10 text-center text-slate-500">
-                        No fields configured yet
-                    </div>
+                                            setFieldName("");
 
-                ) : (
+                                            setFieldType("TEXT");
 
-                    fields.map(field => (
+                                            setRequiredField(true);
 
-                        <div
-                            key={field.id}
-                            className="
-                            flex
-                            justify-between
-                            items-center
-                            p-5
-                            border-b
-                            last:border-b-0
-                        "
-                        >
+                                        }}
 
-                            <div>
+                                        className="cancel-field-button"
 
-                                <h4
-                                    className="
-                                    font-semibold
-                                    text-slate-800
-                                "
-                                >
-                                    {field.fieldName}
-                                </h4>
+                                    >
 
-                                <p
-                                    className="
-                                    text-sm
-                                    text-slate-500
-                                "
-                                >
-                                    {field.fieldType}
-                                    {" • "}
-                                    {field.requiredField
-                                        ? "Required"
-                                        : "Optional"}
-                                </p>
+                                        Cancel
 
-                            </div>
+                                    </button>
 
-                            <div className="flex gap-2">
+                                )
 
-                                <button
-                                    onClick={() =>
-                                        startEdit(field)
-                                    }
-                                    className="
-                                    px-4
-                                    py-2
-                                    rounded-xl
-                                    bg-amber-500
-                                    text-white
-                                "
-                                >
-                                    Edit
-                                </button>
-
-                                <button
-                                    onClick={() =>
-                                        deleteField(field.id)
-                                    }
-                                    className="
-                                    px-4
-                                    py-2
-                                    rounded-xl
-                                    bg-red-500
-                                    text-white
-                                "
-                                >
-                                    Delete
-                                </button>
-
-                            </div>
+                            }
 
                         </div>
 
-                    ))
+                    </div>
 
-                )}
+                </div>
+
+                {/* Configured Fields */}
+
+                <div className="configured-fields-card">
+
+                    <div className="configured-fields-header">
+
+                        <h2 className="configured-fields-title">
+
+                            Configured Fields
+
+                        </h2>
+
+                    </div>
+
+                    {
+
+                        fields.length === 0 ?
+
+                            (
+
+                                <div className="empty-fields">
+
+                                    No fields configured yet
+
+                                </div>
+
+                            )
+
+                            :
+
+                            fields.map(field => (
+
+                                <div
+                                    key={field.id}
+                                    className="field-item"
+                                >
+
+                                    <div>
+
+                                        <h4 className="field-name">
+
+                                            {field.fieldName}
+
+                                        </h4>
+
+                                        <p className="field-meta">
+
+                                            {field.fieldType}
+
+                                            {" • "}
+
+                                            {
+
+                                                field.requiredField
+
+                                                    ?
+
+                                                    "Required"
+
+                                                    :
+
+                                                    "Optional"
+
+                                            }
+
+                                        </p>
+
+                                    </div>
+
+                                    <div className="field-buttons">
+
+                                        <button
+                                            onClick={() =>
+                                                startEdit(field)
+                                            }
+                                            className="edit-field-button"
+                                        >
+
+                                            Edit
+
+                                        </button>
+
+                                        <button
+                                            onClick={() =>
+                                                deleteField(field.id)
+                                            }
+                                            className="delete-field-button"
+                                        >
+
+                                            Delete
+
+                                        </button>
+
+                                    </div>
+
+                                </div>
+
+                            ))
+
+                    }
+
+                </div>
 
             </div>
 
         </div>
+
     );
+
 }
 
 export default ServiceFieldManager;

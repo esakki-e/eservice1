@@ -21,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import com.eservice1.feedback.repository.FeedbackRepository;
+import com.eservice1.submission.dto.CustomerRequestViewDTO;
 @Service
 public class CustomerRequestService {
 
@@ -28,14 +30,17 @@ public class CustomerRequestService {
     private final PortalServiceRepository serviceRepository;
 
     private final TaskRepository taskRepository;
+    private final FeedbackRepository feedbackRepository;
     public CustomerRequestService(
             CustomerRequestRepository requestRepository,
             PortalServiceRepository serviceRepository,
-            TaskRepository taskRepository) {
+            TaskRepository taskRepository,
+            FeedbackRepository feedbackRepository) {
 
         this.requestRepository = requestRepository;
         this.serviceRepository = serviceRepository;
         this.taskRepository = taskRepository;
+        this.feedbackRepository = feedbackRepository;
     }
 
     public CustomerRequest createRequest(CustomerRequestDTO dto) {
@@ -215,7 +220,7 @@ public class CustomerRequestService {
         );
 
     }
-    public PageResponseDTO<CustomerRequest> getRequests(
+    public PageResponseDTO<CustomerRequestViewDTO> getRequests(
 
             String phoneNumber,
 
@@ -239,17 +244,76 @@ public class CustomerRequestService {
 
         Page<CustomerRequest> requests =
 
-                requestRepository
-                        .findByPhoneNumberOrderByCreatedAtDesc(
+                requestRepository.findByPhoneNumberOrderByCreatedAtDesc(
 
-                                phoneNumber,
+                        phoneNumber,
 
-                                pageable
+                        pageable
 
-                        );
+                );
+
+        Page<CustomerRequestViewDTO> dtoPage =
+
+                requests.map(request -> {
+
+                    CustomerRequestViewDTO dto =
+
+                            new CustomerRequestViewDTO();
+
+                    dto.setId(
+
+                            request.getId()
+
+                    );
+
+                    dto.setCustomerName(
+
+                            request.getCustomerName()
+
+                    );
+
+                    dto.setPhoneNumber(
+
+                            request.getPhoneNumber()
+
+                    );
+
+                    dto.setServiceName(
+
+                            request.getService().getServiceName()
+
+                    );
+
+                    dto.setStatus(
+
+                            request.getStatus().name()
+
+                    );
+
+                    dto.setCreatedAt(
+
+                            request.getCreatedAt()
+
+                    );
+
+                    dto.setFeedbackSubmitted(
+
+                            feedbackRepository.existsByRequestId(
+
+                                    request.getId()
+
+                            )
+
+                    );
+
+                    return dto;
+
+                });
 
         return PaginationMapper.toResponse(
-                requests
+
+                dtoPage
+
         );
 
     }

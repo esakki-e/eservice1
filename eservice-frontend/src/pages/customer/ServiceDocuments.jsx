@@ -4,6 +4,7 @@ import {
 } from "react-router-dom";
 import CustomerNavbar from "../../components/CustomerNavbar";
 //import { useParams } from "react-router-dom";
+import "./ServiceDocuments.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { API_URL } from "../../config";
@@ -217,155 +218,238 @@ function ServiceDocuments() {
     }, []);
     return (
         <>
-            <CustomerNavbar/>
-            <div className="container mt-4">
+            <CustomerNavbar />
 
-                <div className="card p-4 shadow">
+            <div className="page-bg">
 
-                    <h2 className="mb-3">
-                        Service Application
-                    </h2>
+                <div className="application-page">
 
-                    <h5 className="mb-4">
-                        Service ID: {id}
-                    </h5>
-                    <input
-                        className="form-control mb-3"
-                        value={customerName}
-                        readOnly
-                    />
+                    <div className="application-container">
 
-                    <input
-                        className="form-control mb-3"
-                        value={dob}
-                        readOnly
-                    />
+                        <div className="application-card">
 
-                    <input
-                        className="form-control mb-3"
-                        value={phoneNumber}
-                        readOnly
-                    />
-                    <h4 className="mt-4">
-                        Application Details
-                    </h4>
+                            <div className="application-header">
 
-                    {
-                        fields.map(field => (
+                                <div>
 
-                            <div
-                                key={field.id}
-                                className="mb-3"
-                            >
+                                    <h2 className="application-title">
 
-                                <label
-                                    className="form-label"
-                                >
-                                    {field.fieldName}
-                                </label>
+                                        Service Application
 
-                                <input
-                                    className="form-control"
-                                    type={
-                                        field.fieldType === "NUMBER"
-                                            ? "number"
-                                            : field.fieldType === "DATE"
-                                                ? "date"
-                                                : "text"
-                                    }
-                                    value={
-                                        fieldValues[field.id]
-                                        ??
-                                        autoFillData[
-                                            field.fieldName
-                                            ]
-                                        ??
-                                        ""
+                                    </h2>
 
-                                    }
-                                    onChange={(e) =>
+                                    <p className="application-subtitle">
 
-                                        setFieldValues({
+                                        Complete the form below and upload the required documents to submit your application.
 
-                                            ...fieldValues,
+                                    </p>
 
-                                            [field.id]:
-                                            e.target.value
-                                        })
+                                </div>
 
-                                    }
-                                />
+                                <div className="application-service-id">
+
+                                    Service ID #{id}
+
+                                </div>
 
                             </div>
 
-                        ))
-                    }
-                    <h4>
-                        Required Documents
-                    </h4>
+                            {/* Customer Details */}
 
-                    <div className="mb-4">
+                            <div className="application-section">
 
-                        {
-                            requiredDocuments.map(
-                                document => (
+                                <div className="application-field">
+
+                                    <label className="application-label">
+
+                                        Full Name
+
+                                    </label>
+
+                                    <input
+                                        className="application-input"
+                                        value={customerName}
+                                        readOnly
+                                    />
+
+                                </div>
+
+                                <div className="application-field">
+
+                                    <label className="application-label">
+
+                                        Date of Birth
+
+                                    </label>
+
+                                    <input
+                                        className="application-input"
+                                        value={dob}
+                                        readOnly
+                                    />
+
+                                </div>
+
+                                <div className="application-field">
+
+                                    <label className="application-label">
+
+                                        Phone Number
+
+                                    </label>
+
+                                    <input
+                                        className="application-input"
+                                        value={phoneNumber}
+                                        readOnly
+                                    />
+
+                                </div>
+
+                            </div>
+
+                            {/* Application Details */}
+                            <h4 className="application-section-title">
+
+                                Application Details
+
+                            </h4>
+
+                            <div className="application-fields-grid">
+
+                                {fields.map(field => (
 
                                     <div
-                                        key={document.id}
-                                        className="mb-3"
+                                        key={field.id}
+                                        className="application-field"
                                     >
 
-                                        <label
-                                            className="form-label"
-                                        >
-                                            {
-                                                document.documentName
-                                            }
+                                        <label className="application-label">
+
+                                            {field.fieldName}
+
                                         </label>
 
                                         <input
-                                            type="file"
-                                            className="form-control"
-                                            onChange={(e) =>
 
-                                                setUploadedFiles(
-                                                    {
-                                                        ...uploadedFiles,
+                                            className="application-input"
 
-                                                        [
-                                                            document.documentName
-                                                            ]:
-                                                            e.target.files[0]
-                                                    }
-                                                )
+                                            type={
+                                                field.fieldType === "NUMBER"
+                                                    ? "number"
+                                                    : field.fieldType === "DATE"
+                                                        ? "date"
+                                                        : "text"
+                                            }
+
+                                            value={
+                                                fieldValues[field.id]
+                                                ??
+                                                autoFillData[field.fieldName]
+                                                ??
+                                                ""
+                                            }
+
+                                            onChange={(e)=>
+
+                                                setFieldValues({
+
+                                                    ...fieldValues,
+
+                                                    [field.id]:
+                                                    e.target.value
+
+                                                })
 
                                             }
+
                                         />
 
                                     </div>
 
-                                )
-                            )
-                        }
+                                ))}
 
-                    </div>
-
-                    <div className="d-flex gap-2">
+                            </div>
 
 
+                            {/* Documents */}
 
-                        <button
-                            className="btn btn-success"
-                            onClick={submitRequest}
-                        >
-                            Submit Request
-                        </button>
+                            <h4 className="application-section-title">
+
+                                Required Documents
+
+                            </h4>
+
+                            <div className="documents-section">
+
+                                {
+
+                                    requiredDocuments.map(document => (
+
+                                        <div
+                                            key={document.id}
+                                            className="document-upload-card"
+                                        >
+
+                                            <label className="application-label">
+
+                                                {document.documentName}
+
+                                            </label>
+
+                                            <input
+
+                                                type="file"
+
+                                                className="file-input"
+
+                                                onChange={(e) =>
+
+                                                    setUploadedFiles({
+
+                                                        ...uploadedFiles,
+
+                                                        [document.documentName]:
+                                                            e.target.files[0]
+
+                                                    })
+
+                                                }
+
+                                            />
+
+                                        </div>
+
+                                    ))
+
+                                }
+
+                            </div>
+
+                            <div className="application-actions">
+
+                                <button
+
+                                    className="submit-request-button"
+
+                                    onClick={submitRequest}
+
+                                >
+
+                                    Submit Request
+
+                                </button>
+
+                            </div>
+
+                        </div>
 
                     </div>
 
                 </div>
 
             </div>
+
         </>
     );
 }

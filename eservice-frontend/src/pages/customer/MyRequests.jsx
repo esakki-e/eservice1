@@ -4,6 +4,8 @@ import CustomerNavbar from "../../components/CustomerNavbar";
 import {Link} from "react-router-dom";
 import { API_URL } from "../../config";
 import Pagination from "../../components/Pagination";
+import "./Myrequest.css";
+
 function MyRequests() {
 
     const [requests, setRequests] = useState([]);
@@ -128,11 +130,32 @@ function MyRequests() {
 
             alert("Feedback submitted!");
 
+            setRequests(prev =>
+
+                prev.map(request =>
+
+                    request.id === selectedRequest.id
+
+                        ? {
+
+                            ...request,
+
+                            feedbackSubmitted: true
+
+                        }
+
+                        : request
+
+                )
+
+            );
+
             setShowFeedback(false);
 
             setRating(5);
 
             setComment("");
+
             setSelectedRequest(null);
 
         }
@@ -155,7 +178,7 @@ function MyRequests() {
 
                 <CustomerNavbar/>
 
-                <div className="flex justify-center items-center h-96">
+                <div className="services-loading">
 
                     Loading...
 
@@ -169,542 +192,426 @@ function MyRequests() {
     return (
         <>
             <CustomerNavbar />
-            <div className="max-w-7xl mx-auto px-4 md:px-6">
 
-                <div className="max-w-5xl mx-auto px-6 py-8">
+            <div className="page-bg">
 
-                    {/* Header */}
+                <div className="requests-page">
 
-                    <div
-                        className="
-    flex
-    flex-col
-    sm:flex-row
-    gap-4
-    sm:items-center
-    sm:justify-between
-    mb-6
-"
-                    >
+                    <div className="requests-container">
 
-                        <div>
-                            <h1 className="
-                            text-4xl
-                            font-bold
-                            text-slate-800
-                            mb-1
-                        ">
-                                My Requests
-                            </h1>
+                        <div className="requests-header">
 
-                            <p className="
-                            text-slate-500
-                        ">
-                                Track the status of your applications.
-                            </p>
-                        </div>
+                            <div>
 
-                        <Link
-                            to="/customer-services"
-                            className="
-    inline-flex
-    items-center
-    px-6
-    py-3
-    rounded-2xl
-    bg-slate-800
-    text-white
-    font-semibold
-    hover:bg-slate-700
-    transition
-    no-underline
-"
-                        >
-                            New Application
-                        </Link>
+                                <h1 className="requests-title">
 
-                    </div>
+                                    My Requests
 
-                    <div className="space-y-4">
+                                </h1>
 
-                        {
+                                <p className="requests-subtitle">
 
-                            requests.length===0 ?
+                                    Track the status of your applications.
 
-                                (
+                                </p>
 
-                                    <div className="
+                            </div>
 
-text-center
-
-py-16
-
-text-slate-500
-
-">
-
-                                        No requests found.
-
-                                    </div>
-
-                                )
-
-                                :
-
-                                requests.map(request => (
-
-                            <div
-                                key={request.id}
-                                className="
-                                bg-white
-                                border
-                                border-slate-200
-                                rounded-2xl
-                                shadow-sm
-                                p-5
-                            "
+                            <Link
+                                to="/customer-services"
+                                className="new-request-button"
                             >
 
-                                {/* Top Row */}
+                                New Application
 
-                                <div className="
-    flex
-    flex-col
-    sm:flex-row
-    sm:justify-between
-    sm:items-start
-    gap-3
-">
+                            </Link>
 
-                                    <div>
-                                        <div
-                                            className="
-    flex
-    flex-col
-    sm:flex-row
-    gap-2
-    mb-2
-"
-                                        >
-                                        <span className="
-                                            px-3
-                                            py-1
-                                            rounded-xl
-                                            bg-slate-100
-                                            text-slate-700
-                                            text-sm
-                                            font-semibold
-                                        ">
-                                            #{request.id}
-                                        </span>
+                        </div>
 
-                                            <h3 className="
-                                            text-lg
-                                            font-bold
-                                            text-slate-800
-                                        ">
-                                                {request.serviceName}
-                                            </h3>
+                        <div className="requests-list">
+
+                            {
+
+                                requests.length === 0 ?
+
+                                    (
+
+                                        <div className="requests-empty">
+
+                                            No requests found.
+
                                         </div>
 
-                                        <p className="
-                                        text-slate-500
-                                        text-sm
-                                    ">
-                                            {
-                                                new Date(
-                                                    request.createdAt
-                                                ).toLocaleString(
-                                                    "en-IN",
-                                                    {
-                                                        day: "2-digit",
-                                                        month: "short",
-                                                        year: "numeric",
-                                                        hour: "numeric",
-                                                        minute: "2-digit",
-                                                        hour12: true
-                                                    }
-                                                )
-                                            }
-                                        </p>
+                                    )
 
-                                    </div>
+                                    :
 
-                                    <div
-                                        className="
-    flex
-    flex-col
-    sm:flex-row
-    gap-2
-    mt-3
-    sm:mt-0
-"
-                                    >
+                                    requests.map(request => (
 
-                                        {request.status === "PENDING" && (
-                                            <span className="
-                                            px-3
-                                            py-1.5
-                                            rounded-full
-                                            bg-slate-100
-                                            text-slate-700
-                                            text-sm
-                                            font-semibold
-                                        ">
-                                            📝 Submitted
-                                        </span>
-                                        )}
+                                        <div
+                                            key={request.id}
+                                            className="request-card"
+                                        >
 
-                                        {request.status === "IN_PROGRESS" && (
-                                            <span className="
-                                            px-3
-                                            py-1.5
-                                            rounded-full
-                                            bg-yellow-100
-                                            text-yellow-800
-                                            text-sm
-                                            font-semibold
-                                        ">
-                                            ✅ Accepted
-                                        </span>
-                                        )}
+                                            <div className="request-card-header">
 
-                                        {request.status === "COMPLETED" && (
+                                                <div>
 
-                                            <>
+                                                    <div className="request-title-row">
 
-                                                <button
-                                                    className="
-                mt-4
-                px-5
-                py-2
-                rounded-xl
-                bg-yellow-500
-                text-white
-                font-semibold
-                hover:bg-yellow-600
-            "
-                                                    onClick={() => {
+                                                    <span className="request-id">
 
-                                                        setSelectedRequest(request);
+                                                        #{request.id}
 
-                                                        setShowFeedback(true);
+                                                    </span>
 
-                                                    }}
-                                                >
+                                                        <h3 className="request-service-name">
 
-                                                    ⭐ Rate Service
+                                                            {request.serviceName}
 
-                                                </button>
+                                                        </h3>
 
-                                                <span
-                                                    className="
-                px-3
-                py-1.5
-                rounded-full
-                bg-emerald-100
-                text-emerald-700
-                text-sm
-                font-semibold
-            "
-                                                >
+                                                    </div>
+
+                                                    <p className="request-date">
+
+                                                        {
+
+                                                            new Date(
+
+                                                                request.createdAt
+
+                                                            ).toLocaleString(
+
+                                                                "en-IN",
+
+                                                                {
+
+                                                                    day: "2-digit",
+
+                                                                    month: "short",
+
+                                                                    year: "numeric",
+
+                                                                    hour: "numeric",
+
+                                                                    minute: "2-digit",
+
+                                                                    hour12: true
+
+                                                                }
+
+                                                            )
+
+                                                        }
+
+                                                    </p>
+
+                                                </div>
+
+                                                <div className="request-actions">
+
+                                                    {request.status === "PENDING" && (
+
+                                                        <span className="status-badge pending-status">
+
+                                                        📝 Submitted
+
+                                                    </span>
+
+                                                    )}
+
+                                                    {request.status === "IN_PROGRESS" && (
+
+                                                        <span className="status-badge progress-status">
+
+                                                        ✅ Accepted
+
+                                                    </span>
+
+                                                    )}
+                                                    {request.status === "COMPLETED" && (
+
+                                                        <>
+
+                                                            {!request.feedbackSubmitted && (
+
+                                                                <button
+
+                                                                    className="feedback-button"
+
+                                                                    onClick={() => {
+
+                                                                        setSelectedRequest(request);
+
+                                                                        setShowFeedback(true);
+
+                                                                    }}
+
+                                                                >
+
+                                                                    ⭐ Rate Service
+
+                                                                </button>
+
+                                                            )}
+
+                                                            <span className="status-badge completed-status">
 
             🎉 Completed
 
         </span>
 
-                                            </>
+                                                        </>
 
-                                        )}
+                                                    )}
 
-                                        {request.status === "REJECTED" && (
-                                            <span className="
-                                            px-3
-                                            py-1.5
-                                            rounded-full
-                                            bg-red-100
-                                            text-red-700
-                                            text-sm
-                                            font-semibold
-                                        ">
-                                            ❌ Rejected
-                                        </span>
-                                        )}
+                                                    {request.status === "REJECTED" && (
 
-                                        <Link
-                                            to={`/request-details/${request.id}`}
-                                            className="
-                                            px-3
-                                            py-1.5
-                                            rounded-xl
-                                            bg-slate-800
-                                            text-white
-                                            text-sm
-                                            font-medium
-                                            hover:bg-slate-900
-                                            transition
-                                        "
-                                        >
-                                            Details →
-                                        </Link>
+                                                        <span className="status-badge rejected-status">
 
-                                    </div>
+                                                        ❌ Rejected
 
-                                </div>
+                                                    </span>
 
-                                {/* Documents */}
+                                                    )}
 
-                                <div className="mt-3">
+                                                    <Link
 
-                                    <button
-                                        onClick={() =>
-                                            loadDocuments(request.id)
-                                        }
-                                        className="
-                                        px-3
-                                        py-1.5
-                                        rounded-xl
-                                        border
-                                        border-slate-300
-                                        text-slate-700
-                                        text-sm
-                                        hover:bg-slate-100
-                                        transition
-                                    "
-                                    >
-                                        View Documents
-                                    </button>
+                                                        to={`/request-details/${request.id}`}
 
-                                    {documents[request.id] && (
+                                                        className="details-button"
 
-                                        <div className="
-                                        flex
-                                        flex-wrap
-                                        gap-2
-                                        mt-3
-                                    ">
+                                                    >
 
-                                            {documents[
-                                                request.id
-                                                ].map(doc => (
+                                                        Details →
 
-                                                <a
-                                                    key={doc.id}
-                                                    href={`${API_URL}/documents/download/${doc.id}`}
-                                                    target="_blank"
-                                                    rel="noreferrer"
-                                                    className="
-                                                    px-3
-                                                    py-1.5
-                                                    rounded-xl
-                                                    bg-slate-100
-                                                    text-slate-700
-                                                    text-sm
-                                                    hover:bg-slate-200
-                                                    transition
-                                                "
+                                                    </Link>
+
+                                                </div>
+
+                                            </div>
+
+                                            <div className="request-documents">
+
+                                                <button
+                                                    className="documents-button"
+                                                    onClick={() => {
+
+                                                        if (documents[request.id]) {
+
+                                                            setDocuments(prev => {
+
+                                                                const updated = { ...prev };
+
+                                                                delete updated[request.id];
+
+                                                                return updated;
+
+                                                            });
+
+                                                        } else {
+
+                                                            loadDocuments(request.id);
+
+                                                        }
+
+                                                    }}
                                                 >
-                                                    📄 {doc.name}
-                                                </a>
 
+                                                    {documents[request.id] ? "Hide Documents" : "View Documents"}
 
-                                            ))}
+                                                </button>
+                                                {documents[request.id] && (
+
+                                                    <div className="documents-list">
+
+                                                        {
+
+                                                            documents[request.id].map(doc => (
+
+                                                                <a
+
+                                                                    key={doc.id}
+
+                                                                    href={`${API_URL}/documents/download/${doc.id}`}
+
+                                                                    target="_blank"
+
+                                                                    rel="noreferrer"
+
+                                                                    className="document-item"
+
+                                                                >
+
+                                                                    📄 {doc.documentName || doc.fileName || "Document"}
+                                                                </a>
+
+                                                            ))
+
+                                                        }
+
+                                                    </div>
+
+                                                )}
+
+                                            </div>
 
                                         </div>
 
-                                    )}
+                                    ))
+
+                            }
+
+                        </div>
+
+                    </div>
+
+                    {
+
+                        showFeedback &&
+
+                        <div className="feedback-overlay">
+
+                            <div className="feedback-modal">
+
+                                <h2 className="feedback-title">
+
+                                    Rate Service
+
+                                </h2>
+
+                                <div className="feedback-stars">
+
+                                    {
+
+                                        [1,2,3,4,5].map(star => (
+
+                                            <button
+
+                                                key={star}
+
+                                                onClick={() =>
+
+                                                    setRating(star)
+
+                                                }
+
+                                                className="star-button"
+
+                                            >
+
+                                                {
+
+                                                    star <= rating
+
+                                                        ? "⭐"
+
+                                                        : "☆"
+
+                                                }
+
+                                            </button>
+
+                                        ))
+
+                                    }
+
+                                </div>
+
+                                <textarea
+
+                                    value={comment}
+
+                                    onChange={(e) =>
+
+                                        setComment(e.target.value)
+
+                                    }
+
+                                    rows={5}
+
+                                    placeholder="Write your feedback..."
+
+                                    className="feedback-textarea"
+
+                                />
+
+                                <div className="feedback-actions">
+
+                                    <button
+
+                                        onClick={() => {
+
+                                            setShowFeedback(false);
+
+                                            setComment("");
+
+                                            setRating(5);
+
+                                            setSelectedRequest(null);
+
+                                        }}
+
+                                        className="feedback-cancel"
+
+                                    >
+
+                                        Cancel
+
+                                    </button>
+
+                                    <button
+
+                                        disabled={comment.trim() === ""}
+
+                                        onClick={submitFeedback}
+
+                                        className="feedback-submit"
+
+                                    >
+
+                                        Submit
+
+                                    </button>
 
                                 </div>
 
                             </div>
 
-                        ))}
+                        </div>
+
+                    }
+
+                    <div className="requests-pagination">
+
+                        <Pagination
+
+                            page={page}
+
+                            totalPages={totalPages}
+
+                            totalElements={totalElements}
+
+                            pageSize={size}
+
+                            onPageChange={setPage}
+
+                            onPageSizeChange={(newSize) => {
+
+                                setSize(newSize);
+
+                                setPage(0);
+
+                            }}
+
+                        />
 
                     </div>
 
                 </div>
 
             </div>
-            {
-                showFeedback &&
-
-                <div
-                    className="
-fixed
-inset-0
-bg-black/50
-flex
-items-center
-justify-center
-z-50
-"
-                >
-
-                    <div
-                        className="
-bg-white
-rounded-3xl
-p-8
-w-[500px]
-"
-                    >
-
-                        <h2
-                            className="
-text-2xl
-font-bold
-mb-6
-"
-                        >
-
-                            Rate Service
-
-                        </h2>
-
-                        <div className="flex gap-3 mb-6">
-
-                            {
-
-                                [1,2,3,4,5].map(star=>
-
-                                    <button
-
-                                        key={star}
-
-                                        onClick={()=>
-                                            setRating(star)
-                                        }
-
-                                        className="
-text-4xl
-"
-
-                                    >
-
-                                        {
-
-                                            star<=rating
-
-                                                ?
-
-                                                "⭐"
-
-                                                :
-
-                                                "☆"
-
-                                        }
-
-                                    </button>
-
-                                )
-
-                            }
-
-                        </div>
-
-                        <textarea
-
-                            value={comment}
-
-                            onChange={(e)=>
-                                setComment(e.target.value)
-                            }
-
-                            rows={5}
-
-                            placeholder="Write your feedback..."
-
-                            className="
-w-full
-border
-rounded-xl
-p-4
-mb-6
-"
-
-                        />
-
-                        <div className="flex justify-end gap-4">
-
-                            <button
-
-                                onClick={() => {
-
-                                    setShowFeedback(false);
-
-                                    setComment("");
-
-                                    setRating(5);
-
-                                    setSelectedRequest(null);
-
-                                }}
-
-                                className="
-px-6
-py-2
-border
-rounded-xl
-"
-
-                            >
-
-                                Cancel
-
-                            </button>
-
-                            <button
-
-                                disabled={comment.trim() === ""}
-
-                                onClick={submitFeedback}
-
-                                className="
-px-6
-py-2
-bg-blue-600
-text-white
-rounded-xl
-disabled:opacity-50
-disabled:cursor-not-allowed
-"
-
-                            >
-
-                                Submit
-
-                            </button>
-
-                        </div>
-
-                    </div>
-
-
-                </div>
-
-            }
-            <Pagination
-
-                page={page}
-
-                totalPages={totalPages}
-
-                totalElements={totalElements}
-
-                pageSize={size}
-
-                onPageChange={setPage}
-
-                onPageSizeChange={(newSize)=>{
-
-                    setSize(newSize);
-
-                    setPage(0);
-
-                }}
-
-            />
 
         </>
     );

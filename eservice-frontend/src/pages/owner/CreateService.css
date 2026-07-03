@@ -1,0 +1,465 @@
+/*=========================================================
+    CREATE SERVICE
+=========================================================*/
+
+:root{
+
+    --gold:#8b6a32;
+    --gold-light:#b89552;
+
+    --glass:rgba(255,255,255,.18);
+
+    --shadow:
+            0 18px 40px rgba(0,0,0,.14);
+
+    --transition:.35s ease;
+}
+
+/*=========================================================
+PAGE
+=========================================================*/
+
+.page-bg{
+
+    min-height:100vh;
+
+    padding:36px;
+
+    background:
+            linear-gradient(
+                    rgba(248,250,255,.55),
+                    rgba(248,250,255,.55)
+            ),
+            url("/images/img.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+.create-service-page{
+
+    width:100%;
+}
+
+.create-service-container{
+
+    max-width:1280px;
+
+    margin:0 auto;
+}
+
+/*=========================================================
+TITLE
+=========================================================*/
+
+.create-service-title{
+
+    font-size:2.4rem;
+
+    font-weight:600;
+
+    color:#222;
+
+    margin-bottom:22px;
+}
+
+/*=========================================================
+GLASS CARD
+=========================================================*/
+
+.service-card{
+
+    margin-bottom:26px;
+
+    padding:24px;
+
+    border:2px solid var(--gold);
+
+    border-radius:24px;
+
+    background:var(--glass);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    box-shadow:var(--shadow);
+
+    transition:var(--transition);
+}
+
+.service-card:hover{
+
+    transform:translateY(-3px);
+
+    border-color:var(--gold-light);
+}
+
+/*=========================================================
+SECTION TITLE
+=========================================================*/
+
+.section-title{
+
+    margin:0 0 18px;
+
+    font-size:2rem;
+
+    font-weight:600;
+
+    color:#202020;
+}
+/*=========================================================
+    FORM
+=========================================================*/
+
+.service-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:22px;
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.form-label{
+
+    font-size:.95rem;
+
+    font-weight:600;
+
+    color:#333;
+}
+
+/*=========================================================
+INPUTS
+=========================================================*/
+
+.form-input,
+.form-textarea,
+.document-input{
+
+    width:100%;
+
+    padding:16px 18px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.88);
+
+    color:#222;
+
+    font-size:.95rem;
+
+    outline:none;
+
+    transition:.3s;
+
+    box-shadow:
+            inset 0 1px rgba(255,255,255,.7),
+            0 6px 16px rgba(0,0,0,.05);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder,
+.document-input::placeholder{
+
+    color:#777;
+}
+
+.form-textarea{
+
+    resize:vertical;
+
+    min-height:120px;
+}
+
+.form-input:focus,
+.form-textarea:focus,
+.document-input:focus{
+
+    background:#fff;
+
+    box-shadow:
+            0 0 0 4px rgba(91,61,245,.12),
+            0 10px 22px rgba(0,0,0,.08);
+}
+
+/*=========================================================
+DOCUMENTS
+=========================================================*/
+
+.documents-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+}
+
+.document-row{
+
+    display:flex;
+
+    gap:14px;
+
+    align-items:center;
+}
+
+.document-input{
+
+    flex:1;
+}
+
+/*=========================================================
+BUTTONS
+=========================================================*/
+
+.add-document-button{
+
+    align-self:flex-start;
+
+    padding:14px 26px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#ffffff;
+
+    color:#444;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    box-shadow:
+            0 8px 18px rgba(0,0,0,.08);
+}
+
+.add-document-button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+            0 12px 24px rgba(0,0,0,.12);
+}
+
+.delete-document-button{
+
+    padding:14px 22px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:#fee2e2;
+
+    color:#dc2626;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.delete-document-button:hover{
+
+    background:#fecaca;
+
+    transform:translateY(-2px);
+}
+/*=========================================================
+    ACTIONS
+=========================================================*/
+
+.service-actions{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    margin-top:28px;
+}
+
+.save-service-button{
+
+    min-width:180px;
+
+    padding:16px 34px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+            135deg,
+            #5b3df5,
+            #4d32d9
+    );
+
+    color:#fff;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.35s ease;
+
+    box-shadow:
+            0 14px 30px rgba(91,61,245,.28);
+}
+
+.save-service-button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+            0 20px 36px rgba(91,61,245,.36);
+}
+
+.save-service-button:active{
+
+    transform:translateY(0);
+}
+
+/*=========================================================
+    SCROLLBAR
+=========================================================*/
+
+::-webkit-scrollbar{
+
+    width:10px;
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#b99555;
+
+    border-radius:999px;
+}
+
+::-webkit-scrollbar-track{
+
+    background:transparent;
+}
+
+/*=========================================================
+    RESPONSIVE
+=========================================================*/
+
+@media (max-width:992px){
+
+    .page-bg{
+
+        padding:24px;
+    }
+
+    .create-service-title{
+
+        font-size:2rem;
+    }
+
+    .service-card{
+
+        padding:20px;
+    }
+
+    .section-title{
+
+        font-size:1.7rem;
+    }
+
+    .document-row{
+
+        flex-direction:column;
+
+        align-items:stretch;
+    }
+
+    .delete-document-button{
+
+        width:100%;
+    }
+}
+
+@media (max-width:768px){
+
+    .page-bg{
+
+        padding:18px;
+    }
+
+    .create-service-title{
+
+        font-size:1.8rem;
+    }
+
+    .service-card{
+
+        border-radius:20px;
+
+        padding:18px;
+    }
+
+    .section-title{
+
+        font-size:1.5rem;
+    }
+
+    .form-input,
+    .form-textarea,
+    .document-input{
+
+        padding:14px 16px;
+    }
+
+    .add-document-button{
+
+        width:100%;
+    }
+
+    .service-actions{
+
+        justify-content:stretch;
+    }
+
+    .save-service-button{
+
+        width:100%;
+    }
+}
+
+/*=========================================================
+    REDUCED MOTION
+=========================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
+
+        scroll-behavior:auto !important;
+    }
+}

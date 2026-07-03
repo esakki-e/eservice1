@@ -1,6 +1,7 @@
 
 import { useEffect, useState } from "react";
 import { API_URL } from "../../config";
+import "./CustomerProfileEdit.css";
 
 import axios from "axios";
 
@@ -163,92 +164,56 @@ function CustomerProfileEdit() {
         <>
             <CustomerNavbar />
 
-            <div className="
-            min-h-screen
-            bg-gradient-to-b
-            from-blue-300
-            via-slate-50
-            to-blue-100
-            py-10
-            px-4
-        ">
+            <div className="customer-profile-page">
 
-                <div className="
-                max-w-4xl
-                mx-auto
-            ">
+                <div className="profile-container">
 
                     {/* Header */}
 
-                    <div className="mb-6">
+                    <div className="profile-edit-header">
 
-                        <h2 className="
-                        text-4xl
-                        font-bold
-                        text-slate-800
-                    ">
+                        <h2 className="profile-edit-title">
+
                             Edit Profile
+
                         </h2>
 
-                        <p className="
-                        text-slate-600
-                        mt-2
-                    ">
+                        <p className="profile-edit-subtitle">
+
                             Keep your details up to date before applying for services.
+
                         </p>
 
                     </div>
 
                     {/* Mobile Verified */}
 
-                    <div className="
-                    bg-green-50
-                    border
-                    border-green-200
-                    rounded-3xl
-                    p-5
-                    mb-6
-                    shadow-sm
-                ">
+                    <div className="verified-card">
 
-                        <div className="
-                        flex
-                        items-center
-                        gap-3
-                    ">
+                        <div className="verified-content">
 
-                            <div className="
-                            w-10
-                            h-10
-                            rounded-full
-                            bg-green-100
-                            flex
-                            items-center
-                            justify-center
-                            text-green-600
-                            font-bold
-                        ">
+                            <div className="verified-icon">
+
                                 ✓
+
                             </div>
 
                             <div>
 
-                                <p className="
-                                text-green-700
-                                font-semibold
-                            ">
+                                <p className="verified-title">
+
                                     Mobile Verified
+
                                 </p>
 
-                                <p className="
-                                text-slate-800
-                                font-medium
-                            ">
+                                <p className="verified-phone">
+
                                     {
                                         localStorage.getItem(
                                             "customerPhone"
                                         )
                                     }
+
                                 </p>
 
                             </div>
@@ -259,95 +224,62 @@ function CustomerProfileEdit() {
 
                     {/* Basic Details */}
 
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    border
-                    shadow-sm
-                    p-6
-                    mb-6
-                ">
+                    <div className="profile-form-card">
 
-                        <h3 className="
-                        text-xl
-                        font-bold
-                        text-slate-800
-                        mb-6
-                    ">
+                        <h3 className="form-section-title">
+
                             Basic Details
+
                         </h3>
 
-                        <div className="
-                        grid
-                        md:grid-cols-2
-                        gap-5
-                    ">
+                        <div className="profile-form-grid">
 
-                            <div>
+                            <div className="form-group">
 
-                                <label className="
-                                block
-                                mb-2
-                                text-slate-700
-                                font-medium
-                            ">
+                                <label className="form-label">
+
                                     Full Name
+
                                 </label>
 
                                 <input
-                                    className="
-                                    w-full
-                                    px-4
-                                    py-3
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    bg-slate-50
-                                    focus:outline-none
-                                    focus:ring-2
-                                    focus:ring-blue-500
-                                "
+
+                                    className="form-input"
+
                                     value={customerName}
+
                                     onChange={(e) =>
                                         setCustomerName(
                                             e.target.value
                                         )
                                     }
+
                                 />
 
                             </div>
 
-                            <div>
+                            <div className="form-group">
 
-                                <label className="
-                                block
-                                mb-2
-                                text-slate-700
-                                font-medium
-                            ">
+                                <label className="form-label">
+
                                     Date of Birth
+
                                 </label>
 
                                 <input
+
                                     type="date"
-                                    className="
-                                    w-full
-                                    px-4
-                                    py-3
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    bg-slate-50
-                                    focus:outline-none
-                                    focus:ring-2
-                                    focus:ring-blue-500
-                                "
+
+                                    className="form-input"
+
                                     value={dob}
+
                                     onChange={(e) =>
                                         setDob(
                                             e.target.value
                                         )
                                     }
+
                                 />
 
                             </div>
@@ -358,77 +290,63 @@ function CustomerProfileEdit() {
 
                     {/* Additional Information */}
 
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    border
-                    shadow-sm
-                    p-6
-                    mb-6
-                ">
+                    <div className="profile-form-card">
 
-                        <h3 className="
-                        text-xl
-                        font-bold
-                        text-slate-800
-                        mb-6
-                    ">
+                        <h3 className="form-section-title">
+
                             Additional Information
+
                         </h3>
 
-                        <div className="
-                        grid
-                        md:grid-cols-2
-                        gap-5
-                    ">
+                        <div className="profile-form-grid">
 
-                            {fields.map(field => (
+                            {
 
-                                <div key={field.id}>
+                                fields.map(field => (
 
-                                    <label className="
-                                    block
-                                    mb-2
-                                    text-slate-700
-                                    font-medium
-                                ">
-                                        {field.fieldName}
-                                    </label>
+                                    <div
+                                        key={field.id}
+                                        className="form-group"
+                                    >
 
-                                    <input
-                                        type={
-                                            field.fieldType === "NUMBER"
-                                                ? "number"
-                                                : "text"
-                                        }
-                                        className="
-                                        w-full
-                                        px-4
-                                        py-3
-                                        rounded-2xl
-                                        border
-                                        border-slate-200
-                                        bg-slate-50
-                                        focus:outline-none
-                                        focus:ring-2
-                                        focus:ring-blue-500
-                                    "
-                                        value={
-                                            values[field.id]
-                                            || ""
-                                        }
-                                        onChange={(e) =>
-                                            setValues({
-                                                ...values,
-                                                [field.id]:
-                                                e.target.value
-                                            })
-                                        }
-                                    />
+                                        <label className="form-label">
 
-                                </div>
+                                            {field.fieldName}
 
-                            ))}
+                                        </label>
+
+                                        <input
+
+                                            type={
+                                                field.fieldType === "NUMBER"
+                                                    ? "number"
+                                                    : "text"
+                                            }
+
+                                            className="form-input"
+
+                                            value={
+                                                values[field.id] || ""
+                                            }
+
+                                            onChange={(e) =>
+                                                setValues({
+
+                                                    ...values,
+
+                                                    [field.id]:
+                                                    e.target.value
+
+                                                })
+                                            }
+
+                                        />
+
+                                    </div>
+
+                                ))
+
+                            }
 
                         </div>
 
@@ -437,28 +355,21 @@ function CustomerProfileEdit() {
                     {/* Save Button */}
 
                     <button
+
                         onClick={updateProfile}
-                        className="
-                        w-full
-                        py-4
-                        rounded-3xl
-                        font-semibold
-                        text-white
-                        bg-gradient-to-r
-                        from-blue-600
-                        to-indigo-600
-                        shadow-lg
-                        hover:from-blue-700
-                        hover:to-indigo-700
-                        transition
-                    "
+
+                        className="save-profile-button"
+
                     >
+
                         💾 Save Changes
+
                     </button>
 
                 </div>
 
             </div>
+
         </>
     );
 }

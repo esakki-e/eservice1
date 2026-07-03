@@ -16,7 +16,7 @@ import {
     CartesianGrid,
     Tooltip
 } from "recharts";
-
+import "./EmployeePerformance.css"
 function EmployeePerformance() {
 
     const { id } =
@@ -58,23 +58,19 @@ function EmployeePerformance() {
             });
 
     }, [id]);
-
     if (!employee) {
 
         return (
 
             <DashboardLayout>
 
-                <div className="
-                    min-h-screen
-                    flex
-                    items-center
-                    justify-center
-                    text-xl
-                    text-slate-500
-                ">
+                <div className="page-bg">
 
-                    Loading Employee...
+                    <div className="employee-details-loading">
+
+                        Loading Employee...
+
+                    </div>
 
                 </div>
 
@@ -83,8 +79,11 @@ function EmployeePerformance() {
         );
 
     }
+
     const currentRevenue = employee.monthRevenue || 0;
+
     const bestRevenue = employee.bestMonthRevenue || 0;
+
     const revenueProgress =
         bestRevenue > 0
             ? (currentRevenue / bestRevenue) * 100
@@ -94,1143 +93,748 @@ function EmployeePerformance() {
 
         <DashboardLayout>
 
-            <div className="
-                min-h-screen
-                bg-slate-50
-                p-8
-            ">
+            <div className="page-bg">
 
-                <div className="
-                    max-w-7xl
-                    mx-auto
-                ">
+                <div className="employee-details-page">
 
-                    {/* Back */}
+                    <div className="employee-details-container">
 
-                    <Link
-                        to="/employees"
-                        className="
-                            inline-flex
-                            items-center
-                            gap-2
-                            text-blue-600
-                            font-medium
-                            hover:text-blue-800
-                            mb-6
-                        "
-                    >
-                        ← Back to Employees
-                    </Link>
+                        {/* Back */}
 
-                    {/* Header */}
-
-                    <div
-                        className="
-                            bg-white
-                            rounded-3xl
-                            shadow-sm
-                            border
-                            p-8
-                            mb-8
-                        "
-                    >
-
-                        <div
-                            className="
-                                flex
-                                flex-col
-                                md:flex-row
-                                justify-between
-                                items-start
-                            "
+                        <Link
+                            to="/employees"
+                            className="back-button"
                         >
 
-                            <div
-                                className="
-                                    flex
-                                    gap-6
-                                    items-center
-                                "
-                            >
+                            ← Back to Employees
 
-                                <div
-                                    className="
-                                        w-24
-                                        h-24
-                                        rounded-full
-                                        bg-blue-600
-                                        text-white
-                                        flex
-                                        items-center
-                                        justify-center
-                                        text-4xl
-                                        font-bold
-                                    "
-                                >
+                        </Link>
 
-                                    {
-                                        employee.name
-                                            ?.charAt(0)
-                                            ?.toUpperCase()
-                                    }
+                        {/* Header */}
 
-                                </div>
+                        <div className="employee-profile-card">
 
-                                <div>
+                            <div className="employee-profile-header">
 
-                                    <h1
-                                        className="
-                                            text-4xl
-                                            font-bold
-                                            text-slate-800
-                                        "
-                                    >
-                                        {employee.name}
-                                    </h1>
+                                <div className="employee-profile-info">
 
-                                    <p
-                                        className="
-                                            text-slate-500
-                                            mt-2
-                                        "
-                                    >
-                                        Employee ID :
-                                        {" "}
-                                        #{employee.id}
-                                    </p>
+                                    <div className="employee-avatar">
 
-                                    <p
-                                        className="
-                                            text-slate-500
-                                        "
-                                    >
-                                        {employee.phoneNumber}
-                                    </p>
+                                        {
+
+                                            employee.name
+                                                ?.charAt(0)
+                                                ?.toUpperCase()
+
+                                        }
+
+                                    </div>
+
+                                    <div>
+
+                                        <h1 className="employee-profile-name">
+
+                                            {employee.name}
+
+                                        </h1>
+
+                                        <p className="employee-id">
+
+                                            Employee ID : #{employee.id}
+
+                                        </p>
+
+                                        <p className="employee-phone">
+
+                                            {employee.phoneNumber}
+
+                                        </p>
+
+                                    </div>
 
                                 </div>
 
-                            </div>
-
-                            <div
-                                className="
-                                    mt-6
-                                    md:mt-0
-                                "
-                            >
+                                <div className="employee-status-wrapper">
 
                                 <span
+
                                     className={
+
                                         employee.active
+
                                             ?
-                                            `
-                                            px-5
-                                            py-2
-                                            rounded-full
-                                            bg-emerald-100
-                                            text-emerald-700
-                                            font-semibold
-                                            `
+
+                                            "employee-status active-status"
+
                                             :
-                                            `
-                                            px-5
-                                            py-2
-                                            rounded-full
-                                            bg-red-100
-                                            text-red-700
-                                            font-semibold
-                                            `
+
+                                            "employee-status inactive-status"
+
                                     }
+
                                 >
 
                                     {
+
                                         employee.active
+
                                             ?
+
                                             "Active"
+
                                             :
+
                                             "Inactive"
+
                                     }
 
                                 </span>
 
+                                </div>
+
                             </div>
 
                         </div>
+                        {/* Summary Cards */}
 
-                    </div>
+                        <div className="employee-summary-grid">
 
-                    {/* Summary Cards */}
+                            {/* Assigned */}
 
-                    <div
-                        className="
-                            grid
-                            grid-cols-1
-                            md:grid-cols-2
-                            xl:grid-cols-3
-                            gap-6
-                            mb-8
-                        "
-                    >
+                            <div className="summary-card">
 
-                        {/* Assigned */}
+                                <p className="summary-label">
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
+                                    Assigned Tasks
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                Assigned Tasks
-                            </p>
+                                </p>
 
-                            <h2
-                                className="
-                                    text-5xl
-                                    font-bold
-                                    text-blue-600
-                                    mt-3
-                                "
-                            >
-                                {
-                                    employee.assignedTasks
-                                }
-                            </h2>
+                                <h2 className="summary-value assigned-value">
 
-                        </div>
+                                    {employee.assignedTasks}
 
-                        {/* Completed */}
+                                </h2>
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
+                            </div>
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                Completed Tasks
-                            </p>
+                            {/* Completed */}
 
-                            <h2
-                                className="
-                                    text-5xl
-                                    font-bold
-                                    text-emerald-600
-                                    mt-3
-                                "
-                            >
-                                {
-                                    employee.completedTasks
-                                }
-                            </h2>
+                            <div className="summary-card">
 
-                        </div>
+                                <p className="summary-label">
 
-                        {/* Pending */}
+                                    Completed Tasks
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
+                                </p>
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                Pending Tasks
-                            </p>
+                                <h2 className="summary-value completed-value">
 
-                            <h2
-                                className="
-                                    text-5xl
-                                    font-bold
-                                    text-orange-500
-                                    mt-3
-                                "
-                            >
-                                {
-                                    employee.pendingTasks
-                                }
-                            </h2>
+                                    {employee.completedTasks}
 
-                        </div>
+                                </h2>
 
-                        {/* In Progress */}
+                            </div>
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
+                            {/* Pending */}
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                In Progress
-                            </p>
+                            <div className="summary-card">
 
-                            <h2
-                                className="
-                                    text-5xl
-                                    font-bold
-                                    text-violet-600
-                                    mt-3
-                                "
-                            >
-                                {
-                                    employee.inProgressTasks
-                                }
-                            </h2>
+                                <p className="summary-label">
 
-                        </div>
+                                    Pending Tasks
 
-                        {/* This Month */}
+                                </p>
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
+                                <h2 className="summary-value pending-value">
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                This Month
-                            </p>
+                                    {employee.pendingTasks}
 
-                            <h2
-                                className="
-                                    text-5xl
-                                    font-bold
-                                    text-cyan-600
-                                    mt-3
-                                "
-                            >
-                                {
-                                    employee.thisMonthRequests
-                                }
-                            </h2>
+                                </h2>
 
-                        </div>
+                            </div>
 
-                        {/* Completion */}
+                            {/* In Progress */}
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
+                            <div className="summary-card">
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                Completion Rate
-                            </p>
+                                <p className="summary-label">
 
-                            <h2
-                                className="
-                                    text-5xl
-                                    font-bold
-                                    text-green-600
-                                    mt-3
-                                "
-                            >
-                                {
-                                    employee.completionPercentage
-                                }%
-                            </h2>
+                                    In Progress
 
-                        </div>
+                                </p>
 
-                    </div>
-                    {/* Revenue & Performance */}
+                                <h2 className="summary-value progress-value">
 
-                    <div
-                        className="
-                            grid
-                            grid-cols-1
-                            lg:grid-cols-3
-                            gap-6
-                            mb-8
-                        "
-                    >
+                                    {employee.inProgressTasks}
 
-                        {/* Total Revenue */}
+                                </h2>
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                border
-                                shadow-sm
-                                p-6
-                            "
-                        >
+                            </div>
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                Total Revenue
-                            </p>
+                            {/* This Month */}
 
-                            <h2
-                                className="
-                                    text-4xl
-                                    font-bold
-                                    text-green-600
-                                    mt-3
-                                "
-                            >
-                                ₹
-                                {
-                                    employee.totalRevenue
-                                }
-                            </h2>
+                            <div className="summary-card">
 
-                            <p
-                                className="
-                                    text-green-600
-                                    mt-3
-                                    text-sm
-                                "
-                            >
-                                Revenue generated
-                            </p>
+                                <p className="summary-label">
 
-                        </div>
+                                    This Month
 
-                        {/* Paid Requests */}
+                                </p>
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                border
-                                shadow-sm
-                                p-6
-                            "
-                        >
+                                <h2 className="summary-value month-value">
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                Paid Requests
-                            </p>
+                                    {employee.thisMonthRequests}
 
-                            <h2
-                                className="
-                                    text-4xl
-                                    font-bold
-                                    text-blue-600
-                                    mt-3
-                                "
-                            >
-                                {
-                                    employee.paidRequests
-                                }
-                            </h2>
+                                </h2>
 
-                            <p
-                                className="
-                                    text-blue-600
-                                    mt-3
-                                    text-sm
-                                "
-                            >
-                                Successfully collected
-                            </p>
+                            </div>
 
-                        </div>
+                            {/* Completion */}
 
-                        {/* Avg Revenue */}
+                            <div className="summary-card">
 
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                border
-                                shadow-sm
-                                p-6
-                            "
-                        >
+                                <p className="summary-label">
 
-                            <p
-                                className="
-                                    text-slate-500
-                                    text-sm
-                                "
-                            >
-                                Average Revenue
-                            </p>
+                                    Completion Rate
 
-                            <h2
-                                className="
-                                    text-4xl
-                                    font-bold
-                                    text-violet-600
-                                    mt-3
-                                "
-                            >
-                                ₹
-                                {
-                                    Number(employee.averageRevenue || 0).toFixed(2)
-                                }
-                            </h2>
+                                </p>
 
-                            <p
-                                className="
-                                    text-violet-600
-                                    mt-3
-                                    text-sm
-                                "
-                            >
-                                Per completed request
-                            </p>
+                                <h2 className="summary-value success-value">
 
-                        </div>
+                                    {employee.completionPercentage}%
 
-                    </div>
-
-                    {/* Performance */}
-
-                    <div
-                        className="
-        bg-white
-        rounded-3xl
-        border
-        shadow-sm
-        p-8
-        mb-8
-    "
-                    >
-
-                        <div className="flex justify-between items-center mb-8">
-
-                            <h2 className="text-3xl font-bold">
-                                Performance Trend
-                            </h2>
-
-                            <div
-                                className="
-                bg-slate-100
-                rounded-full
-                p-1
-                flex
-            "
-                            >
-
-                                <button
-                                    onClick={() => setChartType("revenue")}
-                                    className={`
-                    px-8
-                    py-3
-                    rounded-full
-                    transition
-
-                    ${chartType === "revenue"
-                                        ? "bg-blue-600 text-white"
-                                        : "text-slate-600"}
-                `}
-                                >
-                                    💰 Revenue
-                                </button>
-
-                                <button
-                                    onClick={() => setChartType("completed")}
-                                    className={`
-                    px-8
-                    py-3
-                    rounded-full
-                    transition
-
-                    ${chartType === "completed"
-                                        ? "bg-green-600 text-white"
-                                        : "text-slate-600"}
-                `}
-                                >
-                                    ✅ Completed
-                                </button>
+                                </h2>
 
                             </div>
 
                         </div>
 
-                        <div className="h-96">
+                        {/* Revenue & Performance */}
 
-                            <ResponsiveContainer
-                                width="100%"
-                                height="100%"
-                            >
+                        <div className="revenue-grid">
 
-                                <LineChart
-                                    data={
-                                        chartType === "revenue"
-                                            ? employee.revenueTrend
-                                            : employee.completedTrend
-                                    }
-                                >
+                            {/* Total Revenue */}
 
-                                    <CartesianGrid strokeDasharray="3 3" />
+                            <div className="revenue-card">
 
-                                    <XAxis dataKey="month" />
+                                <p className="summary-label">
 
-                                    <YAxis />
+                                    Total Revenue
 
-                                    <Tooltip />
+                                </p>
 
-                                    <Line
-                                        type="monotone"
-                                        dataKey={
+                                <h2 className="revenue-value total-revenue">
+
+                                    ₹{employee.totalRevenue}
+
+                                </h2>
+
+                                <p className="revenue-note revenue-green">
+
+                                    Revenue generated
+
+                                </p>
+
+                            </div>
+
+                            {/* Paid Requests */}
+
+                            <div className="revenue-card">
+
+                                <p className="summary-label">
+
+                                    Paid Requests
+
+                                </p>
+
+                                <h2 className="revenue-value paid-value">
+
+                                    {employee.paidRequests}
+
+                                </h2>
+
+                                <p className="revenue-note revenue-blue">
+
+                                    Successfully collected
+
+                                </p>
+
+                            </div>
+
+                            {/* Average Revenue */}
+
+                            <div className="revenue-card">
+
+                                <p className="summary-label">
+
+                                    Average Revenue
+
+                                </p>
+
+                                <h2 className="revenue-value average-value">
+
+                                    ₹{Number(employee.averageRevenue || 0).toFixed(2)}
+
+                                </h2>
+
+                                <p className="revenue-note revenue-purple">
+
+                                    Per completed request
+
+                                </p>
+
+                            </div>
+
+                        </div>
+                        {/* Performance */}
+
+                        <div className="performance-card">
+
+                            <div className="performance-header">
+
+                                <h2 className="performance-title">
+
+                                    Performance Trend
+
+                                </h2>
+
+                                <div className="chart-toggle">
+
+                                    <button
+                                        onClick={() => setChartType("revenue")}
+                                        className={`chart-button ${
                                             chartType === "revenue"
-                                                ? "revenue"
-                                                : "completed"
-                                        }
-                                        stroke={
-                                            chartType === "revenue"
-                                                ? "#2563EB"
-                                                : "#16A34A"
-                                        }
-                                        strokeWidth={4}
-                                    />
-
-                                </LineChart>
-
-                            </ResponsiveContainer>
-
-                        </div>
-
-                        <div className="mt-10 space-y-8">
-
-                            <div>
-
-                                <div className="flex justify-between mb-2">
-
-                <span className="font-medium">
-                    Completion Rate
-                </span>
-
-                                    <span className="text-green-600 font-semibold">
-                    {employee.completionPercentage}%
-                </span>
-
-                                </div>
-
-                                <div className="h-3 rounded-full bg-slate-200">
-
-                                    <div
-                                        className="h-3 rounded-full bg-green-500"
-                                        style={{
-                                            width: `${employee.completionPercentage}%`
-                                        }}
-                                    />
-
-                                </div>
-
-                            </div>
-
-                            <div>
-
-                                <div className="flex justify-between mb-2">
-
-                <span className="font-medium">
-                    Progress to Best Month
-                </span>
-
-                                    <span className="text-blue-600 font-semibold">
-                    {revenueProgress.toFixed(0)}%
-                </span>
-
-                                </div>
-
-                                <div className="h-3 rounded-full bg-slate-200">
-
-                                    <div
-                                        className="h-3 rounded-full bg-blue-500"
-                                        style={{
-                                            width: `${Math.min(revenueProgress,100)}%`
-                                        }}
-                                    />
-
-                                </div>
-
-                                <div className="flex justify-between mt-3 text-sm text-slate-500">
-
-                <span>
-                    Current : ₹{currentRevenue}
-                </span>
-
-                                    <span>
-                    Best : ₹{bestRevenue}
-                </span>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-                    {/* Monthly Statistics */}
-
-                    <div
-                        className="
-                            grid
-                            grid-cols-1
-                            md:grid-cols-2
-                            xl:grid-cols-4
-                            gap-6
-                            mb-8
-                        "
-                    >
-
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
-
-                            <p className="text-slate-500">
-                                This Month
-                            </p>
-
-                            <h2
-                                className="
-                                    text-4xl
-                                    font-bold
-                                    mt-2
-                                "
-                            >
-                                {
-                                    employee.thisMonthRequests
-                                }
-                            </h2>
-
-                            <p
-                                className="
-                                    text-sm
-                                    text-slate-500
-                                    mt-2
-                                "
-                            >
-                                Requests handled
-                            </p>
-
-                        </div>
-
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
-
-                            <p className="text-slate-500">
-                                This Month Revenue
-                            </p>
-
-                            <h2
-                                className="
-                                    text-4xl
-                                    font-bold
-                                    text-green-600
-                                    mt-2
-                                "
-                            >
-                                ₹
-                                {
-                                    employee.monthRevenue
-                                }
-                            </h2>
-
-                        </div>
-
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                            "
-                        >
-
-                            <p className="text-slate-500">
-                                Best Month
-                            </p>
-
-                            <h2
-                                className="
-        text-3xl
-        font-bold
-        text-indigo-600
-        mt-2
-    "
-                            >
-                                {employee.bestMonth}
-                            </h2>
-
-                            <p
-                                className="
-        text-green-600
-        font-semibold
-        mt-3
-    "
-                            >
-                                ₹{bestRevenue}
-                            </p>
-
-                        </div>
-
-                        <div
-                            className="
-                                bg-white
-                                rounded-3xl
-                                shadow-sm
-                                border
-                                p-6
-                                "
-                        >
-
-                            <p className="text-slate-500">
-                                Success Score
-                            </p>
-
-                            <h2
-                                className="
-                                text-4xl
-                                font-bold
-                                text-emerald-600
-                                mt-2
-                                "
-                            >
-                                {
-                                    employee.successScore
-                                }
-                                %
-                            </h2>
-
-                        </div>
-
-                    </div>
-                    {/* Recent Requests */}
-
-                    <div
-                        className="
-                            bg-white
-                            rounded-3xl
-                            shadow-sm
-                            border
-                            overflow-hidden
-                            mb-8
-                        "
-                    >
-
-                        <div
-                            className="
-                                p-6
-                                border-b
-                            "
-                        >
-
-                            <h2
-                                className="
-                                    text-2xl
-                                    font-bold
-                                    text-slate-800
-                                "
-                            >
-                                Recent Requests
-                            </h2>
-
-                            <p
-                                className="
-                                    text-slate-500
-                                    mt-1
-                                "
-                            >
-                                Latest requests handled by this employee.
-                            </p>
-
-                        </div>
-
-                        <table
-                            className="w-full"
-                        >
-
-                            <thead
-                                className="bg-slate-50"
-                            >
-
-                            <tr>
-
-                                <th className="text-left p-4">
-                                    ID
-                                </th>
-
-                                <th className="text-left p-4">
-                                    Customer
-                                </th>
-
-                                <th className="text-left p-4">
-                                    Service
-                                </th>
-
-                                <th className="text-left p-4">
-                                    Amount
-                                </th>
-
-                                <th className="text-left p-4">
-                                    Payment
-                                </th>
-
-                                <th className="text-left p-4">
-                                    Status
-                                </th>
-
-                            </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                            {
-                                employee.recentRequests?.map(request => (
-
-                                    <tr
-                                        key={request.id}
-                                        className="
-                                            border-t
-                                            hover:bg-slate-50
-                                        "
+                                                ? "chart-button-active revenue-active"
+                                                : ""
+                                        }`}
                                     >
 
-                                        <td className="p-4">
-                                            #{request.id}
-                                        </td>
+                                        💰 Revenue
 
-                                        <td className="p-4">
-                                            {request.customerName}
-                                        </td>
+                                    </button>
 
-                                        <td className="p-4">
-                                            {request.serviceName}
-                                        </td>
+                                    <button
+                                        onClick={() => setChartType("completed")}
+                                        className={`chart-button ${
+                                            chartType === "completed"
+                                                ? "chart-button-active completed-active"
+                                                : ""
+                                        }`}
+                                    >
 
-                                        <td className="p-4 font-semibold text-green-600">
-                                            {request.amount ? `₹${request.amount}` : "--"}                                        </td>
+                                        ✅ Completed
 
-                                        <td className="p-4">
+                                    </button>
 
-                                            {
-                                                request.paymentStatus === "PAID"
+                                </div>
 
-                                                    ?
+                            </div>
 
-                                                    <span
-                                                        className="
-                                                            px-3
-                                                            py-1
-                                                            rounded-full
-                                                            bg-green-100
-                                                            text-green-700
-                                                            text-sm
-                                                            font-semibold
-                                                        "
-                                                    >
-                                                        PAID
-                                                    </span>
+                            <div className="performance-chart">
 
-                                                    :
+                                <ResponsiveContainer
+                                    width="100%"
+                                    height="100%"
+                                >
 
-                                                    <span
-                                                        className="
-                                                            px-3
-                                                            py-1
-                                                            rounded-full
-                                                            bg-red-100
-                                                            text-red-700
-                                                            text-sm
-                                                            font-semibold
-                                                        "
-                                                    >
-                                                        UNPAID
-                                                    </span>
+                                    <LineChart
+                                        data={
+                                            chartType === "revenue"
+                                                ? employee.revenueTrend
+                                                : employee.completedTrend
+                                        }
+                                    >
 
+                                        <CartesianGrid strokeDasharray="3 3" />
+
+                                        <XAxis dataKey="month" />
+
+                                        <YAxis />
+
+                                        <Tooltip />
+
+                                        <Line
+                                            type="monotone"
+                                            dataKey={
+                                                chartType === "revenue"
+                                                    ? "revenue"
+                                                    : "completed"
                                             }
+                                            stroke={
+                                                chartType === "revenue"
+                                                    ? "#2563EB"
+                                                    : "#16A34A"
+                                            }
+                                            strokeWidth={4}
+                                        />
 
-                                        </td>
+                                    </LineChart>
 
-                                        <td className="p-4">
+                                </ResponsiveContainer>
 
-                                            <span
-                                                className="
-                                                    px-3
-                                                    py-1
-                                                    rounded-full
-                                                    bg-blue-100
-                                                    text-blue-700
-                                                    text-sm
-                                                    font-semibold
-                                                "
-                                            >
+                            </div>
 
-                                                {request.status}
+                            <div className="performance-metrics">
 
-                                            </span>
+                                <div className="metric-item">
 
-                                        </td>
+                                    <div className="metric-header">
 
-                                    </tr>
+                                    <span className="metric-label">
 
-                                ))
-                            }
+                                        Completion Rate
 
-                            </tbody>
+                                    </span>
 
-                        </table>
+                                        <span className="metric-value completion-text">
 
-                    </div>
+                                        {employee.completionPercentage}%
 
-                    {/* Performance Insight */}
+                                    </span>
 
-                    <div
-                        className="
-                            bg-gradient-to-r
-                            from-blue-600
-                            to-indigo-600
-                            rounded-3xl
-                            p-8
-                            text-white
-                            shadow-xl
-                            mb-8
-                        "
-                    >
+                                    </div>
 
-                        <h2
-                            className="
-                                text-2xl
-                                font-bold
-                            "
-                        >
-                            Performance Insight
-                        </h2>
+                                    <div className="progress-track">
 
-                        <p
-                            className="
-                                mt-3
-                                text-blue-100
-                                leading-7
-                            "
-                        >
+                                        <div
+                                            className="progress-fill completion-fill"
+                                            style={{
+                                                width: `${employee.completionPercentage}%`
+                                            }}
+                                        />
 
-                            {
+                                    </div>
 
-                                revenueProgress >= 100
+                                </div>
 
-                                    ?
+                                <div className="metric-item">
 
-                                    "🏆 Amazing! You've matched or exceeded your personal best month."
+                                    <div className="metric-header">
 
-                                    :
+                                    <span className="metric-label">
 
-                                    revenueProgress >= 80
+                                        Progress to Best Month
+
+                                    </span>
+
+                                        <span className="metric-value revenue-text">
+
+                                        {revenueProgress.toFixed(0)}%
+
+                                    </span>
+
+                                    </div>
+
+                                    <div className="progress-track">
+
+                                        <div
+                                            className="progress-fill revenue-fill"
+                                            style={{
+                                                width: `${Math.min(revenueProgress,100)}%`
+                                            }}
+                                        />
+
+                                    </div>
+
+                                    <div className="metric-footer">
+
+                                    <span>
+
+                                        Current : ₹{currentRevenue}
+
+                                    </span>
+
+                                        <span>
+
+                                        Best : ₹{bestRevenue}
+
+                                    </span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        {/* Monthly Statistics */}
+
+                        <div className="monthly-stats-grid">
+
+                            {/* This Month */}
+
+                            <div className="monthly-stat-card">
+
+                                <p className="monthly-stat-label">
+
+                                    This Month
+
+                                </p>
+
+                                <h2 className="monthly-stat-value">
+
+                                    {employee.thisMonthRequests}
+
+                                </h2>
+
+                                <p className="monthly-stat-note">
+
+                                    Requests handled
+
+                                </p>
+
+                            </div>
+
+                            {/* This Month Revenue */}
+
+                            <div className="monthly-stat-card">
+
+                                <p className="monthly-stat-label">
+
+                                    This Month Revenue
+
+                                </p>
+
+                                <h2 className="monthly-stat-value revenue-color">
+
+                                    ₹{employee.monthRevenue}
+
+                                </h2>
+
+                            </div>
+
+                            {/* Best Month */}
+
+                            <div className="monthly-stat-card">
+
+                                <p className="monthly-stat-label">
+
+                                    Best Month
+
+                                </p>
+
+                                <h2 className="monthly-best-month">
+
+                                    {employee.bestMonth}
+
+                                </h2>
+
+                                <p className="monthly-best-revenue">
+
+                                    ₹{bestRevenue}
+
+                                </p>
+
+                            </div>
+
+                            {/* Success Score */}
+
+                            <div className="monthly-stat-card">
+
+                                <p className="monthly-stat-label">
+
+                                    Success Score
+
+                                </p>
+
+                                <h2 className="monthly-stat-value success-color">
+
+                                    {employee.successScore}%
+
+                                </h2>
+
+                            </div>
+
+                        </div>
+                        {/* Recent Requests */}
+
+                        <div className="recent-requests-card">
+
+                            <div className="recent-requests-header">
+
+                                <h2 className="recent-requests-title">
+
+                                    Recent Requests
+
+                                </h2>
+
+                                <p className="recent-requests-subtitle">
+
+                                    Latest requests handled by this employee.
+
+                                </p>
+
+                            </div>
+
+                            <table className="recent-requests-table">
+
+                                <thead className="recent-requests-table-header">
+
+                                <tr>
+
+                                    <th className="table-heading">ID</th>
+
+                                    <th className="table-heading">Customer</th>
+
+                                    <th className="table-heading">Service</th>
+
+                                    <th className="table-heading">Amount</th>
+
+                                    <th className="table-heading">Payment</th>
+
+                                    <th className="table-heading">Status</th>
+
+                                </tr>
+
+                                </thead>
+
+                                <tbody>
+
+                                {
+
+                                    employee.recentRequests?.map(request => (
+
+                                        <tr
+                                            key={request.id}
+                                            className="request-row"
+                                        >
+
+                                            <td className="table-cell">
+
+                                                #{request.id}
+
+                                            </td>
+
+                                            <td className="table-cell">
+
+                                                {request.customerName}
+
+                                            </td>
+
+                                            <td className="table-cell">
+
+                                                {request.serviceName}
+
+                                            </td>
+
+                                            <td className="table-cell amount-cell">
+
+                                                {
+
+                                                    request.amount
+
+                                                        ?
+
+                                                        `₹${request.amount}`
+
+                                                        :
+
+                                                        "--"
+
+                                                }
+
+                                            </td>
+
+                                            <td className="table-cell">
+
+                                                {
+
+                                                    request.paymentStatus === "PAID"
+
+                                                        ?
+
+                                                        <span className="payment-badge paid-badge">
+
+                                                            PAID
+
+                                                        </span>
+
+                                                        :
+
+                                                        <span className="payment-badge unpaid-badge">
+
+                                                            UNPAID
+
+                                                        </span>
+
+                                                }
+
+                                            </td>
+
+                                            <td className="table-cell">
+
+                                                <span className="status-badge request-status-badge">
+
+                                                    {request.status}
+
+                                                </span>
+
+                                            </td>
+
+                                        </tr>
+
+                                    ))
+
+                                }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                        {/* Performance Insight */}
+
+                        <div className="performance-insight-card">
+
+                            <h2 className="performance-insight-title">
+
+                                Performance Insight
+
+                            </h2>
+
+                            <p className="performance-insight-text">
+
+                                {
+
+                                    revenueProgress >= 100
 
                                         ?
 
-                                        "🔥 Excellent progress! You're very close to beating your best month."
+                                        "🏆 Amazing! You've matched or exceeded your personal best month."
 
                                         :
 
-                                        revenueProgress >= 60
+                                        revenueProgress >= 80
 
                                             ?
 
-                                            "👍 Good performance. Keep pushing toward your personal best."
+                                            "🔥 Excellent progress! You're very close to beating your best month."
 
                                             :
 
-                                            revenueProgress >= 40
+                                            revenueProgress >= 60
 
                                                 ?
 
-                                                "📈 You're making steady progress this month. Keep improving."
+                                                "👍 Good performance. Keep pushing toward your personal best."
 
                                                 :
 
-                                                "💪 There's plenty of room to improve and surpass your previous best."
+                                                revenueProgress >= 40
 
-                            }
+                                                    ?
 
-                        </p>
+                                                    "📈 You're making steady progress this month. Keep improving."
+
+                                                    :
+
+                                                    "💪 There's plenty of room to improve and surpass your previous best."
+
+                                }
+
+                            </p>
+
+                        </div>
 
                     </div>
 

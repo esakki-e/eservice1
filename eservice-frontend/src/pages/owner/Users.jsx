@@ -4,6 +4,7 @@ import Navbar from "../../components/Navbar";
 import { API_URL } from "../../config";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
+import "./Users.css"
 function Users() {
 
     const [users, setUsers] =
@@ -56,225 +57,199 @@ function Users() {
 
         loadUsers();
     };
-
     return (
+
         <DashboardLayout>
 
-            <div className="min-h-screen bg-slate-50 p-8">
+            <div className="page-bg">
 
-                <div className="max-w-7xl mx-auto">
+                <div className="users-page">
 
-                    {/* Header */}
+                    <div className="users-container">
 
-                    <div className="mb-8">
+                        {/* Header */}
 
-                        <h1 className="
-                        text-4xl
-                        font-bold
-                        text-slate-800
-                    ">
-                            Users
-                        </h1>
+                        <div className="users-header">
 
-                        <p className="
-                        text-slate-500
-                        mt-2
-                    ">
-                            Manage roles and access across the portal
-                        </p>
+                            <h1 className="users-title">
 
-                    </div>
+                                Users
 
-                    {/* Users Table */}
+                            </h1>
 
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    border
-                    shadow-sm
-                    overflow-hidden
-                ">
+                            <p className="users-subtitle">
 
-                        <table className="w-full">
+                                Manage roles and access across the portal
 
-                            <thead className="bg-slate-50">
+                            </p>
 
-                            <tr>
+                        </div>
 
-                                <th className="
-                                p-4
-                                text-left
-                            ">
-                                    Name
-                                </th>
+                        {/* Users Table */}
 
-                                <th className="
-                                p-4
-                                text-left
-                            ">
-                                    Phone
-                                </th>
+                        <div className="users-table-card">
 
-                                <th className="
-                                p-4
-                                text-left
-                            ">
-                                    Role
-                                </th>
+                            <table className="users-table">
 
-                                <th className="
-                                p-4
-                                text-right
-                            ">
-                                    Action
-                                </th>
+                                <thead className="users-table-header">
 
-                            </tr>
+                                <tr>
 
-                            </thead>
+                                    <th className="table-heading">
 
-                            <tbody>
+                                        Name
 
-                            {users.map(user => (
+                                    </th>
 
-                                <tr
-                                    key={user.id}
-                                    className="
-                                    border-t
-                                    hover:bg-slate-50
-                                    transition
-                                "
-                                >
+                                    <th className="table-heading">
 
-                                    <td className="p-4">
+                                        Phone
 
-                                        <div className="
-                                        flex
-                                        items-center
-                                        gap-3
-                                    ">
+                                    </th>
 
-                                            <div className="
-                                            w-10
-                                            h-10
-                                            rounded-full
-                                            bg-slate-200
-                                            flex
-                                            items-center
-                                            justify-center
-                                            font-semibold
-                                            text-slate-700
-                                        ">
-                                                {
-                                                    user.name
-                                                        ?.substring(0, 2)
-                                                        .toUpperCase()
-                                                }
-                                            </div>
+                                    <th className="table-heading">
 
-                                            <span className="
-                                            font-medium
-                                            text-slate-800
-                                        ">
-                                            {user.name}
-                                        </span>
+                                        Role
 
-                                        </div>
+                                    </th>
 
-                                    </td>
+                                    <th className="table-heading table-heading-right">
 
-                                    <td className="p-4 text-slate-600">
-                                        {user.phoneNumber}
-                                    </td>
+                                        Action
 
-                                    <td className="p-4">
-
-                                    <span
-                                        className={
-                                            user.role === "OWNER"
-                                                ? `
-                                                px-3
-                                                py-1
-                                                rounded-full
-                                                text-xs
-                                                font-semibold
-                                                bg-purple-100
-                                                text-purple-700
-                                                `
-                                                : user.role === "EMPLOYEE"
-                                                    ? `
-                                                    px-3
-                                                    py-1
-                                                    rounded-full
-                                                    text-xs
-                                                    font-semibold
-                                                    bg-blue-100
-                                                    text-blue-700
-                                                    `
-                                                    : `
-                                                    px-3
-                                                    py-1
-                                                    rounded-full
-                                                    text-xs
-                                                    font-semibold
-                                                    bg-emerald-100
-                                                    text-emerald-700
-                                                    `
-                                        }
-                                    >
-                                        {user.role}
-                                    </span>
-
-                                    </td>
-
-                                    <td className="
-                                    p-4
-                                    text-right
-                                ">
-
-                                        {user.role === "CUSTOMER" ? (
-
-                                            <button
-                                                onClick={() =>
-                                                    promoteUser(
-                                                        user.id
-                                                    )
-                                                }
-                                                className="
-                                                px-4
-                                                py-2
-                                                rounded-xl
-                                                bg-emerald-600
-                                                text-white
-                                                text-sm
-                                                font-medium
-                                                hover:bg-emerald-700
-                                                transition
-                                            "
-                                            >
-                                                Promote
-                                            </button>
-
-                                        ) : (
-
-                                            <span className="
-                                            text-slate-400
-                                            font-medium
-                                        ">
-                                            —
-                                        </span>
-
-                                        )}
-
-                                    </td>
+                                    </th>
 
                                 </tr>
 
-                            ))}
+                                </thead>
 
-                            </tbody>
+                                <tbody>
 
-                        </table>
+                                {
+
+                                    users.map(user => (
+
+                                        <tr
+
+                                            key={user.id}
+
+                                            className="user-row"
+
+                                        >
+
+                                            <td className="table-cell">
+
+                                                <div className="user-info">
+
+                                                    <div className="user-avatar">
+
+                                                        {
+
+                                                            user.name
+                                                                ?.substring(0, 2)
+                                                                .toUpperCase()
+
+                                                        }
+
+                                                    </div>
+
+                                                    <span className="user-name">
+
+                                                        {user.name}
+
+                                                    </span>
+
+                                                </div>
+
+                                            </td>
+
+                                            <td className="table-cell user-phone">
+
+                                                {user.phoneNumber}
+
+                                            </td>
+
+                                            <td className="table-cell">
+
+                                                <span
+
+                                                    className={
+
+                                                        user.role === "OWNER"
+
+                                                            ? "role-badge owner-role"
+
+                                                            : user.role === "EMPLOYEE"
+
+                                                                ? "role-badge employee-role"
+
+                                                                : "role-badge customer-role"
+
+                                                    }
+
+                                                >
+
+                                                    {user.role}
+
+                                                </span>
+
+                                            </td>
+
+                                            <td className="table-cell table-cell-right">
+
+                                                {
+
+                                                    user.role === "CUSTOMER"
+
+                                                        ? (
+
+                                                            <button
+
+                                                                onClick={() =>
+
+                                                                    promoteUser(
+
+                                                                        user.id
+
+                                                                    )
+
+                                                                }
+
+                                                                className="promote-button"
+
+                                                            >
+
+                                                                Promote
+
+                                                            </button>
+
+                                                        )
+
+                                                        : (
+
+                                                            <span className="no-action">
+
+                                                                —
+
+                                                            </span>
+
+                                                        )
+
+                                                }
+
+                                            </td>
+
+                                        </tr>
+
+                                    ))
+
+                                }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
 
                     </div>
 
@@ -283,6 +258,7 @@ function Users() {
             </div>
 
         </DashboardLayout>
+
     );
 }
 

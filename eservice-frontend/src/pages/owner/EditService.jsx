@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navbar from "../../components/Navbar";
 import { API_URL } from "../../config";
-
+import "./EditService.css"
 function EditService() {
 
     const { id } = useParams();
@@ -79,45 +79,94 @@ function EditService() {
     };
 
     return (
+
         <>
+
             <Navbar />
 
-            <div className="container mt-4">
+            <div className="page-bg">
 
-                <h2>Edit Service</h2>
+                <div className="edit-service-page">
 
-                <form onSubmit={updateService}>
+                    <div className="edit-service-card">
 
-                    <input
-                        className="form-control mb-3"
-                        value={serviceName}
-                        onChange={(e) =>
-                            setServiceName(
-                                e.target.value
-                            )
-                        }
-                    />
+                        <h2 className="edit-service-title">
 
-                    <textarea
-                        className="form-control mb-3"
-                        value={description}
-                        onChange={(e) =>
-                            setDescription(
-                                e.target.value
-                            )
-                        }
-                    />
+                            Edit Service
 
-                    <button
-                        className="btn btn-warning"
-                    >
-                        Update
-                    </button>
+                        </h2>
 
-                </form>
+                        <form
+                            onSubmit={updateService}
+                            className="edit-service-form"
+                        >
+
+                            <div className="form-group">
+
+                                <label className="form-label">
+
+                                    Service Name
+
+                                </label>
+
+                                <input
+
+                                    className="form-input"
+
+                                    value={serviceName}
+
+                                    onChange={(e) =>
+                                        setServiceName(
+                                            e.target.value
+                                        )
+                                    }
+
+                                />
+
+                            </div>
+
+                            <div className="form-group">
+
+                                <label className="form-label">
+
+                                    Description
+
+                                </label>
+
+                                <textarea
+
+                                    className="form-textarea"
+
+                                    value={description}
+
+                                    onChange={(e) =>
+                                        setDescription(
+                                            e.target.value
+                                        )
+                                    }
+
+                                />
+
+                            </div>
+
+                            <button
+                                className="update-service-button"
+                            >
+
+                                Update
+
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
 
             </div>
+
         </>
+
     );
 }
 

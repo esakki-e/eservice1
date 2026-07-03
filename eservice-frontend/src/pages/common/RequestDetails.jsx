@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { API_URL } from "../../config";
+import "./RequestDetails.css";
+
 function RequestDetails() {
 
     const { id } = useParams();
@@ -13,12 +15,12 @@ function RequestDetails() {
 
     const [documents, setDocuments] =
         useState([]);
-    const customerDocuments = documents.filter(
-        doc => !doc.documentName.startsWith("RESULT_")
+    const customerDocuments = (documents || []).filter(
+        doc => !doc.resultDocument
     );
 
-    const resultDocuments = documents.filter(
-        doc => doc.documentName.startsWith("RESULT_")
+    const resultDocuments = (documents || []).filter(
+        doc => doc.resultDocument
     );
 
     const [formResponses,
@@ -48,12 +50,17 @@ function RequestDetails() {
             .then(res => {
                 setFormResponses(res.data);
             });
+        Promise.all([
+            axios.get(`${API_URL}/documents/request/${id}`),
+            axios.get(`${API_URL}/documents/request/${id}/results`)
+        ])
+            .then(([customerRes, resultRes]) => {
 
-        axios.get(
-            `${API_URL}/documents/request/${id}`
-        )
-            .then(res => {
-                setDocuments(res.data);
+                setDocuments([
+                    ...customerRes.data,
+                    ...resultRes.data
+                ]);
+
             });
 
     }, [id]);
@@ -61,433 +68,354 @@ function RequestDetails() {
     if (!request) {
 
         return <h3>Loading...</h3>;
+
     }
-    return ( <div className="min-h-screen bg-slate-100 py-8 px-6">
+    console.log("All documents:", documents);
+    console.log("Customer docs:", customerDocuments);
+    console.log("Result docs:", resultDocuments);
+    return (
 
+        <div className="page-bg">
 
-        <div className="max-w-7xl mx-auto">
+            <div className="request-details-page">
 
-            {/* Header */}
-            <div className="
-            bg-white
-            rounded-3xl
-            border
-            shadow-sm
-            p-6
-            mb-6
-            flex
-            justify-between
-            items-center
-        ">
-                <div>
-                    <p className="text-slate-500 text-sm">
-                        Request #{request.id}
-                    </p>
+                <div className="request-details-container">
 
-                    <h1 className="
-                    text-3xl
-                    font-bold
-                    text-slate-800
-                ">
-                        {request.service?.serviceName}
-                    </h1>
-                </div>
+                    {/* Header */}
 
-                <span
-                    className={`
-                    px-4
-                    py-2
-                    rounded-full
-                    text-sm
-                    font-semibold
-                    ${
-                        request.status === "PENDING"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : request.status === "ASSIGNED"
-                                ? "bg-sky-100 text-sky-700"
-                                : request.status === "IN_PROGRESS"
-                                    ? "bg-violet-100 text-violet-700"
-                                    : "bg-emerald-100 text-emerald-700"
-                    }
-                `}
-                >
-                {request.status?.replace("_", " ")}
-            </span>
-            </div>
+                    <div className="request-header">
 
-            {/* Main Layout */}
-            <div className="grid lg:grid-cols-3 gap-6">
+                        <div>
 
-                {/* Left Section */}
-                <div className="lg:col-span-2 space-y-6">
+                            <p className="request-id">
 
-                    {/* Applicant */}
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    border
-                    shadow-sm
-                    p-6
-                ">
-                        <h3 className="
-                        text-xl
-                        font-bold
-                        text-slate-800
-                        mb-6
-                    ">
-                            Applicant
-                        </h3>
+                                Request #{request.id}
 
-                        <div className="
-                        grid
-                        md:grid-cols-2
-                        gap-4
-                        mb-6
-                    ">
-                            <div className="
-                            bg-slate-50
-                            border
-                            rounded-2xl
-                            p-4
-                        ">
-                                <p className="text-xs text-slate-500">
-                                    Customer
-                                </p>
+                            </p>
 
-                                <p className="font-semibold text-lg">
-                                    {request.customerName}
-                                </p>
-                            </div>
+                            <h1 className="request-title">
 
-                            <div className="
-                            bg-slate-50
-                            border
-                            rounded-2xl
-                            p-4
-                        ">
-                                <p className="text-xs text-slate-500">
-                                    Phone
-                                </p>
+                                {request.service?.serviceName}
 
-                                <p className="font-semibold text-lg">
-                                    {request.phoneNumber}
-                                </p>
-                            </div>
-                        </div>
-
-                        <h4 className="
-                        font-semibold
-                        text-slate-800
-                        mb-4
-                    ">
-                            Application Details
-                        </h4>
-
-                        <div className="space-y-3">
-
-                            {formResponses.map(response => (
-
-                                <div
-                                    key={response.fieldName}
-                                    className="
-                                    flex
-                                    justify-between
-                                    border-b
-                                    pb-3
-                                "
-                                >
-                                <span className="text-slate-500">
-                                    {response.fieldName}
-                                </span>
-
-                                    <span className="
-                                    font-semibold
-                                    text-slate-800
-                                ">
-                                    {response.value || "-"}
-                                </span>
-                                </div>
-
-                            ))}
+                            </h1>
 
                         </div>
-                    </div>
 
-                    {/* Documents */}
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    border
-                    shadow-sm
-                    p-6
-                ">
-                        <h3 className="
-                        text-xl
-                        font-bold
-                        text-slate-800
-                        mb-6
-                    ">
-                            Uploaded Documents
-                        </h3>
+                        <span
+                            className={`request-status ${
+                                request.status === "PENDING"
+                                    ? "status-pending"
+                                    : request.status === "ASSIGNED"
+                                        ? "status-assigned"
+                                        : request.status === "IN_PROGRESS"
+                                            ? "status-progress"
+                                            : "status-completed"
+                            }`}
+                        >
 
-                        <div className="
-                        grid
-                        md:grid-cols-2
-                        gap-4
-                    ">
+                        {request.status?.replace("_", " ")}
 
-                            {customerDocuments.map(doc => (
-                                <a
-                                    key={doc.id}
-                                    href={`http://localhost:8080/documents/download/${doc.id}`}
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="
-                                    flex
-                                    items-center
-                                    justify-between
-                                    border
-                                    rounded-2xl
-                                    p-4
-                                    hover:bg-slate-50
-                                    transition
-                                "
-                                >
-                                    <div className="
-                                    flex
-                                    items-center
-                                    gap-3
-                                ">
-                                    <span className="text-xl">
-                                        📄
-                                    </span>
-
-                                        <span className="
-                                        font-medium
-                                        text-slate-700
-                                        truncate
-                                    ">
-{
-    doc.documentName.length > 25
-        ? doc.documentName.substring(0, 25) + "..."
-        : doc.documentName
-}                                    </span>
-                                    </div>
-
-                                    <span>
-                                    ⬇
-                                </span>
-                                </a>
-
-
-                            ))}
-
-                        </div>
-                    </div>
-                    {/* Result Documents */}
-
-                    {resultDocuments.length > 0 && (
-
-                        <div className="
-        bg-white
-        rounded-3xl
-        border
-        shadow-sm
-        p-6
-    ">
-
-                            <h3 className="
-            text-xl
-            font-bold
-            text-slate-800
-            mb-6
-        ">
-                                Result Documents
-                            </h3>
-
-                            <div className="
-            grid
-            md:grid-cols-2
-            gap-4
-        ">
-
-                                {resultDocuments.map(doc => (
-
-                                    <a
-                                        key={doc.id}
-                                        href={`http://localhost:8080/documents/download/${doc.id}`}
-                                        target="_blank"
-                                        rel="noreferrer"
-                                        className="
-                        flex
-                        items-center
-                        justify-between
-                        border
-                        border-emerald-200
-                        bg-emerald-50
-                        rounded-2xl
-                        p-4
-                        hover:bg-emerald-100
-                        transition
-                    "
-                                    >
-
-                                        <div className="
-                        flex
-                        items-center
-                        gap-3
-                    ">
-                        <span className="text-xl">
-                            📜
-                        </span>
-
-                                            <span className="
-                            font-medium
-                            text-slate-700
-                        ">
-                            {doc.documentName}
-                        </span>
-                                        </div>
-
-                                        <span>
-                        ⬇
                     </span>
 
-                                    </a>
+                    </div>
 
-                                ))}
+                    {/* Main Layout */}
+
+                    <div className="request-layout">
+
+                        {/* Left Section */}
+
+                        <div className="request-left-column">
+
+                            <div className="glass-card">
+                                {/* Applicant */}
+
+                                <h3 className="section-title">
+                                    Applicant
+                                </h3>
+
+                                <div className="applicant-grid">
+
+                                    <div className="info-card">
+
+                                        <p className="info-label">
+                                            Customer
+                                        </p>
+
+                                        <p className="info-value">
+                                            {request.customerName}
+                                        </p>
+
+                                    </div>
+
+                                    <div className="info-card">
+
+                                        <p className="info-label">
+                                            Phone
+                                        </p>
+
+                                        <p className="info-value">
+                                            {request.phoneNumber}
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <h4 className="subsection-title">
+                                    Application Details
+                                </h4>
+
+                                <div className="details-list">
+
+                                    {formResponses.map(response => (
+
+                                        <div
+                                            key={response.fieldName}
+                                            className="detail-row"
+                                        >
+
+                <span className="detail-label">
+                    {response.fieldName}
+                </span>
+
+                                            <span className="detail-value">
+                    {response.value || "-"}
+                </span>
+
+                                        </div>
+
+                                    ))}
+
+                                </div>
 
                             </div>
+
+                            <div className="glass-card">
+
+                                <h3 className="section-title">
+                                    Uploaded Documents
+                                </h3>
+
+                                <div className="documents-grid">
+
+                                    {customerDocuments.map(doc => (
+
+                                        <a
+                                            key={doc.id}
+                                            href={`http://localhost:8080/documents/download/${doc.id}`}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                            className="document-card"
+                                        >
+
+                                            <div className="document-info">
+
+                    <span className="document-icon">
+                        📄
+                    </span>
+
+                                                <span className="document-name">
+
+                        {doc.documentName.length > 25
+                            ? doc.documentName.substring(0, 25) + "..."
+                            : doc.documentName}
+
+                    </span>
+
+                                            </div>
+
+                                            <span className="download-icon">
+                    ⬇
+                </span>
+
+                                        </a>
+
+                                    ))}
+
+                                </div>
+
+                            </div>
+
+                            {/* Result Documents */}
+
+                            {
+
+                                resultDocuments.length > 0 && (
+
+                                    <div className="glass-card">
+
+                                        <h3 className="section-title">
+
+                                            Result Documents
+
+                                        </h3>
+
+                                        <div className="documents-grid">
+
+                                            {
+
+                                                resultDocuments.map(doc => (
+
+                                                    <a
+                                                        key={doc.id}
+                                                        href={`http://localhost:8080/documents/download/${doc.id}`}
+                                                        target="_blank"
+                                                        rel="noreferrer"
+                                                        className="result-document-card"
+                                                    >
+
+                                                        <div className="document-info">
+
+                                                        <span className="document-icon">
+
+                                                            📜
+
+                                                        </span>
+
+                                                            <span className="document-name">
+
+                                                            {doc.documentName}
+
+                                                        </span>
+
+                                                        </div>
+
+                                                        <span className="download-icon">
+
+                                                        ⬇
+
+                                                    </span>
+
+                                                    </a>
+
+                                                ))
+
+                                            }
+
+                                        </div>
+
+                                    </div>
+
+                                )
+
+                            }
 
                         </div>
 
-                    )}
-                </div>
+                        {/* Timeline */}
 
+                        <div className="timeline-card">
 
-                {/* Right Timeline */}
-                <div className="
-                bg-white
-                rounded-3xl
-                border
-                shadow-sm
-                p-6
-                h-fit
-            ">
-                    <h3 className="
-                    text-xl
-                    font-bold
-                    text-slate-800
-                    mb-6
-                ">
-                        Status Timeline
-                    </h3>
+                            <h3 className="section-title">
 
-                    <div className="space-y-6">
+                                Status Timeline
 
-                        <div className="flex gap-3">
-                            <div className="
-                            h-4
-                            w-4
-                            rounded-full
-                            bg-green-500
-                            mt-1
-                        "></div>
+                            </h3>
 
-                            <div>
-                                <p className="font-semibold">
-                                    Submitted
-                                </p>
+                            <div className="timeline-list">
 
-                                <p className="
-                                text-sm
-                                text-slate-500
-                            ">
-                                    Request Created
-                                </p>
+                                <div className="timeline-item">
+
+                                    <div className="timeline-dot submitted-dot"></div>
+
+                                    <div>
+
+                                        <p className="timeline-title">
+
+                                            Submitted
+
+                                        </p>
+
+                                        <p className="timeline-text">
+
+                                            Request Created
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="timeline-item">
+
+                                    <div className="timeline-dot assigned-dot"></div>
+
+                                    <div>
+
+                                        <p className="timeline-title">
+
+                                            Assigned
+
+                                        </p>
+
+                                        <p className="timeline-text">
+
+                                            Employee Assigned
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="timeline-item">
+
+                                    <div className="timeline-dot progress-dot"></div>
+
+                                    <div>
+
+                                        <p className="timeline-title">
+
+                                            In Progress
+
+                                        </p>
+
+                                        <p className="timeline-text">
+
+                                            Processing Request
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <div className="timeline-item">
+
+                                    <div className="timeline-dot completed-dot"></div>
+
+                                    <div>
+
+                                        <p className="timeline-title">
+
+                                            Completed
+
+                                        </p>
+
+                                        <p className="timeline-text">
+
+                                            Final Status
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
                             </div>
-                        </div>
 
-                        <div className="flex gap-3">
-                            <div className="
-                            h-4
-                            w-4
-                            rounded-full
-                            bg-blue-500
-                            mt-1
-                        "></div>
-
-                            <div>
-                                <p className="font-semibold">
-                                    Assigned
-                                </p>
-
-                                <p className="
-                                text-sm
-                                text-slate-500
-                            ">
-                                    Employee Assigned
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <div className="
-                            h-4
-                            w-4
-                            rounded-full
-                            bg-violet-500
-                            mt-1
-                        "></div>
-
-                            <div>
-                                <p className="font-semibold">
-                                    In Progress
-                                </p>
-
-                                <p className="
-                                text-sm
-                                text-slate-500
-                            ">
-                                    Processing Request
-                                </p>
-                            </div>
-                        </div>
-
-                        <div className="flex gap-3">
-                            <div className="
-                            h-4
-                            w-4
-                            rounded-full
-                            bg-slate-300
-                            mt-1
-                        "></div>
-
-                            <div>
-                                <p className="font-semibold">
-                                    Completed
-                                </p>
-
-                                <p className="
-                                text-sm
-                                text-slate-500
-                            ">
-                                    Final Status
-                                </p>
-                            </div>
                         </div>
 
                     </div>
+
                 </div>
 
             </div>
 
         </div>
 
-    </div>
-
-
-);
+    );
 
 }
 

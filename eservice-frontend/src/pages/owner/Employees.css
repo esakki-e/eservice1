@@ -1,0 +1,571 @@
+/*=========================================================
+    EMPLOYEES PAGE
+=========================================================*/
+
+.employees-page{
+
+    width:100%;
+
+    max-width:1500px;
+
+    margin:0 auto;
+
+    padding:36px;
+}
+
+.employees-container{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+}
+
+/*=========================================================
+    HEADER
+=========================================================*/
+
+.employees-header{
+
+    margin-bottom:8px;
+}
+
+.employees-title{
+
+    margin:0;
+
+    font-size:2.6rem;
+
+    font-weight:700;
+
+    color:#222;
+}
+
+.employees-subtitle{
+
+    margin-top:8px;
+
+    color:#666;
+
+    font-size:1rem;
+}
+
+/*=========================================================
+    SUMMARY CARDS
+=========================================================*/
+
+.employee-summary-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:24px;
+}
+
+.employee-summary-card{
+
+    display:block;
+
+    padding:24px;
+
+    border:2px solid #8b6a32;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(18px);
+
+    text-decoration:none;
+
+    color:inherit;
+
+    transition:.3s;
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.employee-summary-card:hover{
+
+    transform:translateY(-4px);
+
+    border-color:#b58c4b;
+}
+
+/*=========================================================
+    BOTTOM SECTION
+=========================================================*/
+
+.employee-dashboard-grid{
+
+    display:grid;
+
+    grid-template-columns:380px 1fr;
+
+    gap:28px;
+
+    align-items:start;
+}
+/*=========================================================
+    EMPLOYEE OF THE MONTH
+=========================================================*/
+
+.employee-highlight-card{
+
+    border:2px solid #8b6a32;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.employee-highlight-content{
+
+    display:flex;
+
+    gap:24px;
+
+    align-items:center;
+}
+
+.employee-highlight-image{
+
+    width:110px;
+
+    height:110px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    border:4px solid #b58c4b;
+
+    background:#fff;
+}
+
+.employee-highlight-title{
+
+    margin:0;
+
+    color:#9a7338;
+
+    font-size:1.8rem;
+
+    font-weight:700;
+}
+
+.employee-highlight-name{
+
+    margin:8px 0;
+
+    font-size:1.4rem;
+
+    font-weight:600;
+
+    color:#222;
+}
+
+.employee-highlight-message{
+
+    margin-bottom:18px;
+
+    color:#666;
+}
+
+.employee-highlight-stats{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:20px;
+}
+
+.highlight-label{
+
+    margin:0;
+
+    font-size:.9rem;
+
+    color:#888;
+}
+
+.highlight-value{
+
+    margin-top:6px;
+
+    font-size:1.2rem;
+
+    font-weight:700;
+
+    color:#222;
+}
+
+/*=========================================================
+    CHART
+=========================================================*/
+
+.revenue-chart-card{
+
+    border:2px solid #8b6a32;
+
+    border-radius:24px;
+
+    padding:28px;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.chart-title{
+
+    margin:0 0 20px;
+
+    font-size:1.7rem;
+
+    font-weight:700;
+
+    color:#222;
+}
+
+.chart-container{
+
+    width:100%;
+
+    height:320px;
+
+    background:rgba(255,255,255,.92);
+
+    border-radius:18px;
+
+    padding:18px;
+}
+/*=========================================================
+    EMPLOYEE CARD CONTENT
+=========================================================*/
+
+.employee-card-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:18px;
+
+    margin-bottom:20px;
+}
+
+.employee-name{
+
+    margin:0;
+
+    font-size:1.4rem;
+
+    font-weight:700;
+
+    color:#222;
+}
+
+.employee-phone{
+
+    margin-top:6px;
+
+    color:#777;
+
+    font-size:.95rem;
+}
+
+.employee-progress-info{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:10px;
+
+    font-size:.95rem;
+
+    color:#666;
+}
+
+.progress-percentage{
+
+    font-weight:700;
+
+    color:#9a7338;
+}
+
+.progress-bar{
+
+    width:100%;
+
+    height:8px;
+
+    border-radius:999px;
+
+    overflow:hidden;
+
+    background:rgba(0,0,0,.08);
+}
+
+.progress-fill{
+
+    height:100%;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+            90deg,
+            #34d399,
+            #10b981
+    );
+}
+
+/*=========================================================
+    STATUS BADGES
+=========================================================*/
+
+.employee-status{
+
+    padding:6px 14px;
+
+    border-radius:999px;
+
+    font-size:.8rem;
+
+    font-weight:600;
+}
+
+.active-status{
+
+    background:#dcfce7;
+
+    color:#15803d;
+}
+
+.inactive-status{
+
+    background:#fee2e2;
+
+    color:#dc2626;
+}
+
+/*=========================================================
+    SEARCH
+=========================================================*/
+
+.employee-search-grid{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:20px;
+}
+
+.employee-search-input{
+
+    width:100%;
+
+    padding:16px 20px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.90);
+
+    outline:none;
+
+    font-size:1rem;
+
+    box-shadow:
+            inset 0 1px rgba(255,255,255,.8),
+            0 8px 18px rgba(0,0,0,.06);
+
+    transition:.3s;
+}
+
+.employee-search-input:focus{
+
+    background:#fff;
+
+    box-shadow:
+            0 0 0 4px rgba(91,61,245,.12),
+            0 10px 24px rgba(0,0,0,.08);
+}
+/*=========================================================
+    TABLE
+=========================================================*/
+
+.employee-table-card{
+
+    border:2px solid #8b6a32;
+
+    border-radius:24px;
+
+    overflow:hidden;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.employee-table{
+
+    width:100%;
+
+    border-collapse:collapse;
+}
+
+.employee-table-header{
+
+    background:rgba(255,255,255,.35);
+}
+
+.table-heading{
+
+    padding:18px 20px;
+
+    text-align:left;
+
+    font-size:.95rem;
+
+    font-weight:700;
+
+    color:#333;
+
+    border-bottom:1px solid rgba(0,0,0,.08);
+}
+
+.table-cell{
+
+    padding:18px 20px;
+
+    color:#444;
+
+    border-bottom:1px solid rgba(0,0,0,.06);
+}
+
+.employee-row{
+
+    transition:.25s;
+}
+
+.employee-row:hover{
+
+    background:rgba(255,255,255,.25);
+}
+
+.employee-name-cell{
+
+    font-weight:600;
+
+    color:#222;
+}
+
+.employee-table tr:last-child .table-cell{
+
+    border-bottom:none;
+}
+
+/*=========================================================
+    RESPONSIVE
+=========================================================*/
+
+@media (max-width:1200px){
+
+    .employee-summary-grid{
+
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .employee-dashboard-grid{
+
+        grid-template-columns:1fr;
+    }
+}
+
+@media (max-width:768px){
+
+    .employees-page{
+
+        padding:20px;
+    }
+
+    .employees-title{
+
+        font-size:2rem;
+    }
+
+    .employee-summary-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .employee-search-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .employee-highlight-content{
+
+        flex-direction:column;
+
+        text-align:center;
+    }
+
+    .employee-highlight-stats{
+
+        grid-template-columns:1fr;
+    }
+
+    .employee-table-card{
+
+        overflow-x:auto;
+    }
+
+    .employee-table{
+
+        min-width:700px;
+    }
+}
+
+/*=========================================================
+    REDUCED MOTION
+=========================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
+
+        scroll-behavior:auto !important;
+    }
+}

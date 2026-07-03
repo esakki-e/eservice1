@@ -341,7 +341,7 @@ public class TaskService {
         document.setRequest(
                 task.getRequest()
         );
-
+        document.setResultDocument(true);
         uploadedDocumentRepository.save(
                 document
         );

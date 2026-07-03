@@ -1,0 +1,1095 @@
+/*=========================================================
+    REQUESTS PAGE - PART 1
+    ROOT + PAGE + HEADER + STATS
+=========================================================*/
+
+:root{
+    --gold:#8b6a32;
+    --gold-dark:#6e5123;
+    --gold-light:#b68a45;
+
+    --glass:rgba(255,255,255,.18);
+    --glass-hover:rgba(255,255,255,.26);
+
+    --text:#1b1b1b;
+    --muted:#666;
+
+    --radius:22px;
+
+    --shadow:
+            0 12px 30px rgba(0,0,0,.14);
+
+    --shadow-hover:
+            0 20px 40px rgba(0,0,0,.18);
+
+    --transition:.35s ease;
+}
+
+/*=========================================================
+RESET
+=========================================================*/
+
+*,
+*::before,
+*::after{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+/*=========================================================
+BACKGROUND
+=========================================================*/
+
+.page-bg{
+
+    min-height:100vh;
+
+    padding:34px;
+
+    background:
+            linear-gradient(
+                    rgba(248,251,255,.50),
+                    rgba(248,251,255,.50)
+            ),
+            url("/images/img.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+}
+
+/*=========================================================
+PAGE
+=========================================================*/
+
+.requests-page{
+
+    width:100%;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:28px;
+}
+
+/*=========================================================
+HEADER
+=========================================================*/
+
+.requests-header{
+
+    margin-bottom:8px;
+}
+
+.requests-title{
+
+    font-size:2.2rem;
+
+    font-weight:700;
+
+    color:var(--text);
+
+    margin-bottom:8px;
+}
+
+.requests-subtitle{
+
+    color:var(--muted);
+
+    font-size:.96rem;
+}
+
+/*=========================================================
+STATISTICS GRID
+=========================================================*/
+
+.request-stats-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(5,minmax(0,1fr));
+
+    gap:18px;
+}
+
+/*=========================================================
+COMMON CARD
+=========================================================*/
+
+.stats-card{
+
+    position:relative;
+
+    height:108px;
+
+    padding:22px;
+
+    border-radius:24px;
+
+    border:2px solid rgba(122,93,46,.9);
+
+    background:rgba(255,255,255,.22);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    overflow:hidden;
+
+    cursor:pointer;
+
+    box-shadow:var(--shadow);
+
+    transition:all var(--transition);
+}
+
+.stats-card:hover{
+
+    transform:translateY(-6px);
+
+    box-shadow:var(--shadow-hover);
+
+    border-color:var(--gold-light);
+}
+
+/*=========================================================
+CARD SHINE
+=========================================================*/
+
+.stats-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    top:0;
+
+    left:-130%;
+
+    width:60%;
+
+    height:100%;
+
+    transform:skewX(-25deg);
+
+    background:
+            linear-gradient(
+                    to right,
+                    transparent,
+                    rgba(255,255,255,.35),
+                    transparent
+            );
+
+    transition:left .8s ease;
+}
+
+.stats-card:hover::before{
+
+    left:130%;
+}
+
+/*=========================================================
+CARD TEXT
+=========================================================*/
+
+.stats-label{
+
+    font-size:.9rem;
+
+    color:#4f4f4f;
+
+    margin-bottom:14px;
+
+    font-weight:600;
+}
+
+.stats-value{
+
+    font-size:2rem;
+
+    line-height:1;
+
+    color:#222;
+
+    font-weight:700;
+}
+
+/*=========================================================
+CARD COLORS
+=========================================================*/
+
+.total-card{
+
+    border-color:#7c5d2e;
+}
+
+.pending-card{
+
+    border-color:#d8a03a;
+}
+
+.assigned-card{
+
+    border-color:#7d56d8;
+}
+
+.progress-card{
+
+    border-color:#3973db;
+}
+
+.completed-card{
+
+    border-color:#38b26b;
+}
+/*=========================================================
+    REQUESTS PAGE - PART 2
+    FILTER SECTION
+=========================================================*/
+
+/*=========================================================
+FILTER CARD
+=========================================================*/
+
+.filter-card{
+
+    position:relative;
+
+    width:100%;
+
+    padding:20px;
+
+    border-radius:28px;
+
+    border:3px solid rgba(122,93,46,.95);
+
+    background:rgba(255,255,255,.16);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    overflow:hidden;
+
+    box-shadow:
+            0 14px 36px rgba(0,0,0,.14);
+
+    transition:all .35s ease;
+}
+
+.filter-card:hover{
+
+    border-color:var(--gold-light);
+
+    box-shadow:
+            0 20px 40px rgba(0,0,0,.18);
+}
+
+/*=========================================================
+FILTER GRID
+=========================================================*/
+
+.filter-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1.3fr
+        1.3fr
+        1fr
+        .8fr;
+
+    gap:16px;
+
+    align-items:center;
+}
+
+/*=========================================================
+INPUTS
+=========================================================*/
+
+.filter-input,
+.filter-select{
+
+    width:100%;
+
+    height:56px;
+
+    padding:0 20px;
+
+    border-radius:18px;
+
+    border:1px solid rgba(255,255,255,.70);
+
+    background:rgba(255,255,255,.72);
+
+    backdrop-filter:blur(12px);
+
+    color:#222;
+
+    font-size:.95rem;
+
+    outline:none;
+
+    transition:all .3s ease;
+
+    box-shadow:
+            inset 0 1px rgba(255,255,255,.8),
+            0 6px 18px rgba(0,0,0,.05);
+}
+
+.filter-input::placeholder{
+
+    color:#666;
+}
+
+.filter-input:focus,
+.filter-select:focus{
+
+    border-color:var(--gold);
+
+    background:rgba(255,255,255,.92);
+
+    box-shadow:
+            0 0 0 4px rgba(182,138,69,.15),
+            0 10px 22px rgba(0,0,0,.08);
+}
+
+/*=========================================================
+SELECT
+=========================================================*/
+
+.filter-select{
+
+    cursor:pointer;
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    background-image:
+            linear-gradient(45deg, transparent 50%, #666 50%),
+            linear-gradient(135deg, #666 50%, transparent 50%);
+
+    background-position:
+            calc(100% - 20px) 24px,
+            calc(100% - 15px) 24px;
+
+    background-size:6px 6px;
+
+    background-repeat:no-repeat;
+}
+
+/*=========================================================
+DATE INPUT
+=========================================================*/
+
+.filter-input[type="date"]{
+
+    cursor:pointer;
+}
+
+/*=========================================================
+FILTER RESPONSIVE
+=========================================================*/
+
+@media (max-width:1200px){
+
+    .filter-grid{
+
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+@media (max-width:768px){
+
+    .filter-card{
+
+        padding:16px;
+    }
+
+    .filter-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .filter-input,
+    .filter-select{
+
+        height:52px;
+    }
+}
+/*=========================================================
+    REQUESTS PAGE - PART 3
+    TABLE + STATUS + ACTIONS
+=========================================================*/
+
+/*=========================================================
+TABLE CARD
+=========================================================*/
+
+.table-card{
+
+    position:relative;
+
+    width:100%;
+
+    padding:16px;
+
+    border-radius:30px;
+
+    border:3px solid rgba(122,93,46,.95);
+
+    background:rgba(255,255,255,.16);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    overflow:hidden;
+
+    box-shadow:
+            0 18px 40px rgba(0,0,0,.14);
+
+    transition:all .35s ease;
+}
+
+.table-card:hover{
+
+    border-color:var(--gold-light);
+
+    box-shadow:
+            0 24px 48px rgba(0,0,0,.18);
+}
+
+/*=========================================================
+TABLE
+=========================================================*/
+
+.requests-table{
+
+    width:100%;
+
+    border-collapse:separate;
+
+    border-spacing:0 10px;
+}
+
+.table-header th{
+
+    padding:18px 16px;
+
+    background:rgba(255,255,255,.68);
+
+    color:#222;
+
+    font-size:.92rem;
+
+    font-weight:700;
+
+    text-align:left;
+
+    backdrop-filter:blur(10px);
+}
+
+.table-header th:first-child{
+
+    border-radius:16px 0 0 16px;
+}
+
+.table-header th:last-child{
+
+    border-radius:0 16px 16px 0;
+}
+
+/*=========================================================
+ROWS
+=========================================================*/
+
+.table-row{
+
+    transition:all .3s ease;
+}
+
+.table-row td{
+
+    padding:16px;
+
+    background:rgba(255,255,255,.42);
+
+    backdrop-filter:blur(8px);
+
+    border-top:1px solid rgba(255,255,255,.55);
+
+    border-bottom:1px solid rgba(255,255,255,.55);
+
+    color:#2c2c2c;
+}
+
+.table-row td:first-child{
+
+    border-radius:14px 0 0 14px;
+}
+
+.table-row td:last-child{
+
+    border-radius:0 14px 14px 0;
+}
+
+.table-row:hover{
+
+    transform:translateY(-2px);
+}
+
+.table-row:hover td{
+
+    background:rgba(255,255,255,.60);
+}
+
+/*=========================================================
+REQUEST LINK
+=========================================================*/
+
+.request-link{
+
+    color:#3768d9;
+
+    font-weight:700;
+
+    text-decoration:none;
+
+    transition:.3s;
+}
+
+.request-link:hover{
+
+    color:#204bb0;
+}
+
+/*=========================================================
+STATUS BADGES
+=========================================================*/
+
+.status-badge{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:92px;
+
+    padding:6px 16px;
+
+    border-radius:999px;
+
+    font-size:.82rem;
+
+    font-weight:700;
+}
+
+.pending-status{
+
+    background:#fff2c9;
+
+    color:#b26a00;
+}
+
+.assigned-status{
+
+    background:#efe4ff;
+
+    color:#7d37d8;
+}
+
+.progress-status{
+
+    background:#dbeafe;
+
+    color:#2563eb;
+}
+
+.completed-status{
+
+    background:#dff8e8;
+
+    color:#16924d;
+}
+
+/*=========================================================
+ASSIGNMENT
+=========================================================*/
+
+.assignment-actions{
+
+    display:flex;
+
+    gap:10px;
+
+    align-items:center;
+}
+
+.employee-select{
+
+    height:38px;
+
+    min-width:120px;
+
+    padding:0 10px;
+
+    border-radius:10px;
+
+    border:1px solid #d5dbe7;
+
+    background:#fff;
+
+    outline:none;
+}
+
+.employee-select:focus{
+
+    border-color:var(--gold);
+}
+
+/*=========================================================
+BUTTONS
+=========================================================*/
+
+.assign-button,
+.accept-button{
+
+    height:38px;
+
+    padding:0 18px;
+
+    border:none;
+
+    border-radius:10px;
+
+    background:linear-gradient(
+            135deg,
+            #4f46e5,
+            #6d28d9
+    );
+
+    color:#fff;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.assign-button:hover,
+.accept-button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+            0 10px 22px rgba(79,70,229,.30);
+}
+
+.accept-button:disabled{
+
+    opacity:.6;
+
+    cursor:not-allowed;
+
+    transform:none;
+}
+
+/*=========================================================
+ASSIGNED EMPLOYEE
+=========================================================*/
+
+.assigned-employee-card{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    min-width:140px;
+
+    padding:8px 16px;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+            135deg,
+            #4f46e5,
+            #7c3aed
+    );
+
+    color:#fff;
+
+    font-weight:600;
+
+    box-shadow:
+            0 8px 20px rgba(99,102,241,.25);
+}
+
+/*=========================================================
+EMPTY + LOADING
+=========================================================*/
+
+.loading-row,
+.empty-row{
+
+    text-align:center;
+
+    padding:50px;
+
+    color:#666;
+
+    font-weight:600;
+}
+/*=========================================================
+    REQUESTS PAGE - PART 4
+    PAGINATION + RESPONSIVE + SCROLLBAR
+=========================================================*/
+
+/*=========================================================
+PAGINATION
+=========================================================*/
+
+.pagination{
+
+    margin-top:28px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    gap:16px;
+
+    flex-wrap:wrap;
+}
+
+.pagination button{
+
+    padding:10px 18px;
+
+    border:none;
+
+    border-radius:12px;
+
+    background:linear-gradient(
+            135deg,
+            #4f46e5,
+            #6d28d9
+    );
+
+    color:#fff;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.3s;
+}
+
+.pagination button:hover{
+
+    transform:translateY(-2px);
+
+    box-shadow:
+            0 10px 20px rgba(79,70,229,.25);
+}
+
+.pagination button:disabled{
+
+    opacity:.45;
+
+    cursor:not-allowed;
+
+    transform:none;
+
+    box-shadow:none;
+}
+
+.pagination select{
+
+    height:40px;
+
+    padding:0 12px;
+
+    border-radius:10px;
+
+    border:1px solid rgba(130,130,130,.3);
+
+    background:#fff;
+
+    outline:none;
+}
+
+/*=========================================================
+SCROLLABLE TABLE
+=========================================================*/
+
+.table-card{
+
+    overflow-x:auto;
+}
+
+.table-card::-webkit-scrollbar{
+
+    height:10px;
+}
+
+.table-card::-webkit-scrollbar-thumb{
+
+    background:#9b7a45;
+
+    border-radius:999px;
+}
+
+.table-card::-webkit-scrollbar-track{
+
+    background:transparent;
+}
+
+/*=========================================================
+RESPONSIVE
+=========================================================*/
+
+@media (max-width:1200px){
+
+    .request-stats-grid{
+
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+
+@media (max-width:992px){
+
+    .requests-page{
+
+        gap:20px;
+    }
+
+    .request-stats-grid{
+
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .filter-grid{
+
+        grid-template-columns:1fr 1fr;
+    }
+
+    .requests-table{
+
+        min-width:900px;
+    }
+}
+
+@media (max-width:768px){
+
+    .page-bg{
+
+        padding:18px;
+    }
+
+    .requests-title{
+
+        font-size:1.8rem;
+    }
+
+    .request-stats-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .stats-card{
+
+        min-height:120px;
+    }
+
+    .filter-grid{
+
+        grid-template-columns:1fr;
+    }
+
+    .table-card{
+
+        padding:12px;
+    }
+
+    .requests-table{
+
+        min-width:850px;
+    }
+
+    .pagination{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+    }
+
+    .assignment-actions{
+
+        flex-direction:column;
+
+        align-items:stretch;
+    }
+
+    .employee-select,
+
+    .assign-button,
+
+    .accept-button{
+
+        width:100%;
+    }
+}
+
+@media (max-width:480px){
+
+    .page-bg{
+
+        padding:14px;
+    }
+
+    .requests-title{
+
+        font-size:1.55rem;
+    }
+
+    .requests-subtitle{
+
+        font-size:.9rem;
+    }
+
+    .stats-card{
+
+        padding:18px;
+    }
+
+    .stats-value{
+
+        font-size:2rem;
+    }
+
+    .table-card{
+
+        border-radius:20px;
+    }
+}
+
+/*=========================================================
+ACCESSIBILITY
+=========================================================*/
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible{
+
+    outline:3px solid rgba(182,143,73,.45);
+
+    outline-offset:3px;
+}
+
+/*=========================================================
+REDUCED MOTION
+=========================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
+
+        scroll-behavior:auto !important;
+    }
+}
+/*=========================================================
+HEADER
+=========================================================*/
+
+.requests-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    margin:6px 0 28px;
+}
+
+.requests-title{
+
+    margin:0;
+
+    font-size:2.35rem;
+
+    font-weight:600;
+
+    line-height:1.15;
+
+    color:#1d1d1d;
+
+    letter-spacing:-0.5px;
+
+    text-shadow:
+            0 1px 2px rgba(255,255,255,.45);
+}
+
+.requests-subtitle{
+
+    margin-top:8px;
+
+    font-size:.96rem;
+
+    font-weight:400;
+
+    color:#404040;
+
+    line-height:1.5;
+}
+
+/*=========================================================
+RESPONSIVE
+=========================================================*/
+
+@media (max-width:768px){
+
+    .requests-header{
+
+        margin-bottom:22px;
+    }
+
+    .requests-title{
+
+        font-size:1.8rem;
+    }
+
+    .requests-subtitle{
+
+        font-size:.9rem;
+    }
+}
+
+@media (max-width:480px){
+
+    .requests-title{
+
+        font-size:1.55rem;
+    }
+
+    .requests-subtitle{
+
+        font-size:.84rem;
+    }
+}

@@ -1,277 +1,203 @@
-import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
+import "./CustomerNavbar.css";
+import { useState, useRef, useEffect } from "react";
 function CustomerNavbar() {
 
     const [showMenu,
         setShowMenu] =
         useState(false);
-
+    const menuRef = useRef(null);
     const navigate =
         useNavigate();
 
     const logout = () => {
 
         localStorage.clear();
+        setShowMenu(false);
+
 
         navigate("/");
     };
+    useEffect(() => {
+
+        function handleClickOutside(event){
+
+            if(
+
+                menuRef.current &&
+
+                !menuRef.current.contains(event.target)
+
+            ){
+
+                setShowMenu(false);
+
+            }
+
+        }
+
+        document.addEventListener(
+
+            "pointerdown",
+
+            handleClickOutside
+
+        );
+
+        return()=>{
+
+            document.removeEventListener(
+
+                "pointerdown",
+
+                handleClickOutside
+
+            );
+
+        };
+
+    },[]);
     return (
 
+        <nav className="customer-navbar">
 
-<nav
-    className="
-    sticky
-    top-0
-    z-50
-    bg-slate-900
-    border-b
-    border-slate-800
-    shadow-lg
-"
+            <div className="navbar-container"
+                ref={menuRef}
 >
+                <div className="navbar-left">
 
-    <div
-        className="
-        max-w-7xl
-        mx-auto
-        px-3
-        sm:px-6
-        h-16
-        flex
-        items-center
-        justify-between
-    "
-    >
+                    <button
 
-        <div
-            className="
-            flex
-            items-center
-            gap-2
-            sm:gap-4
-        "
-        >
+                        onClick={() =>
+                            setShowMenu(!showMenu)
+                        }
 
-            <button
-                onClick={() =>
-                    setShowMenu(!showMenu)
-                }
-                className="
-                w-10
-                h-10
-                rounded-xl
-                bg-slate-800
-                text-white
-                hover:bg-slate-700
-                transition
-            "
-            >
-                ☰
-            </button>
+                        className="menu-toggle"
 
-            <div
-                className="
-                flex
-                items-center
-                gap-2
-                sm:gap-3
-            "
-            >
+                    >
 
-                <div
-                    className="
-                    w-10
-                    h-10
-                    rounded-xl
-                    bg-indigo-600
-                    text-white
-                    flex
-                    items-center
-                    justify-center
-                    font-bold
-                    shrink-0
-                "
-                >
-                    V
-                </div>
+                        ☰
 
-                <h5
-                    className="
-                    text-white
-                    font-bold
-                    m-0
-                    text-sm
-                    sm:text-lg
-                    leading-tight
-                "
-                >
-                    E-Service Portal
-                </h5>
+                    </button>
 
-            </div>
+                    <div className="navbar-brand">
 
-        </div>
+                        <div className="brand-logo">
 
-        {/* Desktop Links */}
+                            V
 
-        <div
-            className="
-            hidden
-            md:flex
-            items-center
-            gap-2
-        "
-        >
+                        </div>
 
-            <Link
-                to="/customer-services"
-                className="
-                px-4
-                py-2
-                rounded-xl
-                text-slate-300
-                hover:bg-slate-800
-                hover:text-white
-                transition
-            "
-            >
-                Services
-            </Link>
+                        <h5 className="brand-title">
 
-            <Link
-                to="/my-requests"
-                className="
-                px-4
-                py-2
-                rounded-xl
-                text-slate-300
-                hover:bg-slate-800
-                hover:text-white
-                transition
-            "
-            >
-                My Requests
-            </Link>
+                            E-Service Portal
 
-        </div>
-
-        {
-            showMenu && (
-
-                <div
-                    className="
-                    absolute
-                    top-20
-                    left-3
-                    sm:left-6
-                    w-60
-                    bg-white
-                    rounded-2xl
-                    shadow-xl
-                    border
-                    border-slate-200
-                    p-3
-                "
-                >
-
-                    {/* Mobile Navigation */}
-
-                    <div className="md:hidden">
-
-                        <Link
-                            to="/customer-services"
-                            className="
-                            block
-                            px-4
-                            py-3
-                            rounded-xl
-                            text-slate-700
-                            hover:bg-slate-100
-                        "
-                        >
-                            Services
-                        </Link>
-
-                        <Link
-                            to="/my-requests"
-                            className="
-                            block
-                            px-4
-                            py-3
-                            rounded-xl
-                            text-slate-700
-                            hover:bg-slate-100
-                        "
-                        >
-                            My Requests
-                        </Link>
-
-                        <hr className="my-2" />
+                        </h5>
 
                     </div>
 
+                </div>
+
+                {/* Desktop Navigation */}
+
+                <div className="navbar-links">
+
                     <Link
-                        to="/customer-profile-view"
-                        className="
-                        block
-                        px-4
-                        py-3
-                        rounded-xl
-                        text-slate-700
-                        hover:bg-slate-100
-                        transition
-                    "
+
+                        to="/customer-services"
+
+                        className="navbar-link"
+
                     >
-                        Profile
+
+                        Services
+
                     </Link>
 
                     <Link
-                        to="/customer-profile-edit"
-                        className="
-                        block
-                        px-4
-                        py-3
-                        rounded-xl
-                        text-slate-700
-                        hover:bg-slate-100
-                        transition
-                    "
+
+                        to="/my-requests"
+
+                        className="navbar-link"
+
                     >
-                        Edit Profile
+
+                        My Requests
+
                     </Link>
-
-                    <hr className="my-2" />
-
-                    <button
-                        onClick={logout}
-                        className="
-                        w-full
-                        px-4
-                        py-3
-                        rounded-xl
-                        bg-red-500
-                        text-white
-                        font-medium
-                        hover:bg-red-600
-                        transition
-                    "
-                    >
-                        Logout
-                    </button>
 
                 </div>
 
-            )
-        }
+                {
 
-    </div>
+                    showMenu && (
 
-</nav>
+                        <div className="navbar-menu">
 
+                            {/* Mobile Links */}
+
+                            <div className="mobile-links">
+
+                                <Link
+                                    to="/customer-services"
+                                    className="menu-link menu-services"
+                                    onClick={() => setShowMenu(false)}
+                                >
+                                    Services
+                                </Link>
+
+                                <Link
+                                    to="/my-requests"
+                                    className="menu-link menu-requests"
+                                    onClick={() => setShowMenu(false)}
+                                >
+                                    My Requests
+                                </Link>
+
+                                <hr className="menu-divider" />
+
+                            </div>
+
+                            <Link
+                                to="/customer-profile-view"
+                                className="menu-link menu-profile"
+                                onClick={() => setShowMenu(false)}
+                            >
+                                Profile
+                            </Link>
+                            <Link
+                                to="/customer-profile-edit"
+                                className="menu-link menu-edit"
+                                onClick={() => setShowMenu(false)}
+                            >
+                                Edit Profile
+                            </Link>
+
+                            <hr className="menu-divider" />
+
+                            <button
+
+                                onClick={logout}
+
+                                className="logout-button"
+
+                            >
+
+                                Logout
+
+                            </button>
+
+                        </div>
+
+                    )
+
+                }
+
+            </div>
+
+        </nav>
 
     );
-
 }
 
 export default CustomerNavbar;

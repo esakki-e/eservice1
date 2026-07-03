@@ -1,0 +1,246 @@
+/*=========================================================
+    EDIT SERVICE PAGE
+=========================================================*/
+
+.edit-service-page{
+
+    width:100%;
+
+    max-width:1400px;
+
+    margin:0 auto;
+
+    padding:36px;
+
+    display:flex;
+
+    justify-content:center;
+}
+
+/*=========================================================
+    GLASS CARD
+=========================================================*/
+
+.edit-service-card{
+
+    width:100%;
+
+    max-width:900px;
+
+    padding:34px;
+
+    border:2px solid #8b6a32;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,.18);
+
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+
+    box-shadow:
+            0 18px 40px rgba(0,0,0,.12);
+}
+
+/*=========================================================
+    TITLE
+=========================================================*/
+
+.edit-service-title{
+
+    margin:0 0 28px;
+
+    font-size:2.2rem;
+
+    font-weight:700;
+
+    color:#222;
+}
+
+/*=========================================================
+    FORM
+=========================================================*/
+
+.edit-service-form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:24px;
+}
+
+.form-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:10px;
+}
+
+.form-label{
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    color:#333;
+}
+/*=========================================================
+    INPUTS
+=========================================================*/
+
+.form-input,
+.form-textarea{
+
+    width:100%;
+
+    padding:16px 20px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:rgba(255,255,255,.90);
+
+    font-size:1rem;
+
+    color:#222;
+
+    outline:none;
+
+    transition:.3s ease;
+
+    box-shadow:
+            inset 0 1px rgba(255,255,255,.8),
+            0 8px 18px rgba(0,0,0,.06);
+}
+
+.form-input:focus,
+.form-textarea:focus{
+
+    background:#fff;
+
+    box-shadow:
+            0 0 0 4px rgba(91,61,245,.12),
+            0 10px 24px rgba(0,0,0,.08);
+}
+
+.form-textarea{
+
+    min-height:150px;
+
+    resize:vertical;
+
+    line-height:1.6;
+}
+
+/*=========================================================
+    UPDATE BUTTON
+=========================================================*/
+
+.update-service-button{
+
+    align-self:flex-end;
+
+    min-width:180px;
+
+    padding:16px 32px;
+
+    border:none;
+
+    border-radius:14px;
+
+    background:linear-gradient(
+            135deg,
+            #5b3df5,
+            #4d32d9
+    );
+
+    color:#fff;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.35s ease;
+
+    box-shadow:
+            0 14px 28px rgba(91,61,245,.28);
+}
+
+.update-service-button:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+            0 20px 36px rgba(91,61,245,.35);
+}
+
+.update-service-button:active{
+
+    transform:translateY(0);
+}
+
+/*=========================================================
+    RESPONSIVE
+=========================================================*/
+
+@media (max-width:992px){
+
+    .edit-service-page{
+
+        padding:24px;
+    }
+
+    .edit-service-card{
+
+        padding:26px;
+    }
+}
+
+@media (max-width:768px){
+
+    .edit-service-page{
+
+        padding:18px;
+    }
+
+    .edit-service-title{
+
+        font-size:1.8rem;
+    }
+
+    .edit-service-card{
+
+        padding:22px;
+
+        border-radius:20px;
+    }
+
+    .update-service-button{
+
+        width:100%;
+
+        align-self:stretch;
+    }
+}
+
+/*=========================================================
+    REDUCED MOTION
+=========================================================*/
+
+@media (prefers-reduced-motion:reduce){
+
+    *{
+
+        animation:none !important;
+
+        transition:none !important;
+
+        scroll-behavior:auto !important;
+    }
+}

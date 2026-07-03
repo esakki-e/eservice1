@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import "./Pagination.css";
 
 function Pagination({
 
@@ -84,74 +85,35 @@ function Pagination({
 
     return (
 
-        <div className="
+        <div className="pagination-container">
 
-    mt-10
+            <div className="pagination-header">
 
-    bg-slate-50
-
-    rounded-2xl
-
-    border
-
-    border-slate-200
-
-    p-6
-
-    shadow-sm
-
-    flex
-
-    flex-col
-
-    gap-6
-
-">
-
-            <div className="
-
-                flex
-
-                flex-wrap
-
-                items-center
-
-                justify-between
-                md:items-center
-                gap-4
-
-            ">
-
-                <div className="
-
-                    text-slate-600
-
-                    font-medium
-
-                ">
+                <div className="pagination-info">
 
                     Showing Results
-                    <span className="font-bold text-slate-800">
 
-                        {" "}{start}
+                    <span className="pagination-highlight">
 
-                    </span>
+                    {" "}{start}
+
+                </span>
 
                     -
 
-                    <span className="font-bold text-slate-800">
+                    <span className="pagination-highlight">
 
-                        {" "}{end}
+                    {" "}{end}
 
-                    </span>
+                </span>
 
                     {" "}of{" "}
 
-                    <span className="font-bold text-indigo-600">
+                    <span className="pagination-total">
 
-                        {totalElements}
+                    {totalElements}
 
-                    </span>
+                </span>
 
                     {" "}requests
 
@@ -161,21 +123,13 @@ function Pagination({
 
                     onPageSizeChange && (
 
-                        <div className="
+                        <div className="page-size-selector">
 
-                            flex
+                        <span className="page-size-label">
 
-                            items-center
+                            Rows per Page
 
-                            gap-3
-
-                        ">
-
-                            <span className="text-slate-500">
-
-                                Rows per Page
-
-                            </span>
+                        </span>
 
                             <select
 
@@ -191,29 +145,7 @@ function Pagination({
 
                                 }
 
-                                className="
-
-h-11
-
-px-4
-
-rounded-xl
-
-border
-
-bg-white
-
-hover:border-indigo-500
-
-focus:ring-2
-
-focus:ring-indigo-500
-
-outline-none
-
-transition
-
-"
+                                className="page-size-dropdown"
 
                             >
 
@@ -235,19 +167,7 @@ transition
 
             </div>
 
-            <div className="
-
-                flex
-
-                flex-wrap
-
-                justify-center
-
-                items-center
-
-                gap-2
-
-            ">
+            <div className="pagination-controls">
 
                 <button
 
@@ -255,31 +175,7 @@ transition
 
                     onClick={()=>onPageChange(page-1)}
 
-                    className="
-
-                        w-12
-
-                        h-12
-
-                        rounded-xl
-
-                        border
-
-                        bg-white
-
-                        hover:bg-slate-100
-
-                        disabled:opacity-40
-
-                        transition
-transition-all
-
-duration-200
-
-ease-in-out
-                         active:scale-95
-
-                    "
+                    className="pagination-arrow"
 
                 >
 
@@ -307,23 +203,13 @@ ease-in-out
 
                                     key={index}
 
-                                    className="
-
-w-12
-
-text-center
-
-text-slate-400
-
-font-bold
-
-"
+                                    className="pagination-dots"
 
                                 >
 
-                                    ...
+                                ...
 
-                                </span>
+                            </span>
 
                             );
 
@@ -337,41 +223,11 @@ font-bold
 
                                 onClick={()=>onPageChange(p)}
 
-                                className={`
-
-                                    h-12
-
-                                    w-12
-
-                                    rounded-xl
-
-                                    transition-all
-
-                                    duration-300
-
-                                    font-semibold
-transition-all
-
-duration-200
-
-ease-in-out
-                                    active:scale-95
-
-                                    ${
-
+                                className={`pagination-page-button ${
                                     page===p
-
-                                        ?
-
-                                        "border bg-white hover:bg-indigo-50 hover:border-indigo-400"
-
-                                        :
-
-                                        "border bg-white hover:bg-slate-100"
-
-                                }
-
-                                `}
+                                        ? "pagination-page-active"
+                                        : ""
+                                }`}
 
                             >
 
@@ -391,56 +247,23 @@ ease-in-out
 
                     onClick={()=>onPageChange(page+1)}
 
-                    className="
-
-                        w-12
-
-                        h-12
-
-                        rounded-xl
-
-                        border
-
-                        bg-white
-
-                        hover:bg-slate-100
-
-                        disabled:opacity-40
-
-                        transition
-                        hover:scale-105
-
-active:scale-95
-
-                    "
+                    className="pagination-arrow"
 
                 >
 
-                     →
+                    →
 
                 </button>
 
             </div>
 
-            <div className="
+            <div className="pagination-jump">
 
-flex
+            <span className="pagination-jump-label">
 
-flex-wrap
+                Go to page
 
-justify-center
-
-items-center
-
-gap-3
-
-">
-
-                <span className="text-slate-500">
-
-                    Go to page
-
-                </span>
+            </span>
 
                 <input
 
@@ -462,24 +285,7 @@ gap-3
 
                     }
 
-                    className="
-w-20
-
-h-11
-
-text-center
-
-border
-
-rounded-xl
-
-focus:ring-2
-
-focus:ring-indigo-500
-
-outline-none
-
-                    "
+                    className="pagination-input"
 
                 />
 
@@ -507,21 +313,7 @@ outline-none
 
                     }}
 
-                    className="
-
-                        px-6
-
-                        h-11
-
-                        rounded-xl
-
-                        bg-indigo-600
-
-                        text-white
-
-                        hover:bg-indigo-700
-
-                    "
+                    className="pagination-go-button"
 
                 >
 

@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
 import Pagination from "../../components/Pagination";
+import "./Services.css";
+
 function Services() {
 
     const [services, setServices] = useState([]);
@@ -85,277 +87,165 @@ function Services() {
     return (
         <DashboardLayout>
 
-            <div className="max-w-7xl mx-auto p-6">
+            <div className="vm-page-bg">
 
-                {/* Header */}
-                <div className="flex justify-between items-center mb-8">
+                <div className="vm-services-page">
 
-                    <div>
-                        <h1 className="text-4xl font-bold text-slate-800">
-                            Services
-                        </h1>
+                    {/* Header */}
 
-                        <p className="text-slate-500 mt-1">
-                            Manage the services available in the portal
-                        </p>
+                    <div className="vm-services-header">
+
+                        <div>
+
+                            <h1 className="vm-services-title">
+                                Services
+                            </h1>
+
+                            <p className="vm-services-subtitle">
+                                Manage the services available in the portal
+                            </p>
+
+                        </div>
+
+                        <Link
+                            to="/services/create"
+                            className="vm-create-btn"
+                        >
+                            + Create Service
+                        </Link>
+
                     </div>
 
-                    <Link
-                        to="/services/create"
-                        className="
-                        px-5
-                        py-3
-                        rounded-xl
-                        bg-indigo-600
-                        text-white
-                        font-medium
-                        shadow-md
-                        hover:bg-indigo-700
-                        transition
-                    "
-                    >
-                        + Create Service
-                    </Link>
+                    {/* Table */}
 
-                </div>
+                    <div className="vm-services-card">
 
-                {/* Se
-                rvices Table */}
-                <div
-                    className="
-                    bg-white
-                    rounded-3xl
-                    shadow-lg
-                    border
-                    border-slate-200
-                    overflow-hidden
-                "
-                >
+                        <table className="vm-services-table">
 
-                    <table className="w-full">
+                            <thead>
 
-                        <thead>
+                            <tr>
 
-                        <tr
-                            className="
-                            bg-slate-50
-                            text-slate-600
-                            text-sm
-                            uppercase
-                        "
-                        >
-                            <th className="text-left p-4">ID</th>
-                            <th className="text-left p-4">Service</th>
-                            <th className="text-left p-4">Description</th>
-                            <th className="text-left p-4">Status</th>
-                            <th className="text-right p-4">Actions</th>
-                        </tr>
+                                <th>ID</th>
 
-                        </thead>
+                                <th>Service</th>
 
-                        <tbody>
+                                <th>Description</th>
 
-                        {services.map(service => (
+                                <th>Status</th>
 
-                            <tr
-                                key={service.id}
-                                className="
-                                border-b
-                                border-slate-100
-                                hover:bg-slate-50
-                                transition
-                            "
-                            >
-
-                                <td className="p-4 font-semibold text-slate-700">
-                                    {service.id}
-                                </td>
-
-                                <td className="p-4">
-
-                                    <div className="flex items-center gap-3">
-
-                                        <div
-                                            className="
-                                            w-10
-                                            h-10
-                                            rounded-xl
-                                            bg-indigo-100
-                                            text-indigo-600
-                                            flex
-                                            items-center
-                                            justify-center
-                                        "
-                                        >
-                                            📄
-                                        </div>
-
-                                        <div>
-                                            <p className="text-slate-800 font-semibold">
-                                                {service.serviceName}
-                                            </p>
-                                        </div>
-
-                                    </div>
-
-                                </td>
-
-                                <td className="p-4 text-slate-500">
-                                    {service.description}
-                                </td>
-
-                                <td className="p-4">
-
-                                    {service.active ? (
-
-                                        <span
-                                            className="
-                                            px-3
-                                            py-1
-                                            rounded-full
-                                            bg-green-100
-                                            text-green-700
-                                            text-sm
-                                            font-medium
-                                        "
-                                        >
-                                        ● Active
-                                    </span>
-
-                                    ) : (
-
-                                        <span
-                                            className="
-                                            px-3
-                                            py-1
-                                            rounded-full
-                                            bg-red-100
-                                            text-red-700
-                                            text-sm
-                                            font-medium
-                                        "
-                                        >
-                                        ● Inactive
-                                    </span>
-
-                                    )}
-
-                                </td>
-
-                                <td className="p-4">
-
-                                    <div
-                                        className="
-                                        flex
-                                        justify-end
-                                        gap-2
-                                    "
-                                    >
-
-                                        <Link
-                                            to={`/services/edit/${service.id}`}
-                                            className="
-                                            w-10
-                                            h-10
-                                            rounded-xl
-                                            bg-amber-100
-                                            text-amber-700
-                                            flex
-                                            items-center
-                                            justify-center
-                                            hover:bg-amber-200
-                                            transition
-                                        "
-                                            title="Edit"
-                                        >
-                                            ✏️
-                                        </Link>
-
-                                        <Link
-                                            to={`/service-fields/${service.id}`}
-                                            className="
-                                            w-10
-                                            h-10
-                                            rounded-xl
-                                            bg-emerald-100
-                                            text-emerald-700
-                                            flex
-                                            items-center
-                                            justify-center
-                                            hover:bg-emerald-200
-                                            transition
-                                        "
-                                            title="Manage Fields"
-                                        >
-                                            ⚙️
-                                        </Link>
-
-                                        <Link
-                                            to={`/service-documents/${service.id}`}
-                                            className="
-                                            w-10
-                                            h-10
-                                            rounded-xl
-                                            bg-blue-100
-                                            text-blue-700
-                                            flex
-                                            items-center
-                                            justify-center
-                                            hover:bg-blue-200
-                                            transition
-                                        "
-                                            title="Apply"
-                                        >
-                                            ↗
-                                        </Link>
-
-                                        <button
-                                            onClick={() =>
-                                                deleteService(service.id)
-                                            }
-                                            className="
-                                            w-10
-                                            h-10
-                                            rounded-xl
-                                            bg-red-100
-                                            text-red-700
-                                            flex
-                                            items-center
-                                            justify-center
-                                            hover:bg-red-200
-                                            transition
-                                        "
-                                            title="Delete"
-                                        >
-                                            🗑️
-                                        </button>
-
-                                    </div>
-
-                                </td>
+                                <th className="text-end">
+                                    Actions
+                                </th>
 
                             </tr>
 
-                        ))}
+                            </thead>
 
-                        </tbody>
+                            <tbody>
 
-                    </table>
-                    <Pagination
+                            {services.map(service => (
 
-                        page={page}
+                                <tr key={service.id}>
 
-                        totalPages={totalPages}
+                                    <td className="vm-id">
+                                        {service.id}
+                                    </td>
 
-                        totalElements={totalElements}
+                                    <td>
 
-                        pageSize={size}
+                                        <div className="vm-service-info">
 
-                        onPageChange={setPage}
+                                            <div className="vm-service-icon">
+                                                📄
+                                            </div>
 
-                        onPageSizeChange={setSize}
+                                            <span className="vm-service-name">
+                                            {service.serviceName}
+                                        </span>
 
-                    />
+                                        </div>
+
+                                    </td>
+
+                                    <td className="vm-description">
+                                        {service.description}
+                                    </td>
+
+                                    <td>
+
+                                        {service.active ? (
+
+                                            <span className="vm-status active">
+                                            ● Active
+                                        </span>
+
+                                        ) : (
+
+                                            <span className="vm-status inactive">
+                                            ● Inactive
+                                        </span>
+
+                                        )}
+
+                                    </td>
+
+                                    <td>
+
+                                        <div className="vm-actions">
+
+                                            <Link
+                                                to={`/services/edit/${service.id}`}
+                                                className="vm-action edit"
+                                            >
+                                                ✏️
+                                            </Link>
+
+                                            <Link
+                                                to={`/service-fields/${service.id}`}
+                                                className="vm-action settings"
+                                            >
+                                                ⚙️
+                                            </Link>
+
+                                            <Link
+                                                to={`/service-documents/${service.id}`}
+                                                className="vm-action view"
+                                            >
+                                                ↗
+                                            </Link>
+
+                                            <button
+                                                className="vm-action delete"
+                                                onClick={() =>
+                                                    deleteService(service.id)
+                                                }
+                                            >
+                                                🗑️
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            ))}
+
+                            </tbody>
+
+                        </table>
+
+                        <Pagination
+                            page={page}
+                            totalPages={totalPages}
+                            totalElements={totalElements}
+                            pageSize={size}
+                            onPageChange={setPage}
+                            onPageSizeChange={setSize}
+                        />
+
+                    </div>
 
                 </div>
 

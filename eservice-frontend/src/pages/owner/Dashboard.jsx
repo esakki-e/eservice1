@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import "./Dashboard.css";
-import DashboardLayout
-    from "../../layouts/DashboardLayout";
+import DashboardLayout from "../../layouts/DashboardLayout";
 import { API_URL } from "../../config";
 function Dashboard() {
 
@@ -128,395 +127,335 @@ function Dashboard() {
     }, [dashboard]);
     return (
         <DashboardLayout>
-        <>
 
+            <>
 
-            <div className="max-w-7xl mx-auto">
-                <div className="mb-4">
-                    <h2 className="text-5xl font-bold text-slate-900">                        Admin Dashboard
-                    </h2>
+                <div className="vm-page-bg">
 
-                    <p className="text-slate-500 mt-2 text-lg">                        Monitor services, requests,
-                        employees and analytics.
-                    </p>
-                </div>
+                    <div className="vm-dashboard-page">
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Total Services */}
+                        <div className="vm-dashboard-container">
 
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-blue-500">
+                            <div className="vm-dashboard-header">
 
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Total Services
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-slate-900">
-                                    {animatedDashboard.totalServices}
+                                <h2 className="vm-dashboard-title">
+                                    Admin Dashboard
                                 </h2>
 
-                                <p className="text-emerald-600 text-sm mt-2">
-                                    Active Services
+                                <p className="vm-dashboard-subtitle">
+                                    Monitor services, requests, employees and analytics.
                                 </p>
 
                             </div>
 
-                            <div className="text-4xl">
-                                🛠️
+                            <div className="vm-dashboard-grid">
+
+                                {/* Total Services */}
+                                <div className="vm-dashboard-card vm-service-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Total Services
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.totalServices}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Active Services
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            🛠️
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Total Requests */}
+                                <div className="vm-dashboard-card vm-request-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Total Requests
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.totalRequests}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Applications Received
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            📄
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Today's Requests */}
+                                <div className="vm-dashboard-card vm-today-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Today's Requests
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.todayRequests}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Received Today
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            📅
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Employees */}
+                                <div className="vm-dashboard-card vm-employee-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Employees
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.totalEmployees}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Active Workforce
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            👨‍💼
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Pending Tasks */}
+                                <div className="vm-dashboard-card vm-pending-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Pending Tasks
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.pendingTasks}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Awaiting Completion
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            ⏳
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Completed Tasks */}
+                                <div className="vm-dashboard-card vm-completed-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Completed Tasks
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.completedTasks}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Successfully Finished
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            ✅
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Paid Requests */}
+                                <div className="vm-dashboard-card vm-paid-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Paid Requests
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.paidRequests}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Payment Received
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            💳
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Pending Payments */}
+                                <div className="vm-dashboard-card vm-unpaid-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Pending Payments
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                {animatedDashboard.unpaidRequests}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Awaiting Payment
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            💸
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                {/* Revenue */}
+                                <div className="vm-dashboard-card vm-revenue-card">
+
+                                    <div className="vm-dashboard-card-content">
+
+                                        <div>
+
+                                            <p className="vm-dashboard-card-label">
+                                                Revenue
+                                            </p>
+
+                                            <h2 className="vm-dashboard-card-value">
+                                                ₹{animatedDashboard.totalRevenue}
+                                            </h2>
+
+                                            <p className="vm-dashboard-card-info">
+                                                Total Collection
+                                            </p>
+
+                                        </div>
+
+                                        <div className="vm-dashboard-card-icon">
+                                            💰
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
                             </div>
 
                         </div>
-
-                    </div>
-
-                    {/* Total Requests */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-violet-500">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Total Requests
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-slate-900">
-                                    {animatedDashboard.totalRequests}
-                                </h2>
-
-                                <p className="text-indigo-600 text-sm mt-2">
-                                    Applications Received
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                📄
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    {/* Today's Requests */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-indigo-500">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Today's Requests
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-indigo-600">
-                                    {animatedDashboard.todayRequests}
-                                </h2>
-
-                                <p className="text-indigo-600 text-sm mt-2">
-                                    Received Today
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                📅
-                            </div>
-
-                        </div>
-
-                    </div>
-                    {/* Employees */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-cyan-500">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Employees
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-slate-900">
-                                    {animatedDashboard.totalEmployees}
-                                </h2>
-
-                                <p className="text-cyan-600 text-sm mt-2">
-                                    Active Workforce
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                👨‍💼
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    {/* Pending Tasks */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-orange-500">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Pending Tasks
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-orange-500">
-                                    {animatedDashboard.pendingTasks}
-                                </h2>
-
-                                <p className="text-orange-500 text-sm mt-2">
-                                    Awaiting Completion
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                ⏳
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    {/* Completed Tasks */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-emerald-500">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Completed Tasks
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-emerald-600">
-                                    {animatedDashboard.completedTasks}
-                                </h2>
-
-                                <p className="text-emerald-600 text-sm mt-2">
-                                    Successfully Finished
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                ✅
-                            </div>
-
-                        </div>
-
-                    </div>
-
-
-
-                    {/* Paid Requests */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-teal-500">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Paid Requests
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-teal-600">
-                                    {animatedDashboard.paidRequests}
-                                </h2>
-
-                                <p className="text-teal-600 text-sm mt-2">
-                                    Payment Received
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                💳
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    {/* Pending Payments */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-red-500">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Pending Payments
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-red-500">
-                                    {animatedDashboard.unpaidRequests}
-                                </h2>
-
-                                <p className="text-red-500 text-sm mt-2">
-                                    Awaiting Payment
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                💸
-                            </div>
-
-                        </div>
-
-                    </div>
-                    {/* Revenue */}
-
-                    <div className="bg-white rounded-2xl p-5 shadow-lg hover:shadow-2xl hover:-translate-y-1 transition-all border-t-4 border-green-600">
-
-                        <div className="flex justify-between items-start">
-
-                            <div>
-
-                                <p className="text-slate-500 text-sm font-medium">
-                                    Revenue
-                                </p>
-
-                                <h2 className="text-4xl font-bold mt-3 text-green-600">
-                                    ₹{animatedDashboard.totalRevenue}
-                                </h2>
-
-                                <p className="text-green-600 text-sm mt-2">
-                                    Total Collection
-                                </p>
-
-                            </div>
-
-                            <div className="text-4xl">
-                                💰
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-
-
-                </div>                <div
-                className="
-mt-8
-rounded-3xl
-overflow-hidden
-shadow-xl
-bg-gradient-to-r
-from-blue-600
-via-indigo-600
-to-violet-600
-text-white
-cursor-pointer
-"
-
-                    onClick={() =>
-                        setShowAnalytics(
-                            !showAnalytics
-                        )
-                    }
-                >
-
-                    <div className="card-body">
 
                         <div
-                            className="
-    mt-6
-    rounded-3xl
-    bg-gradient-to-r
-    from-blue-600
-    via-indigo-600
-    to-purple-600
-    p-8
-    shadow-xl
-    text-white
-    flex
-    items-center
-    justify-between
-"
+                            className="vm-analytics-section"
+                            onClick={() => setShowAnalytics(!showAnalytics)}
                         >
 
-                            <div>
+                            <div className="vm-analytics-card">
 
-                                <h3 className="text-3xl font-bold">
-                                    Service Analytics
-                                </h3>
+                                <div className="vm-analytics-header">
 
-                                <p className="text-blue-100 mt-2">
+                                    <div>
 
+                                        <h3 className="vm-analytics-title">
+                                            Service Analytics
+                                        </h3>
 
-                                    {
-                                        Math.min(analytics.length, 3)
-                                    } Top Services
+                                        <p className="vm-analytics-subtitle">
+                                            {Math.min(analytics.length,3)} Top Services
+                                        </p>
 
-                                </p>
+                                    </div>
 
-                            </div>
+                                    <h3 className="vm-analytics-toggle">
+                                        {showAnalytics ? "▲" : "▼"}
+                                    </h3>
 
-                            <h3>
+                                </div>
 
-                                {
-                                    showAnalytics
-                                        ? "▲"
-                                        : "▼"
-                                }
+                                {showAnalytics && (
 
-                            </h3>
+                                    <div className="vm-analytics-list">
 
-                        </div>
-
-                        {
-                            showAnalytics
-                            &&
-                            (
-                                <div
-                                    className="mt-3"
-                                >
-                                    {
+                                        {
 
                                             analytics.slice(0, 3).map((item, index) => (
 
                                                 <div
-                                                    key={
-                                                        item.serviceName
-                                                    }
-                                                    className="
-                    border-bottom
-                    py-3
-                "
+                                                    key={item.serviceName}
+                                                    className="vm-analytics-item"
                                                 >
 
-                                                    <div
-                                                        className="
-                        d-flex
-                        justify-content-between
-                        align-items-center
-                    "
-                                                    >
+                                                    <div className="vm-analytics-item-header">
 
                                                         <strong>
 
@@ -528,42 +467,29 @@ cursor-pointer
                                                                         : "🥉 "
                                                             }
 
-                                                            {
-                                                                item.serviceName
-                                                            }
+                                                            {item.serviceName}
 
                                                         </strong>
 
-                                                        <div
-                                                            className="
-                            analytics-count
-                        "
-                                                        >
-                                                            {
-                                                                item.requestCount
-                                                            }
+                                                        <div className="vm-analytics-count">
+
+                                                            {item.requestCount}
+
                                                         </div>
 
                                                     </div>
 
-                                                    <div
-                                                        className="progress mt-2"
-                                                        style={{
-                                                            height: "8px"
-                                                        }}
-                                                    >
+                                                    <div className="vm-analytics-progress">
 
                                                         <div
-                                                            className="progress-bar"
+                                                            className="vm-analytics-progress-bar"
                                                             style={{
-                                                                width:
-                                                                    `${
-                                                                        (
-                                                                            item.requestCount
-                                                                            /
-                                                                            analytics[0].requestCount
-                                                                        ) * 100
-                                                                    }%`
+                                                                width: `${
+                                                                    (
+                                                                        item.requestCount /
+                                                                        analytics[0].requestCount
+                                                                    ) * 100
+                                                                }%`
                                                             }}
                                                         />
 
@@ -571,29 +497,24 @@ cursor-pointer
 
                                                 </div>
 
-                                            )
-                                        )
-                                    }
+                                            ))
 
+                                        }
 
+                                    </div>
 
+                                )}
+                            </div>
 
-                                </div>
-                            )
-                        }
+                        </div>
 
                     </div>
 
                 </div>
 
+            </>
 
-
-
-
-    </>
-
-</DashboardLayout>
-
-);
+        </DashboardLayout>
+    );
 }
 export default Dashboard;

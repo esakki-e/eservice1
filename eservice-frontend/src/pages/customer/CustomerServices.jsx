@@ -6,6 +6,8 @@ import { API_URL } from "../../config";
 import {
     getActiveCategories
 } from "../../services/serviceCategoryService";
+import "./CustomerService.css";
+
 import Pagination from "../../components/Pagination";
 
 function CustomerServices() {
@@ -106,7 +108,7 @@ function CustomerServices() {
         return (
             <>
                 <CustomerNavbar />
-                <div className="flex justify-center items-center h-96">
+                <div className="services-loading">
                     Loading...
                 </div>
             </>
@@ -118,291 +120,193 @@ function CustomerServices() {
         <>
             <CustomerNavbar />
 
-            <div className="min-h-screen bg-slate-50">
+            <div className="page-bg">
 
-                <div className="max-w-7xl mx-auto px-6 py-10">
+                <div className="services-page">
 
-                    {/* Header */}
+                    <div className="services-container">
 
-                    <div className="mb-10">
-                        <div className="relative mb-8 max-w-md">
+                        {/* Header */}
 
-    <span
-        className="
-        absolute
-        left-4
-        top-1/2
-        -translate-y-1/2
-        text-slate-400
-    "
-    >
-        🔍
-    </span>
+                        <div className="services-header">
 
-                            <input
-                                type="text"
-                                placeholder="Search certificates and services..."
-                                value={searchTerm}
-                                onChange={(e) =>
-                                    setSearchTerm(e.target.value)
+                            <div className="services-search">
+
+                            <span className="search-icon">
+                                🔍
+                            </span>
+
+                                <input
+                                    type="text"
+                                    placeholder="Search certificates and services..."
+                                    value={searchTerm}
+                                    onChange={(e) =>
+                                        setSearchTerm(e.target.value)
+                                    }
+                                    className="search-input"
+                                />
+
+                            </div>
+
+                            <h1 className="services-title">
+
+                                Available Services
+
+                            </h1>
+
+                            <p className="services-subtitle">
+
+                                Choose a service and begin your application process.
+
+                            </p>
+
+                            <div className="category-list">
+
+                                <button
+
+                                    onClick={() =>
+                                        setSelectedCategory(null)
+                                    }
+
+                                    className={`category-button ${
+                                        selectedCategory == null
+                                            ? "category-active"
+                                            : ""
+                                    }`}
+                                >
+
+                                    All
+
+                                </button>
+
+                                {
+
+                                    categories.map(category => (
+
+                                        <button
+
+                                            key={category.id}
+
+                                            onClick={() =>
+                                                setSelectedCategory(category)
+                                            }
+
+                                            className={`category-button ${
+                                                selectedCategory?.id === category.id
+                                                    ? "category-active"
+                                                    : ""
+                                            }`}
+                                        >
+
+                                            {category.name}
+
+                                        </button>
+
+                                    ))
+
                                 }
-                                className="
-            w-full
-            h-12
-            pl-12
-            pr-4
-            rounded-2xl
-            border
-            border-slate-300
-            bg-white
-            shadow-sm
-            focus:outline-none
-            focus:ring-2
-            focus:ring-indigo-500
-        "
-                            />
+
+                            </div>
 
                         </div>
-                        <h1 className="
-                        text-5xl
-                        font-bold
-                        text-slate-800
-                        mb-2
-                    ">
-                            Available Services
-                        </h1>
 
-                        <p className="
-                        text-slate-500
-                        text-lg
-                    ">
-                            Choose a service and begin your application process.
-                        </p>
-                        <div
-                            className="
-        flex
-        flex-wrap
-        gap-3
-        mt-8
-        mb-10
-    "
-                        >
+                        {/* Services Grid */}
 
-                            <button
+                        <div className="services-grid">
 
-                                onClick={() =>
-                                    setSelectedCategory(null)
-                                }
+                            {services
+                                .filter(service => {
 
-                                className={`
-            px-5
-            py-2
-            rounded-full
-            transition
+                                    if (selectedCategory == null) {
 
-            ${selectedCategory == null
+                                        return true;
 
-                                    ?
+                                    }
 
-                                    "bg-indigo-600 text-white"
+                                    return selectedCategory.serviceIds?.includes(service.id) || false;
 
-                                    :
+                                })
+                                .map(service => (
 
-                                    "bg-white border"
-
-                                }
-
-        `}
-                            >
-
-                                All
-
-                            </button>
-
-                            {
-
-                                categories.map(category => (
-
-                                    <button
-
-                                        key={category.id}
-
-                                        onClick={() =>
-                                            setSelectedCategory(category)
-                                        }
-
-                                        className={`
-                    px-5
-                    py-2
-                    rounded-full
-                    transition
-
-                    ${selectedCategory?.id === category.id
-
-                                            ?
-
-                                            "bg-indigo-600 text-white"
-
-                                            :
-
-                                            "bg-white border"
-
-                                        }
-
-                `}
+                                    <div
+                                        key={service.id}
+                                        className="service-card"
                                     >
 
-                                        {category.name}
+                                        <div className="service-card-header">
 
-                                    </button>
+                                            <div className="service-icon">
 
-                                ))
+                                                📄
 
-                            }
+                                            </div>
+
+                                            <span className="service-status">
+
+                                            Active
+
+                                        </span>
+
+                                        </div>
+
+                                        <div className="service-card-body">
+                                            <h3 className="service-title">{service.serviceName}</h3>
+
+                                            <p className="service-description">
+                                                {service.description}
+                                            </p>
+                                        </div>
+
+                                        <button
+                                            onClick={() =>
+                                                navigate(
+                                                    `/service-documents/${service.id}`
+                                                )
+                                            }
+                                            className="apply-button"
+                                        >
+
+                                            Apply Now →
+
+                                        </button>
+
+                                    </div>
+
+                                ))}
 
                         </div>
 
                     </div>
 
-                    {/* Services Grid */}
+                    <div className="services-pagination">
 
-                    <div className="
-                    grid
-                    grid-cols-1
-                    md:grid-cols-2
-                    xl:grid-cols-3
-                    gap-6
-                ">
+                        <Pagination
 
-                        {services
-                            .filter(service => {
+                            page={page}
 
-                                if (selectedCategory == null) {
+                            totalPages={totalPages}
 
-                                    return true;
+                            totalElements={totalElements}
 
-                                }
+                            pageSize={size}
 
-                                return selectedCategory.serviceIds?.includes(service.id) || false;
+                            onPageChange={setPage}
 
-                            })
-                            .map(service => (
-                            <div
-                                key={service.id}
-                                className="
-                                bg-white
-                                border
-                                border-slate-200
-                                rounded-3xl
-                                shadow-sm
-                                p-6
-                                hover:shadow-lg
-                                hover:-translate-y-1
-                                transition-all
-                            "
-                            >
+                            onPageSizeChange={(newSize) => {
 
-                                <div className="
-                                flex
-                                items-center
-                                justify-between
-                                mb-5
-                            ">
+                                setSize(newSize);
 
-                                    <div className="
-                                    w-12
-                                    h-12
-                                    rounded-2xl
-                                    bg-slate-100
-                                    flex
-                                    items-center
-                                    justify-center
-                                    text-xl
-                                ">
-                                        📄
-                                    </div>
+                                setPage(0);
 
-                                    <span className="
-                                    px-3
-                                    py-1
-                                    rounded-full
-                                    text-xs
-                                    font-semibold
-                                    bg-emerald-100
-                                    text-emerald-700
-                                ">
-                                    Active
-                                </span>
+                            }}
 
-                                </div>
-
-                                <h3 className="
-                                text-xl
-                                font-bold
-                                text-slate-800
-                                mb-2
-                            ">
-                                    {service.serviceName}
-                                </h3>
-
-                                <p className="
-                                text-slate-500
-                                mb-6
-                                min-h-[48px]
-                            ">
-                                    {service.description}
-                                </p>
-
-                                <button
-                                    onClick={() =>
-                                        navigate(
-                                            `/service-documents/${service.id}`
-                                        )
-                                    }
-                                    className="
-                                    w-full
-                                    py-3
-                                    rounded-2xl
-                                    bg-slate-800
-                                    text-white
-                                    font-semibold
-                                    hover:bg-slate-900
-                                    transition-all
-                                "
-                                >
-                                    Apply Now →
-                                </button>
-
-                            </div>
-
-                        ))}
+                        />
 
                     </div>
 
                 </div>
-                <Pagination
 
-                    page={page}
-
-                    totalPages={totalPages}
-
-                    totalElements={totalElements}
-
-                    pageSize={size}
-
-                    onPageChange={setPage}
-
-                    onPageSizeChange={(newSize)=>{
-
-                        setSize(newSize);
-
-                        setPage(0);
-
-                    }}
-
-                />
             </div>
-
 
         </>
     );

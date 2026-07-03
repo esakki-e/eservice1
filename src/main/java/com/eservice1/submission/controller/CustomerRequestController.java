@@ -2,6 +2,7 @@ package com.eservice1.submission.controller;
 
 import com.eservice1.common.dto.PageResponseDTO;
 import com.eservice1.submission.dto.CustomerRequestDTO;
+import com.eservice1.submission.dto.CustomerRequestViewDTO;
 import com.eservice1.submission.entity.CustomerRequest;
 import com.eservice1.submission.service.CustomerRequestService;
 import org.springframework.web.bind.annotation.*;
@@ -31,16 +32,13 @@ public class CustomerRequestController {
         return requestService.createRequest(dto);
     }
     @GetMapping("/phone/{phoneNumber}")
-
-    public PageResponseDTO<CustomerRequest> getByPhoneNumber(
+    public PageResponseDTO<CustomerRequestViewDTO> getByPhoneNumber(
 
             @PathVariable String phoneNumber,
 
-            @RequestParam(defaultValue="0")
-            int page,
+            @RequestParam(defaultValue = "0") int page,
 
-            @RequestParam(defaultValue="10")
-            int size
+            @RequestParam(defaultValue = "10") int size
 
     ) {
 

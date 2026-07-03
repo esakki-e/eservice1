@@ -5,6 +5,8 @@ import { API_URL } from "../../config";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
 import Pagination from "../../components/Pagination";
+import "./Requests.css";
+
 function Requests() {
 
     const [requests, setRequests] =
@@ -300,410 +302,523 @@ function Requests() {
         dateFilter
 
     ]);
-    return (<DashboardLayout>
-        <>
+    return (
+
+        <DashboardLayout>
+
+            <>
+
+                <div className="page-bg">
+
+                    <div className="requests-page">
+                        {/* Header */}
+
+                        <div className="requests-header">
+
+                            <div>
+
+                                <h1 className="requests-title">
+                                    Admin Dashboard
+                                </h1>
+
+                                <p className="requests-subtitle">
+                                    Monitor services, requests, employees and analytics.
+                                </p>
+
+                            </div>
+
+                        </div>
+                        {/* Statistics */}
+
+                        <div className="request-stats-grid">
+
+                            <div className="stats-card total-card">
+
+                                <p className="stats-label">
+
+                                    Total Requests
+
+                                </p>
+
+                                <h2 className="stats-value">
+
+                                    {totalRequests}
+
+                                </h2>
+
+                            </div>
+
+                            <div className="stats-card pending-card">
+
+                                <p className="stats-label">
+
+                                    Pending
+
+                                </p>
+
+                                <h2 className="stats-value">
+
+                                    {pendingCount}
+
+                                </h2>
+
+                            </div>
+
+                            <div className="stats-card assigned-card">
+
+                                <p className="stats-label">
+
+                                    Assigned
+
+                                </p>
+
+                                <h2 className="stats-value">
+
+                                    {assignedCount}
+
+                                </h2>
+
+                            </div>
+
+                            <div className="stats-card progress-card">
+
+                                <p className="stats-label">
+
+                                    In Progress
+
+                                </p>
+
+                                <h2 className="stats-value">
+
+                                    {inProgressCount}
+
+                                </h2>
+
+                            </div>
+
+                            <div className="stats-card completed-card">
+
+                                <p className="stats-label">
+
+                                    Completed
+
+                                </p>
+
+                                <h2 className="stats-value">
+
+                                    {completedCount}
+
+                                </h2>
+
+                            </div>
+
+                        </div>
+
+                        {/* Header */}
 
 
-            <div className="w-full">
-                <div className="grid grid-cols-5 gap-6 mb-8">
-                    <div className="bg-white rounded-3xl p-6 shadow-sm border">
-                        <p className="text-slate-500">Total Requests</p>
-                        <h2 className="text-3xl font-bold">{totalRequests}</h2>                    </div>
 
-                    <div className="bg-amber-50 rounded-3xl p-6 border border-amber-200">
-                        <p className="text-amber-700">Pending</p>
-                        <h2 className="text-3xl font-bold">{pendingCount}</h2>
-                    </div>
-                    <div className="bg-purple-50 rounded-3xl p-6 border border-purple-200">
-                        <p className="text-purple-700">
-                            Assigned
-                        </p>
+                        {/* Filters */}
 
-                        <h2 className="text-3xl font-bold">
-                            {assignedCount}
-                        </h2>
-                    </div>
+                        <div className="filter-card">
 
-                    <div className="bg-blue-50 rounded-3xl p-6 border border-blue-200">
-                        <p className="text-blue-700">In Progress</p>
-                        <h2 className="text-3xl font-bold">{inProgressCount}</h2>                    </div>
+                            <div className="filter-grid">
 
-                    <div className="bg-green-50 rounded-3xl p-6 border border-green-200">
-                        <p className="text-green-700">Completed</p>
-                        <h2 className="text-3xl font-bold">{completedCount}</h2>                    </div>
-                </div>
+                                <input
 
-                <div className="mb-6">
-                    <h1 className="text-4xl font-bold text-slate-800">
-                        Customer Requests
-                    </h1>
+                                    className="filter-input"
 
-                    <p className="text-slate-500 mt-2">
-                        Manage and track service requests from citizens.
-                    </p>
-                </div>
-                <div className="
-bg-white
-rounded-3xl
-shadow-sm
-border
-p-6
-mb-6
-">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                                    placeholder="Search Customer"
 
-                            <input
-                                className="
-                w-full
-                rounded-2xl
-                border
-                border-slate-200
-                px-4
-                py-3
-                focus:ring-2
-                focus:ring-indigo-500
-                outline-none
-            "
-                                placeholder="Search Customer"
-                                value={searchName}
-                                onChange={(e) => setSearchName(e.target.value)}
-                            />
+                                    value={searchName}
 
-                            <input
-                                className="
-                w-full
-                rounded-2xl
-                border
-                border-slate-200
-                px-4
-                py-3
-                focus:ring-2
-                focus:ring-indigo-500
-                outline-none
-            "
-                                placeholder="Search Phone"
-                                value={searchPhone}
-                                onChange={(e) => setSearchPhone(e.target.value)}
-                            />
+                                    onChange={(e) =>
+                                        setSearchName(e.target.value)
+                                    }
 
-                            <input
-                                type="date"
-                                className="
-                w-full
-                rounded-2xl
-                border
-                border-slate-200
-                px-4
-                py-3
-                focus:ring-2
-                focus:ring-indigo-500
-                outline-none
-            "
-                                value={dateFilter}
-                                onChange={(e) => setDateFilter(e.target.value)}
-                            />
+                                />
 
-                            <select
-                                className="
-                w-full
-                rounded-2xl
-                border
-                border-slate-200
-                px-4
-                py-3
-                focus:ring-2
-                focus:ring-indigo-500
-                outline-none
-            "
-                                value={statusFilter}
-                                onChange={(e) => setStatusFilter(e.target.value)}
-                            >
-                                <option value="ALL">All Status</option>
-                                <option value="PENDING">Pending</option>
-                                <option value="ASSIGNED">Assigned</option>
-                                <option value="IN_PROGRESS">In Progress</option>
-                                <option value="COMPLETED">Completed</option>
-                            </select>
+                                <input
 
-                    </div>
+                                    className="filter-input"
 
+                                    placeholder="Search Phone"
 
-                </div>
-                <div className="bg-white rounded-3xl shadow-sm border overflow-hidden">
-                <table className="table">
+                                    value={searchPhone}
 
-                    <thead className="bg-slate-50">
-                    <tr className="text-slate-700">
-                        <th>ID</th>
-                        <th>Customer</th>
-                        <th>Phone</th>
-                        <th>Date</th>
-                        <th>Service</th>
-                        <th>Status</th>
+                                    onChange={(e) =>
+                                        setSearchPhone(e.target.value)
+                                    }
 
-                        {role === "OWNER" && (
-                            <th>Assignment</th>                        )}
+                                />
 
-                        {role === "EMPLOYEE" && (
-                            <th>Action</th>
-                        )}
-                    </tr>
-                </thead>
+                                <input
 
-                    <tbody>
+                                    type="date"
 
-                    {
+                                    className="filter-input"
 
-                        loading ?
+                                    value={dateFilter}
 
-                            <tr>
+                                    onChange={(e) =>
+                                        setDateFilter(e.target.value)
+                                    }
 
-                                <td
-                                    colSpan="10"
-                                    className="text-center py-12"
+                                />
+
+                                <select
+
+                                    className="filter-select"
+
+                                    value={statusFilter}
+
+                                    onChange={(e) =>
+                                        setStatusFilter(e.target.value)
+                                    }
+
                                 >
 
-                                    Loading Requests...
+                                    <option value="ALL">All Status</option>
 
-                                </td>
+                                    <option value="PENDING">Pending</option>
 
-                            </tr>
+                                    <option value="ASSIGNED">Assigned</option>
 
-                            :
+                                    <option value="IN_PROGRESS">In Progress</option>
 
-                            requests.length===0 ?
+                                    <option value="COMPLETED">Completed</option>
+
+                                </select>
+
+                            </div>
+
+                        </div>
+
+                        {/* Table */}
+
+                        <div className="table-card">
+
+                            <table className="requests-table">
+
+                                <thead className="table-header">
 
                                 <tr>
 
-                                    <td
-                                        colSpan="10"
-                                        className="text-center py-12 text-slate-500"
-                                    >
+                                    <th>ID</th>
 
-                                        No requests found
+                                    <th>Customer</th>
 
-                                    </td>
+                                    <th>Phone</th>
+
+                                    <th>Date</th>
+
+                                    <th>Service</th>
+
+                                    <th>Status</th>
+
+                                    {role === "OWNER" && <th>Assignment</th>}
+
+                                    {role === "EMPLOYEE" && <th>Action</th>}
 
                                 </tr>
 
-                                :
+                                </thead>
 
-                                requests.map(request=>(
+                                <tbody>
 
-                        <tr
-                            key={request.id}
-                            className="
-    hover:bg-slate-50
-    transition-colors
-    duration-200
-    "
-                        >
-                            <td>
-                                <Link
-                                    to={`/request-details/${request.id}`}
-                                >
-                                    #{request.id}
-                                </Link>
-                            </td>
-                            <td>{request.customerName}</td>
-
-                            <td>{request.phoneNumber}</td>
-
-                            <td>
                                 {
-                                    new Date(
-                                        request.createdAt
-                                    ).toLocaleString(
-                                        "en-IN",
-                                        {
-                                            day: "2-digit",
-                                            month: "short",
-                                            year: "numeric",
-                                            hour: "numeric",
-                                            minute: "2-digit",
-                                            hour12: true
-                                        }
-                                    )
-                                }                            </td>
 
-                            <td>
-                                {request.serviceName}
-                            </td>
-                            <td>
-                                {request.status === "PENDING" && (
-                                    <span className="px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-semibold">
-            Pending
-        </span>
-                                )}
-                                {request.status === "ASSIGNED" && (
-                                    <span className="
-        px-3
-        py-1
-        rounded-full
-        bg-purple-100
-        text-purple-700
-        text-xs
-        font-semibold
-    ">
-        Assigned
-    </span>
-                                )}
+                                    loading ?
 
-                                {request.status === "IN_PROGRESS" && (
-                                    <span className="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold">
-            In Progress
-        </span>
-                                )}
+                                        <tr>
 
-                                {request.status === "COMPLETED" && (
-                                    <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-xs font-semibold">
-            Completed
-        </span>
-                                )}
-                            </td>
+                                            <td colSpan="10" className="loading-row">
 
-                            <td>
-                                {role === "OWNER" && (
-                                    request.assignedEmployeeId ? (
+                                                Loading Requests...
 
-                                            <div
-                                                className="
-    w-[252px]
-    h-[50px]
-    rounded-xl
-    bg-gradient-to-r
-    from-indigo-600
-    to-violet-600
-    shadow-sm
-    flex
-    items-center
-    justify-center
-    text-white
-    font-medium
-    "
-                                            >
-                                                👤 {request.assignedEmployeeName}
-                                            </div>
+                                            </td>
 
-                                        )
+                                        </tr>
 
+                                        :
 
-                                     : (
+                                        requests.length === 0 ?
 
-                                        <div className="flex items-center gap-2">
+                                            <tr>
 
-                                            <select
-                                                className="
-                rounded-xl
-                border
-                border-slate-200
-                px-3
-                py-2
-                text-sm
-                "
-                                                value={
-                                                    selectedEmployees[
-                                                        request.id
-                                                        ] || ""
-                                                }
-                                                onChange={(e) =>
-                                                    setSelectedEmployees({
-                                                        ...selectedEmployees,
-                                                        [request.id]:
-                                                        e.target.value
-                                                    })
-                                                }
-                                            >
-                                                <option value="">
-                                                    Select
-                                                </option>
+                                                <td colSpan="10" className="empty-row">
 
-                                                {employees.map(
-                                                    employee => (
-                                                        <option
-                                                            key={employee.id}
-                                                            value={employee.id}
+                                                    No requests found
+
+                                                </td>
+
+                                            </tr>
+
+                                            :
+
+                                            requests.map(request => (
+
+                                                <tr
+
+                                                    key={request.id}
+
+                                                    className="table-row"
+
+                                                >
+
+                                                    <td>
+
+                                                        <Link
+
+                                                            to={`/request-details/${request.id}`}
+
+                                                            className="request-link"
+
                                                         >
-                                                            {employee.name}
-                                                        </option>
-                                                    )
-                                                )}
-                                            </select>
 
-                                            <button
-                                                className="
-                bg-indigo-600
-                hover:bg-indigo-700
-                text-white
-                px-4
-                py-2
-                rounded-xl
-                text-sm
-                font-medium
-                "
-                                                onClick={() =>
-                                                    assignEmployee(
-                                                        request.id
-                                                    )
-                                                }
-                                            >
-                                                Assign
-                                            </button>
+                                                            #{request.id}
 
-                                        </div>
+                                                        </Link>
 
-                                    )
-                                )}
+                                                    </td>
 
-                                {role === "EMPLOYEE" &&
-                                    request.status === "ASSIGNED" && (
-                                        <button
-                                            className="btn btn-secondary btn-sm"
-                                            disabled={
-                                                acceptedRequests.includes(
-                                                    request.id
-                                                )
-                                            }
-                                            onClick={() =>
-                                                acceptRequest(request.id)
-                                            }
-                                        >
-                                            {
-                                                acceptedRequests.includes(
-                                                    request.id
-                                                )
-                                                    ? "Accepted"
-                                                    : "Accept"
-                                            }
-                                        </button>
-                                    )}
+                                                    <td>{request.customerName}</td>
 
-                            </td>
-                        </tr>
-                    ))}
+                                                    <td>{request.phoneNumber}</td>
 
-                    </tbody>
+                                                    <td>
 
-                </table>
-                    <Pagination
+                                                        {
 
-                        page={page}
+                                                            new Date(
 
-                        totalPages={totalPages}
+                                                                request.createdAt
 
-                        totalElements={totalElements}
+                                                            ).toLocaleString(
 
-                        pageSize={size}
+                                                                "en-IN",
 
-                        onPageChange={setPage}
+                                                                {
 
-                        onPageSizeChange={setSize}
+                                                                    day: "2-digit",
 
-                    />
+                                                                    month: "short",
+
+                                                                    year: "numeric",
+
+                                                                    hour: "numeric",
+
+                                                                    minute: "2-digit",
+
+                                                                    hour12: true
+
+                                                                }
+
+                                                            )
+
+                                                        }
+
+                                                    </td>
+
+                                                    <td>{request.serviceName}</td>
+
+                                                    <td>
+
+                                                        {request.status === "PENDING" && (
+
+                                                            <span className="status-badge pending-status">
+
+                                                                Pending
+
+                                                            </span>
+
+                                                        )}
+
+                                                        {request.status === "ASSIGNED" && (
+
+                                                            <span className="status-badge assigned-status">
+
+                                                                Assigned
+
+                                                            </span>
+
+                                                        )}
+
+                                                        {request.status === "IN_PROGRESS" && (
+
+                                                            <span className="status-badge progress-status">
+
+                                                                In Progress
+
+                                                            </span>
+
+                                                        )}
+
+                                                        {request.status === "COMPLETED" && (
+
+                                                            <span className="status-badge completed-status">
+
+                                                                Completed
+
+                                                            </span>
+
+                                                        )}
+
+                                                    </td>
+
+                                                    <td>
+
+                                                        {role === "OWNER" && (
+
+                                                            request.assignedEmployeeId ?
+
+                                                                <div className="assigned-employee-card">
+
+                                                                    👤 {request.assignedEmployeeName}
+
+                                                                </div>
+
+                                                                :
+
+                                                                <div className="assignment-actions">
+
+                                                                    <select
+
+                                                                        className="employee-select"
+
+                                                                        value={selectedEmployees[request.id] || ""}
+
+                                                                        onChange={(e) =>
+
+                                                                            setSelectedEmployees({
+
+                                                                                ...selectedEmployees,
+
+                                                                                [request.id]: e.target.value
+
+                                                                            })
+
+                                                                        }
+
+                                                                    >
+
+                                                                        <option value="">
+
+                                                                            Select
+
+                                                                        </option>
+
+                                                                        {
+
+                                                                            employees.map(employee => (
+
+                                                                                <option
+
+                                                                                    key={employee.id}
+
+                                                                                    value={employee.id}
+
+                                                                                >
+
+                                                                                    {employee.name}
+
+                                                                                </option>
+
+                                                                            ))
+
+                                                                        }
+
+                                                                    </select>
+
+                                                                    <button
+
+                                                                        className="assign-button"
+
+                                                                        onClick={() =>
+
+                                                                            assignEmployee(request.id)
+
+                                                                        }
+
+                                                                    >
+
+                                                                        Assign
+
+                                                                    </button>
+
+                                                                </div>
+
+                                                        )}
+
+                                                        {role === "EMPLOYEE" &&
+                                                            request.status === "ASSIGNED" && (
+
+                                                                <button
+
+                                                                    className="accept-button"
+
+                                                                    disabled={
+                                                                        acceptedRequests.includes(request.id)
+                                                                    }
+
+                                                                    onClick={() =>
+                                                                        acceptRequest(request.id)
+                                                                    }
+
+                                                                >
+
+                                                                    {
+
+                                                                        acceptedRequests.includes(request.id)
+
+                                                                            ? "Accepted"
+
+                                                                            : "Accept"
+
+                                                                    }
+
+                                                                </button>
+
+                                                            )}
+
+                                                    </td>
+
+                                                </tr>
+
+                                            ))
+
+                                }
+
+                                </tbody>
+
+                            </table>
+
+                            <Pagination
+
+                                page={page}
+
+                                totalPages={totalPages}
+
+                                totalElements={totalElements}
+
+                                pageSize={size}
+
+                                onPageChange={setPage}
+
+                                onPageSizeChange={setSize}
+
+                            />
+
+                        </div>
+
+                    </div>
+
                 </div>
 
-            </div>
-        </></DashboardLayout>
+            </>
+
+        </DashboardLayout>
+
     );
 }
 
