@@ -12,7 +12,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import com.eservice1.submission.entity.RequestStatus;
+import com.eservice1.submission.entity.RequestStatus;import com.eservice1.submission.repository.CustomerRequestRepository;
+
 public interface CustomerRequestRepository
         extends JpaRepository<CustomerRequest, Long>,
         JpaSpecificationExecutor<CustomerRequest> {
@@ -35,6 +36,7 @@ public interface CustomerRequestRepository
     long countByPaymentStatus(
             PaymentStatus paymentStatus
     );long countByStatus(RequestStatus status);
+    boolean existsByService_Id(Long serviceId);
     @Query("""
 SELECT COALESCE(SUM(c.amount),0)
 FROM CustomerRequest c

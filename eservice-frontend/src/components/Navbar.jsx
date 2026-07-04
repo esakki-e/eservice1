@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-
+import "./Navbar.css"
 function Navbar() {
 
     const role = localStorage.getItem("role");
@@ -13,75 +13,36 @@ function Navbar() {
 
         window.location.href = "/";
     };
-
     return (
 
         <>
 
-            <nav
-                className="
-                    sticky
-                    top-0
-                    z-50
-                    bg-slate-900
-                    border-b
-                    border-slate-800
-                    shadow-lg
-                "
-            >
+            <nav className="portal-navbar">
 
-                <div
-                    className="
-                        max-w-7xl
-                        mx-auto
-                        h-16
-                        px-6
-                        flex
-                        items-center
-                        justify-between
-                    "
-                >
+                <div className="portal-navbar-container">
 
                     {/* Left */}
 
-                    <div className="flex items-center gap-3">
+                    <div className="portal-navbar-left">
 
                         {(role === "CUSTOMER" || role === "EMPLOYEE") && (
 
                             <button
                                 onClick={() => setOpen(!open)}
-                                className="
-                                    w-10
-                                    h-10
-                                    rounded-lg
-                                    bg-slate-800
-                                    text-white
-                                    text-2xl
-                                    hover:bg-slate-700
-                                "
+                                className="portal-menu-button"
                             >
                                 ☰
                             </button>
 
                         )}
 
-                        <div
-                            className="
-                                w-10
-                                h-10
-                                rounded-xl
-                                bg-indigo-600
-                                text-white
-                                flex
-                                items-center
-                                justify-center
-                                font-bold
-                            "
-                        >
+                        <div className="portal-logo">
+
                             V
+
                         </div>
 
-                        <h1 className="text-white text-2xl font-bold">
+                        <h1 className="portal-title">
 
                             Vinayaga Portal
 
@@ -91,29 +52,26 @@ function Navbar() {
 
                     {/* Right */}
 
-                    <div className="flex items-center gap-6">
+                    <div className="portal-navbar-right">
 
                         {role === "OWNER" && (
 
                             <>
+
                                 <Link
                                     to="/dashboard"
-                                    className="text-blue-500 hover:text-white"
+                                    className="portal-nav-link"
                                 >
                                     Dashboard
                                 </Link>
 
                                 <button
                                     onClick={logout}
-                                    className="
-                                        bg-red-500
-                                        text-white
-                                        px-6
-                                        py-2
-                                    "
+                                    className="portal-logout-button"
                                 >
                                     Logout
                                 </button>
+
                             </>
 
                         )}
@@ -124,14 +82,14 @@ function Navbar() {
 
                                 <Link
                                     to="/customer-services"
-                                    className="text-blue-500 hover:text-white"
+                                    className="portal-nav-link"
                                 >
                                     Services
                                 </Link>
 
                                 <Link
                                     to="/my-requests"
-                                    className="text-blue-500 hover:text-white"
+                                    className="portal-nav-link"
                                 >
                                     My Requests
                                 </Link>
@@ -146,14 +104,14 @@ function Navbar() {
 
                                 <Link
                                     to="/employee-dashboard"
-                                    className="text-blue-500 hover:text-white"
+                                    className="portal-nav-link"
                                 >
                                     Dashboard
                                 </Link>
 
                                 <Link
                                     to="/employee-requests"
-                                    className="text-blue-500 hover:text-white"
+                                    className="portal-nav-link"
                                 >
                                     Requests
                                 </Link>
@@ -172,19 +130,7 @@ function Navbar() {
 
             {open && (role === "CUSTOMER" || role === "EMPLOYEE") && (
 
-                <div
-                    className="
-        absolute
-        top-20
-        left-8
-        w-64
-        bg-white
-        rounded-3xl
-        shadow-2xl
-        z-50
-        p-5
-    "
-                >
+                <div className="portal-side-menu">
 
                     {role === "CUSTOMER" && (
 
@@ -193,12 +139,7 @@ function Navbar() {
                             <Link
                                 to="/customer-profile-view"
                                 onClick={() => setOpen(false)}
-                                className="
-    block
-    py-3
-    text-blue-600
-    text-lg
-"
+                                className="portal-side-link"
                             >
                                 Profile
                             </Link>
@@ -206,12 +147,7 @@ function Navbar() {
                             <Link
                                 to="/customer-profile-edit"
                                 onClick={() => setOpen(false)}
-                                className="
-                                    block
-                                    py-3
-                                    text-blue-600
-                                    text-lg
-                                "
+                                className="portal-side-link"
                             >
                                 Edit Profile
                             </Link>
@@ -227,24 +163,15 @@ function Navbar() {
                             <Link
                                 to="/employee/profile"
                                 onClick={() => setOpen(false)}
-                                className="
-                                    block
-                                    py-3
-                                    text-blue-600
-                                    text-lg
-                                "
+                                className="portal-side-link"
                             >
                                 Profile
                             </Link>
 
-                            <Link to="/employee/profile/edit"
+                            <Link
+                                to="/employee/profile/edit"
                                 onClick={() => setOpen(false)}
-                                className="
-                                    block
-                                    py-3
-                                    text-blue-600
-                                    text-lg
-                                "
+                                className="portal-side-link"
                             >
                                 Edit Profile
                             </Link>
@@ -253,20 +180,11 @@ function Navbar() {
 
                     )}
 
-                    <hr className="my-4" />
+                    <hr className="portal-side-divider" />
 
                     <button
                         onClick={logout}
-                        className="
-                            w-full
-                            bg-red-500
-                            hover:bg-red-600
-                            text-white
-                            rounded-xl
-                            py-3
-                            text-lg
-                            font-semibold
-                        "
+                        className="portal-side-logout"
                     >
                         Logout
                     </button>
@@ -278,7 +196,6 @@ function Navbar() {
         </>
 
     );
-
 }
 
 export default Navbar;

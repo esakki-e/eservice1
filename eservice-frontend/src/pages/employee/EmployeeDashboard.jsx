@@ -4,7 +4,7 @@ import axios from "axios";
 import {Link} from "react-router-dom";
 import Pagination from "../../components/Pagination";
 import { useNavigate } from "react-router-dom";import { API_URL } from "../../config";
-
+import "./EmployeeDashboard.css"
 
 
 function EmployeeDashboard() {
@@ -444,1002 +444,901 @@ Thank you.`;
         <>
             <Navbar />
 
-            <div className="min-h-screen bg-slate-50">
+            <div className="page-bg">
 
-                <div className="max-w-7xl mx-auto p-8">
+                <div className="employee-dashboard-page">
 
-                    {/* Header */}
+                    <div className="employee-dashboard-container">
 
-                    <div className="mb-8">
+                        {/* Header */}
 
-                        <h1 className="
-                        text-5xl
-                        font-bold
-                        text-slate-800
-                        mb-2
-                    ">
-                            My Tasks
-                        </h1>
+                        <div className="employee-dashboard-header">
 
-                        <p className="
-                        text-slate-500
-                        text-lg
-                    ">
-                            Process assigned requests and update their status
-                        </p>
+                            <h1 className="employee-dashboard-title">
 
-                    </div>
+                                My Tasks
 
-                    {/* Stats Cards */}
+                            </h1>
 
-                    <div className="
-                    grid
-                    grid-cols-1
-                    md:grid-cols-2
-                    xl:grid-cols-4
-                    gap-6
-                    mb-8
-                ">
+                            <p className="employee-dashboard-subtitle">
 
-                        <div className="
-                        bg-white
-                        rounded-3xl
-                        border
-                        border-slate-200
-                        p-6
-                        shadow-sm
-                    ">
-                            <div className="text-3xl font-bold text-slate-800">
-                                {stats.pendingTasks}
-                            </div>
+                                Process assigned requests and update their status
 
-                            <div className="text-slate-500 mt-2">
-                                Pending Tasks
-                            </div>
+                            </p>
+
                         </div>
 
-                        <div className="
-                        bg-white
-                        rounded-3xl
-                        border
-                        border-slate-200
-                        p-6
-                        shadow-sm
-                    ">
-                            <div className="text-3xl font-bold text-violet-600">
+                        {/* Stats Cards */}
+
+                        <div className="employee-stats-grid">
+
+                            <div className="employee-stat-card">
+
+                                <div className="employee-stat-value">
+
+                                    {stats.pendingTasks}
+
+                                </div>
+
+                                <div className="employee-stat-label">
+
+                                    Pending Tasks
+
+                                </div>
+
+                            </div>
+
+                            <div className="employee-stat-card">
+
+                                <div className="employee-stat-value employee-assigned-value">
 
                                     {stats.assignedTasks}
 
+                                </div>
+
+                                <div className="employee-stat-label">
+
+                                    Assigned Tasks
+
+                                </div>
+
                             </div>
 
-                            <div className="text-slate-500 mt-2">
-                                Assigned Tasks
-                            </div>
-                        </div>
+                            <div className="employee-stat-card">
 
-                        <div className="
-                        bg-white
-                        rounded-3xl
-                        border
-                        border-slate-200
-                        p-6
-                        shadow-sm
-                    ">
-                            <div className="text-3xl font-bold text-emerald-600">
+                                <div className="employee-stat-value employee-progress-value">
 
                                     {stats.inProgressTasks}
 
+                                </div>
+
+                                <div className="employee-stat-label">
+
+                                    In Progress
+
+                                </div>
+
                             </div>
 
-                            <div className="text-slate-500 mt-2">
-                                In Progress
+                            <div className="employee-stat-card">
+
+                                <div className="employee-stat-value employee-completed-value">
+
+                                    {stats.completedTasks}
+
+                                </div>
+
+                                <div className="employee-stat-label">
+
+                                    Completed
+
+                                </div>
+
                             </div>
+
                         </div>
-                        <div className="
-bg-white
-rounded-3xl
-border
-border-slate-200
-p-6
-shadow-sm
-">
-                            <div className="text-3xl font-bold text-emerald-600">
-                                {stats.completedTasks}
-                            </div>
 
-                            <div className="text-slate-500 mt-2">
-                                Completed
-                            </div>
+                        {/* Filters */}
+
+                        <div className="employee-filter-grid">
+
+                            <input
+                                type="text"
+                                placeholder="Search Customer"
+                                value={searchName}
+                                onChange={(e) => setSearchName(e.target.value)}
+                                className="employee-filter-input"
+                            />
+
+                            <input
+                                type="text"
+                                placeholder="Search Phone"
+                                value={searchPhone}
+                                onChange={(e) => setSearchPhone(e.target.value)}
+                                className="employee-filter-input"
+                            />
+
+                            <select
+                                value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value)}
+                                className="employee-filter-select"
+                            >
+
+                                <option value="ALL">
+
+                                    All Status
+
+                                </option>
+
+                                <option value="PENDING">
+
+                                    Pending
+
+                                </option>
+
+                                <option value="ACCEPTED">
+
+                                    Accepted
+
+                                </option>
+
+                                <option value="IN_PROGRESS">
+
+                                    In Progress
+
+                                </option>
+
+                                <option value="COMPLETED">
+
+                                    Completed
+
+                                </option>
+
+                            </select>
+
                         </div>
+                        {/* Table */}
 
-                    </div>
-                    <div className="grid md:grid-cols-3 gap-4 mb-6">
+                        <div className="employee-table-card">
 
-                        <input
-                            type="text"
-                            placeholder="Search Customer"
-                            value={searchName}
-                            onChange={(e) => setSearchName(e.target.value)}
-                            className="border rounded-xl px-4 py-3"
-                        />
+                            <table className="employee-table">
 
-                        <input
-                            type="text"
-                            placeholder="Search Phone"
-                            value={searchPhone}
-                            onChange={(e) => setSearchPhone(e.target.value)}
-                            className="border rounded-xl px-4 py-3"
-                        />
+                                <thead className="employee-table-head">
 
-                        <select
-                            value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
-                            className="border rounded-xl px-4 py-3"
-                        >
-
-                            <option value="ALL">All Status</option>
-
-                            <option value="PENDING">Pending</option>
-
-                            <option value="ACCEPTED">Accepted</option>
-
-                            <option value="IN_PROGRESS">In Progress</option>
-
-                            <option value="COMPLETED">Completed</option>
-
-                        </select>
-
-                    </div>
-
-                    {/* Table */}
-
-                    <div className="
-                    bg-white
-                    rounded-3xl
-                    border
-                    border-slate-200
-                    shadow-sm
-                    overflow-hidden
-                ">
-
-                        <table className="w-full">
-
-                            <thead className="bg-slate-100">
-
-                            <tr>
-
-                                <th className="p-4 text-left">
-                                    ID
-                                </th>
-
-                                <th className="p-4 text-left">
-                                    Date
-                                </th>
-
-                                <th className="p-4 text-left">
-                                    Customer
-                                </th>
-
-                                <th className="p-4 text-left">
-                                    Service
-                                </th>
-
-                                <th className="p-4 text-left">
-                                    Documents
-                                </th>
-
-                                <th className="p-4 text-left">
-                                    Status
-                                </th>
-
-                                <th className="p-4 text-left">
-                                    Amount
-                                </th>
-                                <th className="p-4 text-left">
-                                    Payment
-                                </th>
-
-                                <th className="p-4 text-left">
-                                    Action
-                                </th>
-
-                            </tr>
-
-                            </thead>
-
-                            <tbody>
-
-                            {loading && (
                                 <tr>
-                                    <td colSpan="9" className="text-center py-8">
-                                        Loading...
-                                    </td>
+
+                                    <th className="employee-table-heading">
+                                        ID
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Date
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Customer
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Service
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Documents
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Status
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Amount
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Payment
+                                    </th>
+
+                                    <th className="employee-table-heading">
+                                        Action
+                                    </th>
+
                                 </tr>
-                            )}
 
-                            {!loading && tasks.length === 0 && (
-                                <tr>
-                                    <td colSpan="9" className="text-center py-8">
-                                        No tasks found.
-                                    </td>
-                                </tr>
-                            )}
+                                </thead>
 
-                            {tasks.map(task => (
+                                <tbody>
 
-                                <tr
-                                    key={task.id}
-                                    className="
-                                    border-t
-                                    border-slate-100
-                                    hover:bg-slate-50
-                                "
-                                >
+                                {loading && (
 
-                                    <td className="p-4 font-semibold">
+                                    <tr>
 
-                                        <Link
-                                            to={`/request-details/${task.request.id}`}
-                                            className="
-                                            text-blue-600
-                                            hover:text-blue-800
-                                        "
+                                        <td
+                                            colSpan="9"
+                                            className="employee-empty-state"
                                         >
-                                            #{task.request.id}
-                                        </Link>
 
-                                    </td>
+                                            Loading...
 
-                                    <td className="p-4 text-slate-600">
+                                        </td>
 
-                                        {
-                                            new Date(
-                                                task.request.createdAt
-                                            ).toLocaleString(
-                                                "en-IN",
-                                                {
-                                                    day: "2-digit",
-                                                    month: "short",
-                                                    year: "numeric",
-                                                    hour: "numeric",
-                                                    minute: "2-digit",
-                                                    hour12: true
-                                                }
-                                            )
-                                        }
+                                    </tr>
 
-                                    </td>
+                                )}
 
-                                    <td className="p-4 font-medium">
-                                        {task.request.customerName}
-                                    </td>
+                                {!loading && tasks.length === 0 && (
 
-                                    <td className="p-4">
-                                        {task.request?.service?.serviceName}
-                                    </td>
+                                    <tr>
 
-                                    <td className="p-4">
-
-                                        <button
-                                            onClick={() =>
-                                                navigate(`/request-details/${task.request.id}`)
-                                            }
-                                            className="
-                                            px-4
-                                            py-2
-                                            rounded-xl
-                                            bg-slate-100
-                                            hover:bg-slate-200
-                                            text-slate-700
-                                            font-medium
-                                        "
+                                        <td
+                                            colSpan="9"
+                                            className="employee-empty-state"
                                         >
-                                            View
-                                        </button>
 
-                                    </td>
+                                            No tasks found.
 
-                                    <td className="p-4">
+                                        </td>
 
-                                    <span
-                                        className={`
-                                            px-4
-                                            py-2
-                                            rounded-full
-                                            text-xs
-                                            font-semibold
-                                            ${
-                                            task.status === "COMPLETED"
-                                                ? "bg-emerald-100 text-emerald-700"
-                                                : task.status === "ACCEPTED"
-                                                    ? "bg-violet-100 text-violet-700"
-                                                    : "bg-yellow-100 text-yellow-700"
-                                        }
-                                        `}
+                                    </tr>
+
+                                )}
+
+                                {tasks.map(task => (
+
+                                    <tr
+                                        key={task.id}
+                                        className="employee-table-row"
                                     >
-                                        {task.status}
-                                    </span>
 
-                                    </td>
-                                    <td className="p-4">
+                                        <td className="employee-table-cell employee-id-cell">
 
-                                        ₹ {(task.request.amount ?? 0).toLocaleString("en-IN")}
-                                    </td>
+                                            <Link
+                                                to={`/request-details/${task.request.id}`}
+                                                className="employee-request-link"
+                                            >
 
-                                    <td className="p-4">
+                                                #{task.request.id}
 
-                                        {task.request.paymentStatus === "PAID" ? (
+                                            </Link>
 
-                                            <span className="
-            px-3
-            py-2
-            rounded-full
-            bg-emerald-100
-            text-emerald-700
-            text-xs
-            font-semibold
-        ">
-            PAID
-        </span>
+                                        </td>
 
-                                        ) : (
+                                        <td className="employee-table-cell employee-date-cell">
 
-                                            <span className="
-            px-3
-            py-2
-            rounded-full
-            bg-red-100
-            text-red-700
-            text-xs
-            font-semibold
-        ">
-            UNPAID
-        </span>
+                                            {
 
-                                        )}
+                                                new Date(
 
-                                    </td>
+                                                    task.request.createdAt
 
-                                    <td className="p-4">
+                                                ).toLocaleString(
 
-                                        <div className="flex gap-2">
+                                                    "en-IN",
 
-                                            {/* STEP 1 : ACCEPT */}
+                                                    {
 
-                                            {task.status === "PENDING" && (
+                                                        day:"2-digit",
 
-                                                <button
-                                                    onClick={() => acceptTask(task.id)}
-                                                    className="
-                    px-5
-                    py-2
-                    rounded-xl
-                    bg-emerald-500
-                    text-white
-                    hover:bg-emerald-600
-                "
-                                                >
-                                                    Accept
-                                                </button>
+                                                        month:"short",
 
-                                            )}
+                                                        year:"numeric",
 
-                                            {/* STEP 2 : PAYMENT */}
+                                                        hour:"numeric",
 
-                                            {task.status === "ACCEPTED" &&
-                                                task.request.paymentStatus !== "PAID" && (
+                                                        minute:"2-digit",
+
+                                                        hour12:true
+
+                                                    }
+
+                                                )
+
+                                            }
+
+                                        </td>
+
+                                        <td className="employee-table-cell employee-name-cell">
+
+                                            {task.request.customerName}
+
+                                        </td>
+
+                                        <td className="employee-table-cell">
+
+                                            {task.request?.service?.serviceName}
+
+                                        </td>
+
+                                        <td className="employee-table-cell">
+
+                                            <button
+
+                                                onClick={()=>
+
+                                                    navigate(
+
+                                                        `/request-details/${task.request.id}`
+
+                                                    )
+
+                                                }
+
+                                                className="employee-view-button"
+
+                                            >
+
+                                                View
+
+                                            </button>
+
+                                        </td>
+
+                                        <td className="employee-table-cell">
+
+                    <span
+
+                        className={`employee-status-badge
+
+                        ${
+
+                            task.status==="COMPLETED"
+
+                                ?
+
+                                "employee-status-completed"
+
+                                :
+
+                                task.status==="ACCEPTED"
+
+                                    ?
+
+                                    "employee-status-accepted"
+
+                                    :
+
+                                    "employee-status-pending"
+
+                        }
+
+                        `}
+
+                    >
+
+                        {task.status}
+
+                    </span>
+
+                                        </td>
+
+                                        <td className="employee-table-cell">
+
+                                            ₹ {(task.request.amount ?? 0).toLocaleString("en-IN")}
+
+                                        </td>
+
+                                        <td className="employee-table-cell">
+
+                                            {
+
+                                                task.request.paymentStatus==="PAID"
+
+                                                    ?
+
+                                                    (
+
+                                                        <span className="employee-payment-paid">
+
+                                    PAID
+
+                                </span>
+
+                                                    )
+
+                                                    :
+
+                                                    (
+
+                                                        <span className="employee-payment-unpaid">
+
+                                    UNPAID
+
+                                </span>
+
+                                                    )
+
+                                            }
+
+                                        </td>
+
+                                        <td className="employee-action-cell">
+
+                                            <div className="employee-action-group">
+
+                                                {task.status==="PENDING" && (
 
                                                     <button
 
-                                                        onClick={() => {
+                                                        onClick={()=>
 
-                                                            setPaymentTask(task);
+                                                            acceptTask(task.id)
 
-                                                            setPaymentAmount(
-                                                                task.request.amount ?? ""
-                                                            );
-
-                                                            setPaymentStatus(
-                                                                task.request.paymentStatus ?? "UNPAID"
-                                                            );
-
-                                                        }}
-
-                                                        className="
-                        px-5
-                        py-2
-                        rounded-xl
-                        bg-amber-500
-                        text-white
-                        hover:bg-amber-600
-                    "
-                                                    >
-
-                                                        Payment
-
-                                                    </button>
-
-                                                )}
-
-                                            {/* STEP 3 : COMPLETE */}
-
-                                            {task.status === "ACCEPTED" &&
-                                                task.request.paymentStatus === "PAID" && (
-
-                                                    <button
-
-                                                        onClick={() =>
-                                                            setSelectedTask(task)
                                                         }
 
-                                                        className="
-                        px-5
-                        py-2
-                        rounded-xl
-                        bg-blue-600
-                        text-white
-                        hover:bg-blue-700
-                    "
+                                                        className="employee-accept-button"
 
                                                     >
 
-                                                        Complete
+                                                        Accept
 
                                                     </button>
 
                                                 )}
 
-                                            {/* COMPLETED */}
+                                                {task.status==="ACCEPTED"
 
-                                            {task.status === "COMPLETED" && (
+                                                    &&
 
-                                                <button
+                                                    task.request.paymentStatus!=="PAID"
 
-                                                    disabled
+                                                    &&
 
-                                                    className="
-                    px-5
-                    py-2
-                    rounded-xl
-                    bg-emerald-600
-                    text-white
-                    cursor-default
-                "
+                                                    (
 
-                                                >
+                                                        <button
 
-                                                    Completed
+                                                            onClick={()=>{
 
-                                                </button>
+                                                                setPaymentTask(task);
 
-                                            )}
+                                                                setPaymentAmount(
+
+                                                                    task.request.amount ?? ""
+
+                                                                );
+
+                                                                setPaymentStatus(
+
+                                                                    task.request.paymentStatus ?? "UNPAID"
+
+                                                                );
+
+                                                            }}
+
+                                                            className="employee-payment-button"
+
+                                                        >
+
+                                                            Payment
+
+                                                        </button>
+
+                                                    )
+
+                                                }
+
+                                                {task.status==="ACCEPTED"
+
+                                                    &&
+
+                                                    task.request.paymentStatus==="PAID"
+
+                                                    &&
+
+                                                    (
+
+                                                        <button
+
+                                                            onClick={()=>
+
+                                                                setSelectedTask(task)
+
+                                                            }
+
+                                                            className="employee-complete-button"
+
+                                                        >
+
+                                                            Complete
+
+                                                        </button>
+
+                                                    )
+
+                                                }
+
+                                                {task.status==="COMPLETED" && (
+
+                                                    <button
+
+                                                        disabled
+
+                                                        className="employee-completed-button"
+
+                                                    >
+
+                                                        Completed
+
+                                                    </button>
+
+                                                )}
+
+                                            </div>
+
+                                        </td>
+
+                                    </tr>
+
+                                ))}
+
+                                </tbody>
+
+                            </table>
+
+                            <Pagination
+
+                                page={page}
+
+                                totalPages={totalPages}
+
+                                size={size}
+
+                                setPage={setPage}
+
+                                setSize={setSize}
+
+                                totalElements={totalElements}
+
+                            />
+
+                        </div>
+                        {
+                            selectedTask && (
+
+                                <div className="employee-modal-overlay">
+
+                                    <div className="employee-upload-modal">
+
+                                        <h3 className="employee-modal-title">
+
+                                            Upload Result Document
+
+                                        </h3>
+
+                                        <div className="employee-info-card">
+
+                                            <p className="employee-info-heading">
+
+                                                Customer
+
+                                            </p>
+
+                                            <p className="employee-info-value">
+
+                                                {selectedTask?.request.customerName}
+
+                                            </p>
+
+                                            <hr className="employee-divider"/>
+
+                                            <p className="employee-info-heading">
+
+                                                Service
+
+                                            </p>
+
+                                            <p className="employee-info-value">
+
+                                                {selectedTask?.request.service?.serviceName}
+
+                                            </p>
 
                                         </div>
 
-                                    </td>
+                                        <div className="employee-upload-group">
 
-                                </tr>
+                                            <label className="employee-upload-label">
 
-                            ))}
+                                                Result Document
 
-                            </tbody>
+                                            </label>
 
-                        </table>
-                        <Pagination
+                                            <input
 
-                            page={page}
+                                                type="file"
 
-                            totalPages={totalPages}
+                                                className="employee-file-input"
 
-                            size={size}
+                                                onChange={(e)=>
 
-                            setPage={setPage}
+                                                    setResultFile(
 
-                            setSize={setSize}
+                                                        e.target.files?.[0] || null
 
-                            totalElements={totalElements}
+                                                    )
 
-                        />
-                    </div>
+                                                }
 
-                </div>
+                                            />
 
-            </div>
-            {
-                selectedTask && (
+                                        </div>
 
-                    <div
-                        className="
-    fixed
-    inset-0
-    bg-black/50
-    flex
-    items-center
-    justify-center
-    z-50
-"
-                    >
+                                        <div className="employee-modal-actions">
 
-                        <div
-                            className="
-        bg-white
-        rounded-3xl
-        p-6
-        w-[450px]
-"
-                        >
+                                            <button
 
-                            <h3 className="text-xl font-bold mb-4">
-                                Upload Result Document
-                            </h3>
-                            <div
-                                className="
-        bg-blue-50
-        border
-        border-blue-200
-        rounded-xl
-        p-4
-        mb-5
-    "
-                            >
+                                                onClick={()=>{
 
-                                <p className="font-semibold text-blue-700">
+                                                    setSelectedTask(null);
 
-                                    Customer
+                                                    setResultFile(null);
 
-                                </p>
+                                                }}
 
-                                <p className="text-slate-700">
+                                                className="employee-cancel-button"
 
-                                    {selectedTask?.request.customerName}
+                                            >
 
-                                </p>
+                                                Cancel
 
-                                <hr className="my-3"/>
+                                            </button>
 
-                                <p className="font-semibold text-blue-700">
+                                            <button
 
-                                    Service
+                                                onClick={uploadResultAndComplete}
 
-                                </p>
+                                                className="employee-upload-button"
 
-                                <p className="text-slate-700">
+                                            >
 
-                                    {selectedTask?.request.service?.serviceName}
+                                                Upload & Complete
 
-                                </p>
+                                            </button>
 
-                            </div>
+                                        </div>
 
-                            <div className="mb-6">
+                                    </div>
 
-                                <label
-                                    className="
-            block
-            font-semibold
-            text-slate-700
-            mb-2
-        "
-                                >
-                                    Result Document
-                                </label>
-
-                                <input
-
-                                    type="file"
-
-                                    className="
-            w-full
-            border
-            rounded-xl
-            px-4
-            py-3
-        "
-
-                                    onChange={(e)=>
-
-                                        setResultFile(
-                                            e.target.files?.[0] || null
-                                        )
-
-                                    }
-
-                                />
-
-                            </div>
-
-                            <div
-                                className="
-        flex
-        justify-end
-        gap-3
-    "
-                            >
-
-                                <button
-
-                                    onClick={()=>{
-                                        setSelectedTask(null);
-                                        setResultFile(null);
-                                    }}
-
-                                    className="
-            px-5
-            py-3
-            rounded-xl
-            border
-            hover:bg-slate-100
-        "
-
-                                >
-
-                                    Cancel
-
-                                </button>
-
-                                <button
-
-                                    onClick={uploadResultAndComplete}
-
-                                    className="
-            px-6
-            py-3
-            rounded-xl
-            bg-blue-600
-            text-white
-            hover:bg-blue-700
-        "
-
-                                >
-
-                                    Upload & Complete
-
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                )}{
-                paymentTask && (
-
-                    <div
-                        className="
-                fixed
-                inset-0
-                bg-black/50
-                flex
-                items-center
-                justify-center
-                z-50
-            "
-                    >
-
-                        <div
-                            className="
-                    bg-white
-                    rounded-3xl
-                    shadow-2xl
-                    w-full
-                    max-w-md
-                    p-6
-                "
-                        >
-
-                            <h2
-                                className="
-                        text-2xl
-                        font-bold
-                        text-slate-800
-                        mb-6
-                    "
-                            >
-                                Update Payment
-                            </h2>
-
-                            <div className="mb-4">
-
-                                <label
-                                    className="
-                            block
-                            text-sm
-                            font-semibold
-                            mb-2
-                            text-slate-700
-                        "
-                                >
-                                    Amount (₹)
-                                </label>
-
-                                <input
-                                    type="number"
-                                    className="
-        w-full
-        border
-        rounded-xl
-        px-4
-        py-3
-        focus:ring-2
-        focus:ring-blue-500
-        outline-none
-        disabled:bg-slate-100
-    "
-                                    placeholder="Enter Amount"
-                                    value={paymentAmount}
-                                    disabled={paymentStatus === "PAID"}
-                                    onChange={(e) =>
-                                        setPaymentAmount(e.target.value)
-                                    }
-                                />
-
-                            </div>
-
-                            <div className="mb-6">
-
-                                <label
-                                    className="
-                            block
-                            text-sm
-                            font-semibold
-                            mb-2
-                            text-slate-700
-                        "
-                                >
-                                    Payment Status
-                                </label>
-
-                                <select
-                                    className="
-        w-full
-        border
-        rounded-xl
-        px-4
-        py-3
-        focus:ring-2
-        focus:ring-blue-500
-        outline-none
-    "
-                                    value={paymentStatus}
-                                    disabled={paymentStatus === "PAID"}
-                                    onChange={(e) =>
-                                        setPaymentStatus(e.target.value)
-                                    }
-                                >
-                                    <option value="UNPAID">Unpaid</option>
-                                    <option value="PAID">Paid</option>
-                                </select>
-
-                            </div>
-
-                            <div
-                                className="
-                        flex
-                        justify-end
-                        gap-3
-                    "
-                            >
-
-                                <button
-
-                                    onClick={() =>
-                                        setPaymentTask(
-                                            null
-                                        )
-                                    }
-
-                                    className="
-                            px-5
-                            py-3
-                            rounded-xl
-                            border
-                            hover:bg-slate-100
-                        "
-
-                                >
-                                    Cancel
-                                </button>
-
-                                <button
-
-                                    onClick={savePayment}
-
-                                    className="
-                            px-6
-                            py-3
-                            rounded-xl
-                            bg-emerald-600
-                            text-white
-                            hover:bg-emerald-700
-                        "
-
-                                >
-                                    Save Payment
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                )
-            }
-            {
-                showNotifyModal && completedTask && (
-
-                    <div
-                        className="
-                fixed
-                inset-0
-                bg-black/50
-                flex
-                items-center
-                justify-center
-                z-50
-            "
-                    >
-
-                        <div
-                            className="
-                    bg-white
-                    rounded-3xl
-                    shadow-2xl
-                    w-full
-                    max-w-lg
-                    p-8
-                "
-                        >
-
-                            <div className="text-center">
-
-                                <div className="text-6xl mb-4">
-                                    ✅
                                 </div>
 
-                                <h2 className="text-3xl font-bold">
+                            )
+                        }
+                        {
+                            paymentTask && (
 
-                                    Request Completed
+                                <div className="employee-modal-overlay">
 
-                                </h2>
+                                    <div className="employee-payment-modal">
 
-                                <p className="text-slate-500 mt-3">
+                                        <h2 className="employee-modal-title">
 
-                                    The result has been uploaded successfully.
+                                            Update Payment
 
-                                </p>
+                                        </h2>
 
-                            </div>
+                                        <div className="employee-form-group">
 
-                            <div
-                                className="
-                        bg-slate-50
-                        rounded-2xl
-                        p-5
-                        mt-8
-                        mb-8
-                    "
-                            >
+                                            <label className="employee-form-label">
 
-                                <p>
+                                                Amount (₹)
 
-                        <span className="font-bold">
+                                            </label>
+
+                                            <input
+                                                type="number"
+                                                className="employee-form-input"
+                                                placeholder="Enter Amount"
+                                                value={paymentAmount}
+                                                disabled={paymentStatus === "PAID"}
+                                                onChange={(e) =>
+                                                    setPaymentAmount(e.target.value)
+                                                }
+                                            />
+
+                                        </div>
+
+                                        <div className="employee-form-group">
+
+                                            <label className="employee-form-label">
+
+                                                Payment Status
+
+                                            </label>
+
+                                            <select
+                                                className="employee-form-select"
+                                                value={paymentStatus}
+                                                disabled={paymentStatus === "PAID"}
+                                                onChange={(e) =>
+                                                    setPaymentStatus(e.target.value)
+                                                }
+                                            >
+
+                                                <option value="UNPAID">
+
+                                                    Unpaid
+
+                                                </option>
+
+                                                <option value="PAID">
+
+                                                    Paid
+
+                                                </option>
+
+                                            </select>
+
+                                        </div>
+
+                                        <div className="employee-modal-actions">
+
+                                            <button
+
+                                                onClick={() =>
+                                                    setPaymentTask(null)
+                                                }
+
+                                                className="employee-cancel-button"
+
+                                            >
+
+                                                Cancel
+
+                                            </button>
+
+                                            <button
+
+                                                onClick={savePayment}
+
+                                                className="employee-save-button"
+
+                                            >
+
+                                                Save Payment
+
+                                            </button>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            )
+                        }
+                        {
+                            showNotifyModal && completedTask && (
+
+                                <div className="employee-modal-overlay">
+
+                                    <div className="employee-notification-modal">
+
+                                        <div className="employee-notification-header">
+
+                                            <div className="employee-success-icon">
+
+                                                ✅
+
+                                            </div>
+
+                                            <h2 className="employee-notification-title">
+
+                                                Request Completed
+
+                                            </h2>
+
+                                            <p className="employee-notification-subtitle">
+
+                                                The result has been uploaded successfully.
+
+                                            </p>
+
+                                        </div>
+
+                                        <div className="employee-summary-card">
+
+                                            <p>
+
+                        <span className="employee-summary-label">
 
                             Customer
 
                         </span>
 
-                                    <br/>
+                                                <br/>
 
-                                    {completedTask.request.customerName}
+                                                {completedTask.request.customerName}
 
-                                </p>
+                                            </p>
 
-                                <hr className="my-4"/>
+                                            <hr className="employee-divider"/>
 
-                                <p>
+                                            <p>
 
-                        <span className="font-bold">
+                        <span className="employee-summary-label">
 
                             Phone
 
                         </span>
 
-                                    <br/>
+                                                <br/>
 
-                                    {completedTask.request.phoneNumber}
+                                                {completedTask.request.phoneNumber}
 
-                                </p>
+                                            </p>
 
-                                <hr className="my-4"/>
+                                            <hr className="employee-divider"/>
 
-                                <p>
+                                            <p>
 
-                        <span className="font-bold">
+                        <span className="employee-summary-label">
 
                             Service
 
                         </span>
 
-                                    <br/>
+                                                <br/>
 
-                                    {completedTask?.request?.service?.serviceName}
+                                                {completedTask?.request?.service?.serviceName}
 
-                                </p>
+                                            </p>
 
-                            </div>
+                                        </div>
 
-                            <div className="space-y-3">
+                                        <div className="employee-notification-actions">
 
-                                <button
+                                            <button
 
-                                    onClick={openWhatsApp}
+                                                onClick={openWhatsApp}
 
-                                    className="
-                            w-full
-                            py-3
-                            rounded-2xl
-                            bg-green-600
-                            hover:bg-green-700
-                            text-white
-                            font-bold
-                        "
+                                                className="employee-whatsapp-button"
 
-                                >
+                                            >
 
-                                    📱 Open WhatsApp
+                                                📱 Open WhatsApp
 
-                                </button>
+                                            </button>
 
-                                <button
+                                            <button
 
-                                    onClick={copyMessage}
+                                                onClick={copyMessage}
 
-                                    className="
-                            w-full
-                            py-3
-                            rounded-2xl
-                            bg-blue-600
-                            hover:bg-blue-700
-                            text-white
-                            font-bold
-                        "
+                                                className="employee-copy-button"
 
-                                >
+                                            >
 
-                                    📋 Copy Message
+                                                📋 Copy Message
 
-                                </button>
+                                            </button>
 
-                                <button
+                                            <button
 
-                                    onClick={closeNotifyModal}
+                                                onClick={closeNotifyModal}
 
-                                    className="
-                            w-full
-                            py-3
-                            rounded-2xl
-                            border
-                            hover:bg-slate-100
-                        "
+                                                className="employee-close-button"
 
-                                >
+                                            >
 
-                                    Close
+                                                Close
 
-                                </button>
+                                            </button>
 
-                            </div>
+                                        </div>
 
-                        </div>
+                                    </div>
+
+                                </div>
+
+                            )
+                        }
 
                     </div>
 
-                )
-            }
-        </>
-    );
+                </div>
+            </div>
+            </>
+
+            );
     }
 
 export default EmployeeDashboard;

@@ -51,6 +51,7 @@ function Services() {
     }, [page, size]);
     const deleteService = async (id) => {
         try {
+
             const token = localStorage.getItem("token");
 
             await axios.delete(
@@ -61,28 +62,33 @@ function Services() {
                     }
                 }
             );
+
             if (
-
-                services.length === 1
-
-                &&
-
+                services.length === 1 &&
                 page > 0
-
             ) {
-
                 setPage(page - 1);
-
                 return;
-
             }
+
             await loadServices();
 
-        } catch (error) {
             alert(
-                "Cannot delete service because documents are attached."
+                "Service deleted successfully. If the service had existing requests, it has been deactivated instead."
             );
+
+        } catch (error) {
+
+            console.log(error.response);
+            console.log(error.response?.data);
+            console.log(error.response?.status);
+
+            alert(
+                error.response?.data || "Delete failed."
+            );
+
         }
+
     };
     return (
         <DashboardLayout>

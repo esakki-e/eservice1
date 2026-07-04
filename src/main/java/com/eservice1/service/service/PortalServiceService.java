@@ -2,6 +2,7 @@ package com.eservice1.service.service;
 
 import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.repository.PortalServiceRepository;
+import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.stereotype.Service;
 import com.eservice1.service.dto.CreateServiceRequest;
 import com.eservice1.document.entity.RequiredDocument;
@@ -12,21 +13,23 @@ import com.eservice1.common.util.PaginationMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort;import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class PortalServiceService {
     private final PortalServiceRepository repository;
 
     private final RequiredDocumentRepository
             documentRepository;
-
+    private final CustomerRequestRepository requestRepository;
     public PortalServiceService(
             PortalServiceRepository repository,
-            RequiredDocumentRepository documentRepository) {
+            RequiredDocumentRepository documentRepository,
+            CustomerRequestRepository requestRepository) {
 
         this.repository = repository;
-        this.documentRepository =
-                documentRepository;
+        this.documentRepository = documentRepository;
+        this.requestRepository = requestRepository;
     }
 
     public PortalService save(PortalService service) {
@@ -149,13 +152,30 @@ public class PortalServiceService {
         );
 
     }
-    public void delete(Long id) {
-        repository.deleteById(id);
-    }
-
     public PortalService getById(Long id) {
+
         return repository.findById(id)
                 .orElseThrow();
+
+    }
+    @Transactional
+    public void delete(Long id) {
+
+        if (requestRepository.existsByService_Id(id)) {
+
+            PortalService service = repository.findById(id)
+                    .orElseThrow();
+
+            service.setActive(false);
+
+            repository.save(service);
+
+            return;
+        }
+
+        documentRepository.deleteByService_Id(id);
+
+        repository.deleteById(id);
     }
 
 }

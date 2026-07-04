@@ -10,7 +10,7 @@ import {
 } from "../../services/employeeProfileService";
 
 import { API_URL } from "../../config";
-
+import "./EmployeeProfileEdit.css"
 function EmployeeProfileEdit() {
 
     const navigate = useNavigate();
@@ -80,413 +80,261 @@ function EmployeeProfileEdit() {
 
         <EmployeeLayout>
 
-            <div className="max-w-7xl mx-auto py-10 px-6">
+            <div className="page-bg">
 
-                <div
-                    className="
-                    bg-white
-                    rounded-[32px]
-                    shadow-2xl
-                    overflow-hidden
-                    relative
-                "
-                >
+                <div className="employee-edit-page">
 
-                    {/* Banner */}
+                    <div className="employee-edit-container">
 
-                    <div
-                        className="
-                        h-40
-                        bg-gradient-to-r
-                        from-indigo-600
-                        via-blue-500
-                        to-cyan-500
-                    "
-                    />
+                        <div className="employee-edit-card">
 
-                    {/* Header */}
+                            {/* Banner */}
 
-                    <div
-                        className="
-                        flex
-                        justify-between
-                        items-start
-                        px-10
-                        -mt-16
-                    "
-                    >
+                            <div className="employee-edit-banner" />
 
-                        <div className="flex gap-8">
+                            {/* Header */}
 
-                            <div className="relative">
+                            <div className="employee-edit-header">
 
-                                <img
-                                    src={
-                                        preview
-                                            ? preview
-                                            : employee.profileImage
-                                                ? `${API_URL}/uploads/employees/${employee.profileImage}`
-                                                : "/default-avatar.png"
+                                <div className="employee-edit-profile-section">
+
+                                    <div className="employee-edit-avatar-wrapper">
+
+                                        <img
+                                            src={
+                                                preview
+                                                    ? preview
+                                                    : employee.profileImage
+                                                        ? `${API_URL}/uploads/employees/${employee.profileImage}`
+                                                        : "/default-avatar.png"
+                                            }
+                                            alt="Profile"
+                                            className="employee-edit-avatar"
+                                        />
+
+                                        <label
+                                            htmlFor="profileImage"
+                                            className="employee-edit-camera-button"
+                                        >
+                                            📷
+                                        </label>
+
+                                        <input
+                                            id="profileImage"
+                                            type="file"
+                                            hidden
+                                            onChange={(e) => {
+
+                                                const file = e.target.files[0];
+
+                                                if (!file) return;
+
+                                                setSelectedImage(file);
+
+                                                setPreview(
+                                                    URL.createObjectURL(file)
+                                                );
+
+                                            }}
+                                        />
+
+                                    </div>
+
+                                    <div className="employee-edit-header-content">
+
+                                        <h1 className="employee-edit-title">
+
+                                            Edit Profile
+
+                                        </h1>
+
+                                        <p className="employee-edit-subtitle">
+
+                                            Update your information
+
+                                        </p>
+
+                                    </div>
+
+                                </div>
+
+                                <button
+                                    onClick={() =>
+                                        navigate("/employee/profile")
                                     }
-                                    alt="Profile"
-                                    className="
-                                        w-40
-                                        h-40
-                                        rounded-3xl
-                                        object-cover
-                                        border-4
-                                        border-white
-                                        shadow-2xl
-                                        bg-white
-                                    "
-                                />
-
-                                <label
-                                    htmlFor="profileImage"
-                                    className="
-                                        absolute
-                                        bottom-2
-                                        right-2
-                                        w-11
-                                        h-11
-                                        rounded-full
-                                        bg-white
-                                        shadow-lg
-                                        flex
-                                        items-center
-                                        justify-center
-                                        cursor-pointer
-                                        hover:scale-110
-                                        transition
-                                    "
+                                    className="employee-edit-back-button"
                                 >
-                                    📷
-                                </label>
-
-                                <input
-                                    id="profileImage"
-                                    type="file"
-                                    hidden
-                                    onChange={(e) => {
-
-                                        const file = e.target.files[0];
-
-                                        if (!file) return;
-
-                                        setSelectedImage(file);
-
-                                        setPreview(
-                                            URL.createObjectURL(file)
-                                        );
-
-                                    }
-                                    }
-                                />
+                                    ← Back
+                                </button>
 
                             </div>
 
-                            <div className="pt-20">
+                            <div className="employee-edit-form-grid">
 
-                                <h1
-                                    className="
-                                    text-5xl
-                                    font-bold
-                                    text-slate-900
-                                "
-                                >
-                                    Edit Profile
-                                </h1>
+                                {/* Name */}
 
-                                <p
-                                    className="
-                                    text-slate-500
-                                    text-xl
-                                    mt-2
-                                "
+                                <div>
+
+                                    <label className="employee-edit-label">
+                                        Name
+                                    </label>
+
+                                    <input
+                                        name="name"
+                                        value={employee.name || ""}
+                                        onChange={handleChange}
+                                        className="employee-edit-input"
+                                    />
+
+                                </div>
+
+                                {/* Email */}
+
+                                <div>
+
+                                    <label className="employee-edit-label">
+                                        Email
+                                    </label>
+
+                                    <input
+                                        name="email"
+                                        value={employee.email || ""}
+                                        onChange={handleChange}
+                                        className="employee-edit-input"
+                                    />
+
+                                </div>
+
+                                {/* Phone */}
+
+                                <div>
+
+                                    <label className="employee-edit-label">
+                                        Phone Number
+                                    </label>
+
+                                    <input
+                                        value={employee.phoneNumber || ""}
+                                        disabled
+                                        className="employee-edit-input-disabled"
+                                    />
+
+                                </div>
+
+                                {/* Date Of Birth */}
+
+                                <div>
+
+                                    <label className="employee-edit-label">
+                                        Date of Birth
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        name="dob"
+                                        value={employee.dob || ""}
+                                        onChange={handleChange}
+                                        className="employee-edit-input"
+                                    />
+
+                                </div>
+
+                                {/* Gender */}
+
+                                <div>
+
+                                    <label className="employee-edit-label">
+                                        Gender
+                                    </label>
+
+                                    <select
+                                        name="gender"
+                                        value={employee.gender || ""}
+                                        onChange={handleChange}
+                                        className="employee-edit-select"
+                                    >
+
+                                        <option value="">
+                                            Select Gender
+                                        </option>
+
+                                        <option value="Male">
+                                            Male
+                                        </option>
+
+                                        <option value="Female">
+                                            Female
+                                        </option>
+
+                                        <option value="Other">
+                                            Other
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                {/* Joining Date */}
+
+                                <div>
+
+                                    <label className="employee-edit-label">
+                                        Date of Joining
+                                    </label>
+
+                                    <input
+                                        type="date"
+                                        value={employee.joinedDate || ""}
+                                        disabled
+                                        className="employee-edit-input-readonly"
+                                    />
+
+                                </div>
+
+                                {/* Address */}
+
+                                <div className="employee-edit-address-section">
+
+                                    <label className="employee-edit-label">
+                                        Address
+                                    </label>
+
+                                    <textarea
+                                        rows={5}
+                                        name="address"
+                                        value={employee.address || ""}
+                                        onChange={handleChange}
+                                        className="employee-edit-textarea"
+                                    />
+
+                                </div>
+
+                            </div>
+
+                            {/* Footer */}
+
+                            <div className="employee-edit-footer">
+
+                                <button
+                                    onClick={() =>
+                                        navigate("/employee/profile")
+                                    }
+                                    className="employee-edit-cancel-button"
                                 >
-                                    Update your information
-                                </p>
+                                    ✕ Cancel
+                                </button>
+
+                                <button
+                                    onClick={handleSave}
+                                    disabled={saving}
+                                    className="employee-edit-save-button"
+                                >
+                                    {saving ? "Saving..." : "✔ Save Changes"}
+                                </button>
 
                             </div>
 
                         </div>
-
-                        <button
-                            onClick={() =>
-                                navigate("/employee/profile")
-                            }
-                            className="
-                                mt-20
-                                h-14
-                                px-8
-                                rounded-2xl
-                                bg-slate-900
-                                text-white
-                                font-semibold
-                                hover:bg-slate-800
-                                transition
-                            "
-                        >
-                            ← Back
-                        </button>
-
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-8 px-10 py-10">
-
-                        {/* Name */}
-
-                        <div>
-
-                            <label className="block mb-2 font-semibold">
-                                Name
-                            </label>
-
-                            <input
-                                name="name"
-                                value={employee.name || ""}
-                                onChange={handleChange}
-                                className="
-                                    w-full
-                                    h-14
-                                    px-5
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    focus:outline-none
-                                    focus:ring-4
-                                    focus:ring-blue-100
-                                "
-                            />
-
-                        </div>
-
-                        {/* Email */}
-
-                        <div>
-
-                            <label className="block mb-2 font-semibold">
-                                Email
-                            </label>
-
-                            <input
-                                name="email"
-                                value={employee.email || ""}
-                                onChange={handleChange}
-                                className="
-                                    w-full
-                                    h-14
-                                    px-5
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    focus:outline-none
-                                    focus:ring-4
-                                    focus:ring-blue-100
-                                "
-                            />
-
-                        </div>
-
-                        {/* Phone */}
-
-                        <div>
-
-                            <label className="block mb-2 font-semibold">
-                                Phone Number
-                            </label>
-
-                            <input
-                                value={employee.phoneNumber || ""}
-                                disabled
-                                className="
-                                    w-full
-                                    h-14
-                                    px-5
-                                    rounded-2xl
-                                    border
-                                    bg-slate-100
-                                    text-slate-500
-                                "
-                            />
-
-                        </div>
-                        {/* Date Of Birth */}
-
-                        <div>
-
-                            <label className="block mb-2 font-semibold">
-                                Date of Birth
-                            </label>
-
-                            <input
-                                type="date"
-                                name="dob"
-                                value={employee.dob || ""}
-                                onChange={handleChange}
-                                className="
-                                    w-full
-                                    h-14
-                                    px-5
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    focus:outline-none
-                                    focus:ring-4
-                                    focus:ring-blue-100
-                                "
-                            />
-
-                        </div>
-
-                        {/* Gender */}
-
-                        <div>
-
-                            <label className="block mb-2 font-semibold">
-                                Gender
-                            </label>
-
-                            <select
-                                name="gender"
-                                value={employee.gender || ""}
-                                onChange={handleChange}
-                                className="
-                                    w-full
-                                    h-14
-                                    px-5
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    focus:outline-none
-                                    focus:ring-4
-                                    focus:ring-blue-100
-                                "
-                            >
-
-                                <option value="">
-                                    Select Gender
-                                </option>
-
-                                <option value="Male">
-                                    Male
-                                </option>
-
-                                <option value="Female">
-                                    Female
-                                </option>
-
-                                <option value="Other">
-                                    Other
-                                </option>
-
-                            </select>
-
-                        </div>
-
-                        {/* Joining Date */}
-
-                        <div>
-
-                            <label className="block mb-2 font-semibold">
-                                Date of Joining
-                            </label>
-
-                            <input
-                                type="date"
-                                value={employee.joinedDate || ""}
-                                disabled
-                                className="
-                                    w-full
-                                    h-14
-                                    px-5
-                                    rounded-2xl
-                                    border
-                                    bg-slate-100
-                                    text-slate-500
-                                    cursor-not-allowed
-                                "
-                            />
-
-                        </div>
-
-                        {/* Address */}
-
-                        <div className="col-span-2">
-
-                            <label className="block mb-2 font-semibold">
-                                Address
-                            </label>
-
-                            <textarea
-                                rows={5}
-                                name="address"
-                                value={employee.address || ""}
-                                onChange={handleChange}
-                                className="
-                                    w-full
-                                    rounded-2xl
-                                    border
-                                    border-slate-200
-                                    p-5
-                                    resize-none
-                                    focus:outline-none
-                                    focus:ring-4
-                                    focus:ring-blue-100
-                                "
-                            />
-
-                        </div>
-
-                    </div>
-
-                    {/* Footer */}
-
-                    <div
-                        className="
-                            flex
-                            justify-end
-                            gap-4
-                            px-10
-                            pb-10
-                        "
-                    >
-
-                        <button
-                            onClick={() =>
-                                navigate("/employee/profile")
-                            }
-                            className="
-                                h-14
-                                px-8
-                                rounded-2xl
-                                border
-                                border-slate-300
-                                font-semibold
-                                hover:bg-slate-100
-                                transition
-                            "
-                        >
-                            ✕ Cancel
-                        </button>
-
-                        <button
-                            onClick={handleSave}
-                            disabled={saving}
-                            className="
-        bg-blue-600
-        hover:bg-blue-700
-        disabled:bg-blue-400
-        text-white
-        px-8
-        py-3
-        rounded-xl
-        font-semibold
-        transition
-    "
-                        >
-                            {saving ? "Saving..." : "✔ Save Changes"}
-                        </button>
 
                     </div>
 

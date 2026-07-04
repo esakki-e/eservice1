@@ -3,7 +3,9 @@ import axios from "axios";
 import Navbar from "../../components/Navbar";
 import { API_URL } from "../../config";
 import Pagination from "../../components/Pagination";
-import DashboardLayout from "../../layouts/DashboardLayout.jsx";
+import DashboardLayout from "../../layouts/EmployeeLayout.jsx";
+import  "./EmployeeRequests.css"
+import EmployeeLayout from "../../layouts/EmployeeLayout.jsx";
 function EmployeeRequests() {
 
     const [requests, setRequests] = useState([]);
@@ -235,358 +237,402 @@ function EmployeeRequests() {
     if (loading) {
 
         return (
-            <DashboardLayout>
 
-                <div className="flex justify-center items-center h-96">
+            <EmployeeLayout>
 
-                    <div className="animate-spin
-                    rounded-full
-                    h-12
-                    w-12
-                    border-4
-                    border-indigo-500
-                    border-t-transparent">
-                    </div>
+                <div className="employee-loading-page">
+
+                    <div className="employee-loader"></div>
 
                 </div>
-            </DashboardLayout>
+
+            </EmployeeLayout>
+
         );
 
     }
 
     return (
+
         <>
+
             <Navbar />
-            <div className="min-h-screen bg-slate-50 p-8">
-                <div className="grid grid-cols-4 gap-6 mb-8">
 
-                    <div className="
-        bg-gradient-to-r
-        from-amber-500
-        to-yellow-400
-        text-white
-        rounded-3xl
-        p-6
-        shadow-lg
-    ">
-                        <p className="text-sm opacity-90">
-                            Pending Requests
-                        </p>
+            <div className="page-bg">
 
-                        <h3 className="text-4xl font-bold mt-2">
-                            {
-                                stats.pendingRequests
-                            }
-                        </h3>
+                <div className="employee-requests-page">
+
+                    {/* Statistics */}
+
+                    <div className="employee-stats-grid">
+
+                        <div className="stats-card pending-card">
+
+                            <p className="stats-label">
+
+                                Pending Requests
+
+                            </p>
+
+                            <h3 className="stats-value">
+
+                                {stats.pendingRequests}
+
+                            </h3>
+
+                        </div>
+
+                        <div className="stats-card assigned-card">
+
+                            <p className="stats-label">
+
+                                Assigned
+
+                            </p>
+
+                            <h3 className="stats-value">
+
+                                {stats.assignedRequests}
+
+                            </h3>
+
+                        </div>
+
+                        <div className="stats-card progress-card">
+
+                            <p className="stats-label">
+
+                                In Progress
+
+                            </p>
+
+                            <h3 className="stats-value">
+
+                                {stats.inProgressRequests}
+
+                            </h3>
+
+                        </div>
+
+                        <div className="stats-card completed-card">
+
+                            <p className="stats-label">
+
+                                Completed
+
+                            </p>
+
+                            <h3 className="stats-value">
+
+                                {stats.completedRequests}
+
+                            </h3>
+
+                        </div>
+
                     </div>
 
-                    <div className="
-        bg-gradient-to-r
-        from-sky-500
-        to-blue-600
-        text-white
-        rounded-3xl
-        p-6
-        shadow-lg
-    ">
-                        <p className="text-sm opacity-90">
-                            Assigned
+                    {/* Header */}
+
+                    <div className="employee-requests-header">
+
+                        <h1 className="employee-requests-title">
+
+                            Available Requests
+
+                        </h1>
+
+                        <p className="employee-requests-subtitle">
+
+                            Browse pending requests and assign them to yourself.
+
                         </p>
 
-                        <h3 className="text-4xl font-bold mt-2">
-                            {
-                                stats.assignedRequests
-                            }
-                        </h3>
                     </div>
 
-                    <div className="
-        bg-gradient-to-r
-        from-violet-500
-        to-purple-600
-        text-white
-        rounded-3xl
-        p-6
-        shadow-lg
-    ">
-                        <p className="text-sm opacity-90">
-                            In Progress
-                        </p>
+                    {/* Filters */}
 
-                        <h3 className="text-4xl font-bold mt-2">
-                            {
-                                stats.inProgressRequests
+                    <div className="employee-filters">
+
+                        <input
+                            type="text"
+                            placeholder="Search Customer"
+                            value={searchName}
+                            onChange={(e)=>
+                                setSearchName(e.target.value)
                             }
-                        </h3>
+                            className="filter-input"
+                        />
+
+                        <input
+                            type="text"
+                            placeholder="Search Phone"
+                            value={searchPhone}
+                            onChange={(e)=>
+                                setSearchPhone(e.target.value)
+                            }
+                            className="filter-input"
+                        />
+
+                        <select
+                            value={statusFilter}
+                            onChange={(e)=>
+                                setStatusFilter(e.target.value)
+                            }
+                            className="filter-select"
+                        >
+
+                            <option value="ALL">All Status</option>
+
+                            <option value="PENDING">Pending</option>
+
+                            <option value="ASSIGNED">Assigned</option>
+
+                            <option value="IN_PROGRESS">In Progress</option>
+
+                            <option value="COMPLETED">Completed</option>
+
+                        </select>
+
                     </div>
 
-                    <div className="
-        bg-gradient-to-r
-        from-emerald-500
-        to-green-600
-        text-white
-        rounded-3xl
-        p-6
-        shadow-lg
-    ">
-                        <p className="text-sm opacity-90">
-                            Completed
-                        </p>
+                    {/* Table */}
 
-                        <h3 className="text-4xl font-bold mt-2">
+                    <div className="employee-requests-table-card">
+
+                        <table className="employee-requests-table">
+
+                            <thead className="employee-table-header">
+
+                            <tr>
+
+                                <th>ID</th>
+
+                                <th>Customer</th>
+
+                                <th>Phone</th>
+
+                                <th>Service</th>
+
+                                <th>Status</th>
+
+                                <th>Action</th>
+
+                            </tr>
+
+                            </thead>
+
+                            <tbody>
+
                             {
-                                stats.completedRequests
+
+                                requests.length === 0 ?
+
+                                    (
+
+                                        <tr>
+
+                                            <td
+                                                colSpan="6"
+                                                className="empty-row"
+                                            >
+
+                                                No requests found.
+
+                                            </td>
+
+                                        </tr>
+
+                                    )
+
+                                    :
+
+                                    requests.map(request => (
+
+                                        <tr
+                                            key={request.id}
+                                            className="request-row"
+                                        >
+
+                                            <td>
+
+                                                #{request.id}
+
+                                            </td>
+
+                                            <td>
+
+                                                {request.customerName}
+
+                                            </td>
+
+                                            <td>
+
+                                                {request.phoneNumber}
+
+                                            </td>
+
+                                            <td>
+
+                                                {request.serviceName}
+
+                                            </td>
+
+                                            <td>
+
+                                                <span
+
+                                                    className={`status-badge ${
+                                                        request.status === "PENDING"
+
+                                                            ?
+
+                                                            "pending-status"
+
+                                                            :
+
+                                                            request.status === "ASSIGNED"
+
+                                                                ?
+
+                                                                "assigned-status"
+
+                                                                :
+
+                                                                request.status === "IN_PROGRESS"
+
+                                                                    ?
+
+                                                                    "progress-status"
+
+                                                                    :
+
+                                                                    request.status === "COMPLETED"
+
+                                                                        ?
+
+                                                                        "completed-status"
+
+                                                                        :
+
+                                                                        "default-status"
+
+                                                    }`}
+
+                                                >
+
+                                                    {
+
+                                                        request.status
+
+                                                            ?
+
+                                                            request.status.replaceAll("_", " ")
+
+                                                            :
+
+                                                            "-"
+
+                                                    }
+
+                                                </span>
+
+                                            </td>
+
+                                            <td className="action-cell">
+
+                                                {
+
+                                                    request.status === "PENDING"
+
+                                                        ?
+
+                                                        (
+
+                                                            <button
+
+                                                                className="self-assign-button"
+
+                                                                onClick={() =>
+
+                                                                    selfAssign(request.id)
+
+                                                                }
+
+                                                            >
+
+                                                                Self Assign
+
+                                                            </button>
+
+                                                        )
+
+                                                        :
+
+                                                        (
+
+                                                            <button
+
+                                                                className="assigned-button"
+
+                                                                disabled
+
+                                                            >
+
+                                                                Assigned To:
+
+                                                                {" "}
+
+                                                                {request.assignedEmployeeName}
+
+                                                            </button>
+
+                                                        )
+
+                                                }
+
+                                            </td>
+
+                                        </tr>
+
+                                    ))
+
                             }
-                        </h3>
+
+                            </tbody>
+
+                        </table>
+
+                        <Pagination
+
+                            page={page}
+
+                            totalPages={totalPages}
+
+                            totalElements={totalElements}
+
+                            pageSize={size}
+
+                            onPageChange={setPage}
+
+                            onPageSizeChange={(newSize) => {
+
+                                setSize(newSize);
+
+                                setPage(0);
+
+                            }}
+
+                        />
+
                     </div>
 
-                </div>
-
-                <div className="mb-6">
-                    <h1 className="text-4xl font-bold text-slate-800">
-                        Available Requests
-                    </h1>
-
-                    <p className="text-slate-500 mt-2">
-                        Browse pending requests and assign them to yourself.
-                    </p>
-                </div>
-
-            <div className="table-responsive">
-                <div className="flex gap-4 mb-6">
-
-                    <input
-                        type="text"
-                        placeholder="Search Customer"
-                        value={searchName}
-                        onChange={(e)=>
-                            setSearchName(e.target.value)
-                        }
-                        className="
-            flex-1
-            bg-white
-            border
-            rounded-xl
-            px-4
-            py-3
-            shadow-sm
-        "
-                    />
-
-                    <input
-                        type="text"
-                        placeholder="Search Phone"
-                        value={searchPhone}
-                        onChange={(e)=>
-                            setSearchPhone(e.target.value)
-                        }
-                        className="
-            flex-1
-            bg-white
-            border
-            rounded-xl
-            px-4
-            py-3
-            shadow-sm
-        "
-                    />
-
-                    <select
-                        value={statusFilter}
-                        onChange={(e)=>
-                            setStatusFilter(e.target.value)
-                        }
-                        className="
-            bg-white
-            border
-            rounded-xl
-            px-4
-            py-3
-            shadow-sm
-            min-w-[180px]
-        "
-                    >
-                        <option value="ALL">All Status</option>
-                        <option value="PENDING">Pending</option>
-                        <option value="ASSIGNED">Assigned</option>
-                        <option value="IN_PROGRESS">In Progress</option>
-                        <option value="COMPLETED">Completed</option>
-                    </select>
-
-                </div>
-                <div
-                    className="
-        bg-white
-        rounded-2xl
-        shadow-sm
-        border
-        overflow-hidden
-    "
-                >
-                <table className="table table-hover align-middle">
-
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Customer</th>
-                        <th>Phone</th>
-                        <th>Service</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-
-                    {
-
-                        requests.length === 0 ?
-
-                            (
-
-                                <tr>
-
-                                    <td
-                                        colSpan="6"
-                                        className="text-center py-10 text-slate-500"
-                                    >
-
-                                        No requests found.
-
-                                    </td>
-
-                                </tr>
-
-                            )
-
-                            :
-                    requests.map(request => (
-                        <tr key={request.id}>
-
-                            <td>
-                                #{request.id}
-                            </td>
-
-                            <td>
-                                {request.customerName}
-                            </td>
-
-                            <td>
-                                {request.phoneNumber}
-                            </td>
-
-                            <td>
-                                {request.serviceName}
-                            </td>
-
-
-                            <td>
-    <span
-        className={`
-            inline-flex
-            items-center
-            px-3
-            py-1
-            rounded-full
-            text-xs
-            font-bold
-
-            ${
-            request.status === "PENDING"
-                ? "bg-yellow-100 text-yellow-800"
-                : request.status === "ASSIGNED"
-                    ? "bg-sky-100 text-sky-700"
-                    : request.status === "IN_PROGRESS"
-                        ? "bg-violet-100 text-violet-700"
-                        : request.status === "COMPLETED"
-                            ? "bg-emerald-100 text-emerald-700"
-                            : "bg-gray-100 text-gray-700"
-        }
-        `}
-    >
-{request.status
-    ? request.status.replaceAll("_", " ")
-    : "-"
-}    </span>
-                            </td>
-
-                            <td style={{ width: "220px" }}>
-
-                                {request.status === "PENDING" ? (
-
-                                    <button
-                                        className="
-    w-full
-    bg-indigo-600
-    hover:bg-indigo-700
-    text-white
-    font-semibold
-    py-2
-    rounded-xl
-    transition-all
-"                                        onClick={() =>
-                                            selfAssign(request.id)
-                                        }
-                                    >
-                                        Self Assign
-                                    </button>
-
-                                ) : (
-
-                                    <button
-                                        className="
-    w-full
-    bg-slate-700
-    text-white
-    font-semibold
-    py-2
-    rounded-xl
-"
-                                        disabled
-                                    >
-                                        Assigned To:
-                                        {" "}
-                                        {request.assignedEmployeeName}
-                                    </button>
-
-                                )}
-
-                            </td>
-
-                        </tr>
-
-                    ))}
-
-                    </tbody>
-
-                </table>
-                    <Pagination
-
-                        page={page}
-
-                        totalPages={totalPages}
-
-                        totalElements={totalElements}
-
-                        pageSize={size}
-
-                        onPageChange={setPage}
-
-                        onPageSizeChange={(newSize) => {
-
-                            setSize(newSize);
-
-                            setPage(0);
-
-                        }}
-
-                    />
                 </div>
 
             </div>
 
-        </div>
-            </>
+        </>
+
     );
 }
 

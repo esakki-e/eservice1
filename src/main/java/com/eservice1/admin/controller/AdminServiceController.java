@@ -46,6 +46,8 @@ public class AdminServiceController {
     }
     @DeleteMapping("/{id}")
     public void deleteService(@PathVariable Long id) {
+        System.out.println("DELETE CONTROLLER HIT");
+
         service.delete(id);
     }
     @PutMapping("/{id}")

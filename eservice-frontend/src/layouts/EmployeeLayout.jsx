@@ -1,5 +1,4 @@
 import Navbar from "../components/Navbar";
-
 function EmployeeLayout({ children }) {
 
     return (
@@ -8,7 +7,7 @@ function EmployeeLayout({ children }) {
 
             <Navbar />
 
-            <div className="min-h-screen bg-gradient-to-br from-blue-100 to-white">
+            <div className="employee-layout">
 
                 {children}
 

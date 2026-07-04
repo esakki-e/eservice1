@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { getMyProfile } from "../../services/employeeProfileService";
 import EmployeeLayout from "../../layouts/EmployeeLayout";
 import { API_URL } from "../../config";
-
+import "./EmployeeProfile.css"
 export default function EmployeeProfile() {
 
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ export default function EmployeeProfile() {
 
         return (
             <EmployeeLayout>
-                <div className="text-center mt-20 text-xl">
+                <div className="employee-profile-loading">
                     Loading...
                 </div>
             </EmployeeLayout>
@@ -41,248 +41,222 @@ export default function EmployeeProfile() {
 
         <EmployeeLayout>
 
-            <div className="max-w-6xl mx-auto py-10 px-6">
-                <div className="
-                    bg-white
-rounded-[32px]
-shadow-2xl
-overflow-hidden
-relative
-                ">
+            <div className="page-bg">
 
-                    {/* Banner */}
+                <div className="employee-profile-page">
 
-                    <div className="h-40 bg-gradient-to-r from-indigo-600 via-blue-500 to-cyan-500"></div>
+                    <div className="employee-profile-container">
 
-                    {/* Profile Image */}
+                        <div className="employee-profile-card">
 
-                    <div className="
-absolute
-left-8
-top-24
-w-32
-h-32
-bg-white
-rounded-3xl
-shadow-2xl
-overflow-hidden
-">
+                            {/* Banner */}
 
+                            <div className="employee-profile-banner"></div>
 
-                    <img
-                            src={
-                                employee.profileImage
-                                    ? `${API_URL}/uploads/employees/${employee.profileImage}`
-                                    : "/default-avatar.png"
-                            }
-                            alt="Profile"
-                            className="w-full h-full object-cover"
-                        />
+                            {/* Profile Image */}
 
-                    </div>
+                            <div className="employee-profile-avatar">
 
-                    {/* Edit Button */}
+                                <img
+                                    src={
+                                        employee.profileImage
+                                            ? `${API_URL}/uploads/employees/${employee.profileImage}`
+                                            : "/default-avatar.png"
+                                    }
+                                    alt="Profile"
+                                    className="employee-profile-avatar-image"
+                                />
 
-                    <button
-                        onClick={() => navigate("/employee/profile/edit")}
-                        className="
-                        absolute
-                        right-10
-                        top-32
-                        bg-slate-900
-                        text-white
-                        px-10
-                        py-5
-                        font-semibold
-                        hover:bg-slate-800
-                        ">
-                        ✏️ Edit Profile
-                    </button>
+                            </div>
 
-                    {/* Name */}
+                            {/* Edit Button */}
 
-                    <div className="ml-52 mt-8">
+                            <button
+                                onClick={() => navigate("/employee/profile/edit")}
+                                className="employee-profile-edit-button"
+                            >
 
-                        <h1 className="text-5xl font-bold">
-                            {employee.name}
-                        </h1>
+                                ✏️ Edit Profile
 
-                        <p className="text-slate-500 text-xl mt-2">
-                            Employee Profile
-                        </p>
+                            </button>
 
-                        <div className="mt-5">
+                            {/* Name */}
 
-        <span className="
-        px-6
-        py-2
-        rounded-full
-        bg-green-100
-        text-green-700
-        font-medium
-        ">
+                            <div className="employee-profile-info">
 
-            ✓ Active Employee
+                                <h1 className="employee-profile-name">
 
-        </span>
+                                    {employee.name}
 
-                        </div>
+                                </h1>
 
-                    </div>
+                                <p className="employee-profile-role">
 
-                    {/* Details */}
+                                    Employee Profile
 
-                    <div className="grid grid-cols-2 gap-6 p-10">
+                                </p>
 
-                        <div className="border rounded-3xl p-8">
+                                <div className="employee-profile-status-wrapper">
 
-                            <p className="text-slate-500">
+                                <span className="employee-profile-status">
 
-                                Phone Number
+                                    ✓ Active Employee
 
-                            </p>
+                                </span>
 
-                            <h3 className="text-3xl font-semibold mt-3">
+                                </div>
 
-                                {employee.phoneNumber}
+                            </div>
 
-                            </h3>
+                            {/* Details */}
 
-                        </div>
+                            <div className="employee-profile-grid">
 
-                        <div className="border rounded-3xl p-8">
+                                <div className="employee-profile-item">
 
-                            <p className="text-slate-500">
+                                    <p className="employee-profile-label">
 
-                                Email
+                                        Phone Number
 
-                            </p>
+                                    </p>
 
-                            <h3 className="text-3xl font-semibold mt-3">
+                                    <h3 className="employee-profile-value">
 
-                                {employee.email || "-"}
+                                        {employee.phoneNumber}
 
-                            </h3>
+                                    </h3>
 
-                        </div>
+                                </div>
 
-                        <div className="border rounded-3xl p-8">
+                                <div className="employee-profile-item">
 
-                            <p className="text-slate-500">
+                                    <p className="employee-profile-label">
 
-                                Date Of Birth
+                                        Email
 
-                            </p>
+                                    </p>
 
-                            <h3 className="text-3xl font-semibold mt-3">
+                                    <h3 className="employee-profile-value">
 
-                                {employee.dob || "-"}
+                                        {employee.email || "-"}
 
-                            </h3>
+                                    </h3>
+
+                                </div>
+
+                                <div className="employee-profile-item">
+
+                                    <p className="employee-profile-label">
+
+                                        Date Of Birth
+
+                                    </p>
+
+                                    <h3 className="employee-profile-value">
+
+                                        {employee.dob || "-"}
+
+                                    </h3>
+
+                                </div>
+
+                                <div className="employee-profile-item">
+
+                                    <p className="employee-profile-label">
+
+                                        Gender
+
+                                    </p>
+
+                                    <h3 className="employee-profile-value">
+
+                                        {employee.gender || "-"}
+
+                                    </h3>
+
+                                </div>
+
+                            </div>
 
                         </div>
 
-                        <div className="border rounded-3xl p-8">
+                        {/* Additional Information */}
 
-                            <p className="text-slate-500">
+                        <div className="employee-profile-extra-card">
 
-                                Gender
+                            <h2 className="employee-profile-extra-title">
 
-                            </p>
+                                Additional Information
 
-                            <h3 className="text-3xl font-semibold mt-3">
+                            </h2>
 
-                                {employee.gender || "-"}
+                            <div className="employee-profile-extra-list">
 
-                            </h3>
+                                <div className="employee-profile-extra-row">
 
-                        </div>
+                                <span className="employee-profile-extra-label">
 
-                    </div>
+                                    Address
 
-                </div>
+                                </span>
 
-                {/* Additional Information */}
+                                    <span className="employee-profile-extra-value">
 
-                <div
-                    className="
-                        bg-white
-                        rounded-[30px]
-                        shadow-xl
-                        mt-8
-                        p-10
-                    "
-                >
+                                    {employee.address || "-"}
 
-                    <h2 className="text-4xl font-bold mb-8">
+                                </span>
 
-                        Additional Information
+                                </div>
 
-                    </h2>
+                                <div className="employee-profile-extra-row">
 
-                    <div className="space-y-6">
+                                <span className="employee-profile-extra-label">
 
-                        <div className="flex justify-between border-b pb-4">
+                                    Joined Date
 
-                            <span className="text-slate-500">
+                                </span>
 
-                                Address
+                                    <span className="employee-profile-extra-value">
 
-                            </span>
+                                    {employee.joinedDate || "-"}
 
-                            <span className="font-semibold">
+                                </span>
 
-                                {employee.address || "-"}
+                                </div>
 
-                            </span>
+                                <div className="employee-profile-extra-row">
 
-                        </div>
+                                <span className="employee-profile-extra-label">
 
-                        <div className="flex justify-between border-b pb-4">
+                                    Employee ID
 
-                            <span className="text-slate-500">
+                                </span>
 
-                                Joined Date
+                                    <span className="employee-profile-extra-value">
 
-                            </span>
+                                    #{employee.id}
 
-                            <span className="font-semibold">
+                                </span>
 
-                                {employee.joinedDate || "-"}
+                                </div>
 
-                            </span>
+                                <div className="employee-profile-extra-row employee-profile-extra-row-last">
 
-                        </div>
+                                <span className="employee-profile-extra-label">
 
-                        <div className="flex justify-between border-b pb-4">
+                                    Status
 
-                            <span className="text-slate-500">
+                                </span>
 
-                                Employee ID
+                                    <span className="employee-profile-active-text">
 
-                            </span>
+                                    Active
 
-                            <span className="font-semibold">
+                                </span>
 
-                                #{employee.id}
+                                </div>
 
-                            </span>
-
-                        </div>
-
-                        <div className="flex justify-between">
-
-                            <span className="text-slate-500">
-
-                                Status
-
-                            </span>
-
-                            <span className="text-green-600 font-semibold">
-
-                                Active
-
-                            </span>
+                            </div>
 
                         </div>
 
@@ -295,5 +269,4 @@ overflow-hidden
         </EmployeeLayout>
 
     );
-
 }
