@@ -5,6 +5,7 @@ import { API_URL } from "../../config";
 import DashboardLayout
     from "../../layouts/DashboardLayout";
 import "./Users.css"
+import {Link} from "react-router-dom";
 function Users() {
 
     const [users, setUsers] =
@@ -71,17 +72,24 @@ function Users() {
 
                         <div className="users-header">
 
-                            <h1 className="users-title">
+                            <div>
 
-                                Users
+                                <h1 className="users-title">
+                                    Users
+                                </h1>
 
-                            </h1>
+                                <p className="users-subtitle">
+                                    Manage roles and access across the portal
+                                </p>
 
-                            <p className="users-subtitle">
+                            </div>
 
-                                Manage roles and access across the portal
-
-                            </p>
+                            <Link
+                                to="/employees/create"
+                                className="vm-create-btn"
+                            >
+                                + Add Employee
+                            </Link>
 
                         </div>
 

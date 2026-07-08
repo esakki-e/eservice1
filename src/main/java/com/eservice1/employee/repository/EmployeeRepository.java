@@ -12,6 +12,7 @@ public interface EmployeeRepository
     Employee findByPhoneNumber(
             String phoneNumber
     );
+    boolean existsByPhoneNumber(String phoneNumber);
 
     @Query("""
 SELECT t.employee

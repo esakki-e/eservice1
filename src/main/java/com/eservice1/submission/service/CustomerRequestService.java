@@ -1,5 +1,7 @@
 package com.eservice1.submission.service;
 
+import com.eservice1.common.exception.InvalidOperationException;
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.repository.PortalServiceRepository;
 import com.eservice1.submission.dto.CustomerRequestDTO;
@@ -46,8 +48,21 @@ public class CustomerRequestService {
     public CustomerRequest createRequest(CustomerRequestDTO dto) {
 
         PortalService service =
-                serviceRepository.findById(dto.getServiceId())
-                        .orElseThrow();
+                serviceRepository.findById(
+                                dto.getServiceId()
+                        )
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Service not found."
+                                )
+                        );
+        if (!Boolean.TRUE.equals(service.getActive())) {
+
+            throw new InvalidOperationException(
+                    "This service is currently unavailable."
+            );
+
+        }
 
         CustomerRequest request = new CustomerRequest();
 
@@ -88,21 +103,23 @@ public class CustomerRequestService {
         CustomerRequest request =
                 requestRepository
                         .findById(requestId)
-                        .orElseThrow();
-        if(
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Request not found."
+                                )
+                        );
+        if (
 
-                paymentStatus==PaymentStatus.PAID
+                paymentStatus == PaymentStatus.PAID
 
                         &&
 
-                        amount<=0
+                        (amount == null || amount <= 0)
 
-        ){
+        ) {
 
-            throw new RuntimeException(
-
+            throw new InvalidOperationException(
                     "Amount must be greater than zero."
-
             );
 
         }

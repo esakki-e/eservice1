@@ -3,7 +3,8 @@ import {
     Routes,
     Route
 } from "react-router-dom";
-
+import CreateEmployee
+    from "./pages/owner/CreateEmployee";
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/owner/Dashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -270,6 +271,10 @@ function AnimatedRoutes() {
                             <ServiceCategories/>
                         </ProtectedRoute>
                     }
+                />
+                <Route
+                    path="/employees/create"
+                    element={<CreateEmployee />}
                 />
             </Routes>
 

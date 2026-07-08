@@ -1,5 +1,6 @@
 package com.eservice1.service.service;
 
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.repository.PortalServiceRepository;
 import com.eservice1.submission.repository.CustomerRequestRepository;
@@ -154,18 +155,22 @@ public class PortalServiceService {
     }
     public PortalService getById(Long id) {
 
-        return repository.findById(id)
-                .orElseThrow();
+        PortalService service =
+                repository.findById(id)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Service not found."
+                                )
+                        );
 
+        return service;
     }
     @Transactional
     public void delete(Long id) {
 
         if (requestRepository.existsByService_Id(id)) {
 
-            PortalService service = repository.findById(id)
-                    .orElseThrow();
-
+            PortalService service = getById(id);
             service.setActive(false);
 
             repository.save(service);
@@ -176,6 +181,55 @@ public class PortalServiceService {
         documentRepository.deleteByService_Id(id);
 
         repository.deleteById(id);
+    }
+    public PageResponseDTO<PortalService> getActiveServices(
+
+            int page,
+
+            int size,
+
+            String search
+
+    ) {
+
+        if (search != null) {
+
+            search = search.trim();
+
+            if (search.isBlank()) {
+
+                search = null;
+
+            }
+
+        }
+
+        Pageable pageable =
+
+                PageRequest.of(
+
+                        page,
+
+                        size,
+
+                        Sort.by("id").descending()
+
+                );
+
+        Page<PortalService> services =
+
+                repository.searchActiveServices(
+
+                        search,
+
+                        pageable
+
+                );
+
+        return PaginationMapper.toResponse(
+                services
+        );
+
     }
 
 }

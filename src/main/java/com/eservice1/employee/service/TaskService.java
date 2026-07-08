@@ -1,5 +1,6 @@
 package com.eservice1.employee.service;
 
+import com.eservice1.common.exception.InvalidOperationException;
 import com.eservice1.employee.dto.EmployeeDashboardStatsDTO;
 import com.eservice1.employee.entity.Employee;
 import com.eservice1.employee.entity.Priority;
@@ -22,7 +23,7 @@ import com.eservice1.common.util.PaginationMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort;import com.eservice1.common.exception.ResourceNotFoundException;
 @Service
 public class TaskService {
 
@@ -46,8 +47,9 @@ public class TaskService {
                         );
 
         if (task.getEmployee() != null) {
-            throw new RuntimeException(
-                    "Already assigned"
+
+            throw new InvalidOperationException(
+                    "Task is already assigned."
             );
         }
 
@@ -191,7 +193,11 @@ public class TaskService {
 
         Task task =
                 taskRepository.findById(taskId)
-                        .orElseThrow();
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Task not found."
+                                )
+                        );
 
         task.setStatus(
                 TaskStatus.IN_PROGRESS
@@ -215,7 +221,11 @@ public class TaskService {
 
         Task task =
                 taskRepository.findById(taskId)
-                        .orElseThrow();
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Task not found."
+                                )
+                        );
 
         task.setPriority(priority);
 
@@ -226,9 +236,9 @@ public class TaskService {
             Long requestId,
             Long employeeId) {
 
-        System.out.println("ASSIGN SERVICE HIT");
-        System.out.println("REQUEST ID = " + requestId);
-        System.out.println("EMPLOYEE ID = " + employeeId);
+       // System.out.println("ASSIGN SERVICE HIT");
+       // System.out.println("REQUEST ID = " + requestId);
+       // System.out.println("EMPLOYEE ID = " + employeeId);
 
         Task task =
                 taskRepository.findByRequestId(
@@ -236,17 +246,17 @@ public class TaskService {
                 );
 
         if (task == null) {
-            throw new RuntimeException(
-                    "Task not found for request " + requestId
+            throw new ResourceNotFoundException(
+                    "Task not found "
             );
         }
 
         Employee employee =
                 employeeRepository.findById(
                         employeeId
-                ).orElseThrow(
-                        () -> new RuntimeException(
-                                "Employee not found"
+                ).orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Employee not found."
                         )
                 );
 
@@ -271,7 +281,11 @@ public class TaskService {
 
         Task task =
                 taskRepository.findById(taskId)
-                        .orElseThrow();
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Task not found."
+                                )
+                        );
 
         task.setStatus(
                 TaskStatus.COMPLETED
@@ -296,7 +310,11 @@ public class TaskService {
         Task task =
                 taskRepository.findById(
                         taskId
-                ).orElseThrow();
+                ).orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Task not found."
+                        )
+                );
 
         String uploadDir =
                 System.getProperty("user.dir")

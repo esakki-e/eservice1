@@ -1,8 +1,9 @@
 // LandingPage.jsx
-
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { API_URL } from "../config";
 import { useNavigate } from "react-router-dom";
 import "./LandingPage.css";
-
 //import PageTransition from "../../components/PageTransition";
 import PageTransition from "../components/PageTransition";
 
@@ -10,7 +11,43 @@ import { motion } from "framer-motion";
 function LandingPage() {
 
     const navigate = useNavigate();
+    const [services, setServices] = useState([]);
+    useEffect(() => {
 
+        loadServices();
+
+    }, []);
+
+    const getIcon = (name) => {
+
+        const text = name.toLowerCase();
+
+        if (text.includes("birth")) return "👶";
+        if (text.includes("death")) return "⚰️";
+        if (text.includes("income")) return "🪙";
+        if (text.includes("community")) return "📜";
+        if (text.includes("marriage")) return "💍";
+        if (text.includes("residence")) return "🏡";
+        if (text.includes("nativity")) return "🏠";
+
+        return "📄";
+    };const loadServices = async () => {
+        try {
+
+            const response = await axios.get(
+                `${API_URL}/services?page=0&size=50`
+            );
+
+            console.log(response.data);
+
+            setServices(response.data.content);
+
+        } catch (error) {
+
+            console.error(error);
+
+        }
+    };
     return (
         <PageTransition>
             <div className="page-bg">
@@ -39,6 +76,7 @@ function LandingPage() {
                         from anywhere.
 
                     </p>
+
                     <div className="hero-stats">
 
                         <div className="stat-card">
@@ -82,6 +120,7 @@ function LandingPage() {
                         </div>
 
                     </div>
+
                     <div className="hero-buttons">
                         <motion.button
                             whileHover={{
@@ -181,56 +220,49 @@ function LandingPage() {
         </span>
 
                             <span className="service-count">
-            25+
-        </span>
+    {services.length}+
+</span>
 
                         </div>
 
-                        <div className="preview-item">
+                        <div className="preview-scroll">
 
-                            <div className="preview-icon">
-                                📜
-                            </div>
+                            <motion.div
+                                className="preview-track"
+                                animate={{
+                                    y: ["0%", "-50%"]
+                                }}
+                                transition={{
+                                    duration: 18,
+                                    ease: "linear",
+                                    repeat: Infinity
+                                }}
+                            >
 
-                            <span>
-            Community Certificate
-        </span>
+                                {[...services, ...services].map((service, index) => (
 
-                        </div>
+                                    <div
+                                        className="preview-item"
+                                        key={index}
+                                    >
 
-                        <div className="preview-item">
+                                        <div className="preview-icon">
 
-                            <div className="preview-icon">
-                                🪙
-                            </div>
+                                            {getIcon(service.serviceName)}
 
-                            <span>
-            Income Certificate
-        </span>
+                                        </div>
 
-                        </div>
+                                        <span>
 
-                        <div className="preview-item">
+                    {service.serviceName}
 
-                            <div className="preview-icon">
-                                🏠
-                            </div>
+                </span>
 
-                            <span>
-            Nativity Certificate
-        </span>
+                                    </div>
 
-                        </div>
+                                ))}
 
-                        <div className="preview-item">
-
-                            <div className="preview-icon">
-                                👶
-                            </div>
-
-                            <span>
-            Birth Certificate
-        </span>
+                            </motion.div>
 
                         </div>
 

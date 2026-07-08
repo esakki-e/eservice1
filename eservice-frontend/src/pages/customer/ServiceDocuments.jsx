@@ -33,7 +33,9 @@ function ServiceDocuments() {
     const [uploadedFiles,
         setUploadedFiles] =
         useState({});
-
+    const [previewUrls,
+        setPreviewUrls] =
+        useState({});
     const [fields, setFields] =
         useState([]);
 
@@ -397,27 +399,134 @@ function ServiceDocuments() {
 
                                             </label>
 
-                                            <input
+                                            <div className="upload-actions">
 
-                                                type="file"
+                                                {/* Upload */}
 
-                                                className="file-input"
+                                                <label className="upload-btn">
 
-                                                onChange={(e) =>
+                                                    📁 Upload
 
-                                                    setUploadedFiles({
+                                                    <input
 
-                                                        ...uploadedFiles,
+                                                        type="file"
 
-                                                        [document.documentName]:
-                                                            e.target.files[0]
+                                                        accept=".pdf,.jpg,.jpeg,.png"
 
-                                                    })
+                                                        hidden
 
-                                                }
+                                                        onChange={(e) => {
 
-                                            />
+                                                            const file = e.target.files[0];
 
+                                                            if (!file) return;
+
+                                                            setUploadedFiles({
+
+                                                                ...uploadedFiles,
+
+                                                                [document.documentName]: file
+
+                                                            });
+
+                                                            setPreviewUrls({
+
+                                                                ...previewUrls,
+
+                                                                [document.documentName]:
+                                                                    URL.createObjectURL(file)
+
+                                                            });
+
+                                                        }}
+
+                                                    />
+
+                                                </label>
+
+                                                {/* Capture */}
+
+                                                <label className="capture-btn">
+
+                                                    📷 Capture
+
+                                                    <input
+
+                                                        type="file"
+
+                                                        accept="image/*"
+
+                                                        capture="environment"
+
+                                                        hidden
+
+                                                        onChange={(e) => {
+
+                                                            const file = e.target.files[0];
+
+                                                            if (!file) return;
+
+                                                            setUploadedFiles({
+
+                                                                ...uploadedFiles,
+
+                                                                [document.documentName]: file
+
+                                                            });
+
+                                                            setPreviewUrls({
+
+                                                                ...previewUrls,
+
+                                                                [document.documentName]:
+                                                                    URL.createObjectURL(file)
+
+                                                            });
+
+                                                        }}
+
+                                                    />
+
+                                                </label>
+
+                                            </div>
+                                            {
+
+                                                uploadedFiles[document.documentName] && (
+
+                                                    <div className="selected-file">
+
+                                                        ✅ {uploadedFiles[document.documentName].name}
+
+                                                        {
+
+                                                            uploadedFiles[document.documentName]
+                                                                .type
+                                                                .startsWith("image/")
+
+                                                            &&
+
+                                                            <img
+
+                                                                src={
+                                                                    previewUrls[
+                                                                        document.documentName
+                                                                        ]
+                                                                }
+
+                                                                alt="Preview"
+
+                                                                className="document-preview"
+
+                                                            />
+
+                                                        }
+
+                                                    </div>
+
+                                                )
+
+                                            }
                                         </div>
 
                                     ))

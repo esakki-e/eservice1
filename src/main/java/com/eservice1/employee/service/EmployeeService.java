@@ -1,5 +1,8 @@
 package com.eservice1.employee.service;
 
+import com.eservice1.common.exception.DuplicateResourceException;
+import com.eservice1.common.exception.InvalidOperationException;
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.employee.dto.EmployeeProfileDTO;
 import com.eservice1.employee.dto.UpdateEmployeeProfileDTO;
 import com.eservice1.employee.entity.Employee;
@@ -14,13 +17,12 @@ import com.eservice1.employee.dto.RecentRequestDTO;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
+
 import com.eservice1.employee.repository.TaskRepository;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import java.time.Month;
-import java.util.HashMap;
-import java.util.Map;
+
 import org.springframework.web.multipart.MultipartFile;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -31,15 +33,15 @@ import com.eservice1.employee.dto.MonthlyRevenueDTO;
 import com.eservice1.employee.dto.MonthlyCompletedDTO;
 import com.eservice1.employee.dto.EmployeeOfMonthDTO;
 import com.eservice1.employee.dto.EmployeeDashboardDTO;
-
-
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.eservice1.employee.dto.CreateEmployeeRequest;
 @Service
 public class EmployeeService {
 
     private final EmployeeRepository employeeRepository;
     private final UserRepository userRepository;
     private final TaskRepository taskRepository;
-
+    private final PasswordEncoder passwordEncoder;
     private final CustomerRequestRepository requestRepository;
     public EmployeeService(
 
@@ -49,22 +51,17 @@ public class EmployeeService {
 
             TaskRepository taskRepository,
 
-            CustomerRequestRepository requestRepository
+            CustomerRequestRepository requestRepository,
+
+            PasswordEncoder passwordEncoder
 
     ) {
 
-        this.employeeRepository =
-                employeeRepository;
-
-        this.userRepository =
-                userRepository;
-
-        this.taskRepository =
-                taskRepository;
-
-        this.requestRepository =
-                requestRepository;
-
+        this.employeeRepository = employeeRepository;
+        this.userRepository = userRepository;
+        this.taskRepository = taskRepository;
+        this.requestRepository = requestRepository;
+        this.passwordEncoder = passwordEncoder;
     }
     public EmployeeProfileDTO getMyProfile(
             String phoneNumber
@@ -73,9 +70,10 @@ public class EmployeeService {
         Employee employee =
                 employeeRepository
                         .findByPhoneNumber(phoneNumber);
-
         if (employee == null) {
-            throw new RuntimeException("Employee not found");
+            throw new ResourceNotFoundException(
+                    "Employee not found."
+            );
         }
 
         EmployeeProfileDTO dto =
@@ -105,7 +103,9 @@ public class EmployeeService {
                         .findByPhoneNumber(phoneNumber);
 
         if (employee == null) {
-            throw new RuntimeException("Employee not found");
+            throw new ResourceNotFoundException(
+                    "Employee not found."
+            );
         }
 
         employee.setName(request.getName());
@@ -119,8 +119,11 @@ public class EmployeeService {
         User user =
                 userRepository
                         .findByPhoneNumber(phoneNumber)
-                        .orElseThrow();
-
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "User not found."
+                                )
+                        );
         user.setName(request.getName());
 
         userRepository.save(user);
@@ -150,11 +153,33 @@ public class EmployeeService {
                 employeeRepository.findByPhoneNumber(phoneNumber);
 
         if (employee == null) {
-            throw new RuntimeException("Employee not found");
+            throw new ResourceNotFoundException(
+                    "Employee not found."
+            );        }
+
+        String contentType = file.getContentType();
+
+        if (contentType == null ||
+                !contentType.startsWith("image/")) {
+
+            throw new InvalidOperationException(
+                    "Only image files are allowed."
+            );
+        }
+        if (file.isEmpty()) {
+
+            throw new InvalidOperationException(
+                    "Please select an image."
+            );
+
         }
 
-        if (file.isEmpty()) {
-            throw new RuntimeException("Please select an image");
+        if (file.getSize() > 2 * 1024 * 1024) {
+
+            throw new InvalidOperationException(
+                    "Maximum image size is 2 MB."
+            );
+
         }
 
         String uploadDir = "uploads/employees/";
@@ -163,9 +188,23 @@ public class EmployeeService {
                 Paths.get(uploadDir)
         );
 
-        String fileName =
-                employee.getId() + "_" + file.getOriginalFilename();
+        String originalName =
+                file.getOriginalFilename();
 
+        String extension = "";
+
+        if (originalName != null &&
+                originalName.contains(".")) {
+
+            extension =
+                    originalName.substring(
+                            originalName.lastIndexOf(".")
+                    );
+
+        }
+
+        String fileName =
+                UUID.randomUUID() + extension;
         Path filePath =
                 Paths.get(uploadDir, fileName);
 
@@ -188,13 +227,16 @@ public class EmployeeService {
         User user =
                 userRepository
                         .findById(userId)
-                        .orElseThrow();
-
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "User not found."
+                                )
+                        );
         if (user.getRole() ==
                 Role.EMPLOYEE) {
 
-            throw new RuntimeException(
-                    "Already an employee"
+            throw new DuplicateResourceException(
+                    "User is already an employee."
             );
         }
 
@@ -211,8 +253,8 @@ public class EmployeeService {
 
         if (existing != null) {
 
-            throw new RuntimeException(
-                    "Employee already exists"
+            throw new DuplicateResourceException(
+                    "Employee already exists."
             );
         }
 
@@ -233,7 +275,20 @@ public class EmployeeService {
                 .save(employee);
     }
     public Employee save(Employee employee) {
+        if (employeeRepository.findByPhoneNumber(
+                employee.getPhoneNumber()) != null) {
 
+            throw new DuplicateResourceException(
+                    "Employee with this phone number already exists."
+            );
+        }
+        if (userRepository.findByPhoneNumber(
+                employee.getPhoneNumber()).isPresent()) {
+
+            throw new DuplicateResourceException(
+                    "User with this phone number already exists."
+            );
+        }
         employee.setActive(true);
 
         Employee savedEmployee =
@@ -244,13 +299,112 @@ public class EmployeeService {
         user.setName(
                 employee.getName()
         );
-
         user.setPhoneNumber(
                 employee.getPhoneNumber()
         );
+        user.setPassword(
+                passwordEncoder.encode(
+                        employee.getPassword()
+                )
+        );
+
+
+        user.setRole(
+                Role.EMPLOYEE
+        );
+
+        userRepository.save(user);
+
+        return savedEmployee;
+    }
+    public Employee createEmployee(
+            CreateEmployeeRequest request) {
+        if (request.getName() == null ||
+                request.getName().isBlank()) {
+
+            throw new InvalidOperationException(
+                    "Employee name cannot be empty."
+            );
+
+        }
+
+        if (request.getPassword() == null ||
+                request.getPassword().length() < 6) {
+
+            throw new InvalidOperationException(
+                    "Password must contain at least 6 characters."
+            );
+
+        }
+        if (employeeRepository.existsByPhoneNumber(
+                request.getPhoneNumber())) {
+
+            throw new DuplicateResourceException(
+                    "Employee already exists."
+            );
+        }
+
+        if (userRepository.findByPhoneNumber(
+                request.getPhoneNumber()).isPresent()) {
+
+            throw new DuplicateResourceException(
+                    "Phone number already registered."
+            );
+        }
+
+        Employee employee = new Employee();
+
+        employee.setName(
+                request.getName()
+        );
+
+        employee.setPhoneNumber(
+                request.getPhoneNumber()
+        );
+
+        employee.setUsername(
+                request.getPhoneNumber()
+        );
+
+        employee.setEmail(
+                request.getEmail()
+        );
+
+        employee.setGender(
+                request.getGender()
+        );
+
+        employee.setAddress(
+                request.getAddress()
+        );
+
+        employee.setDob(
+                request.getDob()
+        );
+
+        employee.setJoinedDate(
+                LocalDate.now()
+        );
+
+        employee.setActive(true);
+
+        Employee savedEmployee =
+                employeeRepository.save(employee);
+
+        User user = new User();
+
+        user.setName(
+                request.getName()
+        );
+
+        user.setPhoneNumber(
+                request.getPhoneNumber()
+        );
 
         user.setPassword(
-                employee.getPassword()
+                passwordEncoder.encode(
+                        request.getPassword()
+                )
         );
 
         user.setRole(
@@ -269,12 +423,15 @@ public class EmployeeService {
 
 
         Employee employee =
-                employeeRepository
-                        .findById(employeeId)
-                        .orElseThrow();
-
+                employeeRepository.findById(employeeId)
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Employee not found."
+                                )
+                        );
         EmployeePerformanceDTO dto =
                 new EmployeePerformanceDTO();
+
 
         Map<Month, Double> monthlyRevenue = new HashMap<>();
 

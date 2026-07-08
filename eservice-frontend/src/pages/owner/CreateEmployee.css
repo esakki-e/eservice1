@@ -1,0 +1,145 @@
+.create-employee-container {
+
+    display: flex;
+
+    justify-content: center;
+
+    padding: 40px;
+
+}
+
+.employee-card {
+
+    width: 650px;
+
+    background: white;
+
+    border-radius: 20px;
+
+    padding: 35px;
+
+    box-shadow: 0 10px 30px rgba(0,0,0,.08);
+
+}
+
+.employee-card h2 {
+
+    margin-bottom: 30px;
+
+    text-align: center;
+
+    color: #23235B;
+
+}
+
+.employee-card form {
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+
+}
+
+.employee-card input,
+
+.employee-card textarea,
+
+.employee-card select {
+
+    padding: 14px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 12px;
+
+    font-size: 15px;
+
+    outline: none;
+
+    transition: .25s;
+
+}
+
+.employee-card input:focus,
+
+.employee-card textarea:focus,
+
+.employee-card select:focus {
+
+    border-color: #6558F5;
+
+    box-shadow: 0 0 0 3px rgba(101,88,245,.15);
+
+}
+
+.employee-card textarea {
+
+    resize: vertical;
+
+    min-height: 120px;
+
+}
+
+.employee-card button {
+
+    margin-top: 10px;
+
+    padding: 15px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #6558F5;
+
+    color: white;
+
+    font-size: 16px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    transition: .25s;
+
+}
+
+.employee-card button:hover {
+
+    background: #4d42d7;
+
+}
+.vm-create-btn{
+
+    padding:12px 22px;
+
+    background:#6558F5;
+
+    color:white;
+
+    border-radius:10px;
+
+    text-decoration:none;
+
+    font-weight:600;
+
+}
+
+.vm-create-btn:hover{
+
+    background:#5648dd;
+
+}
+.users-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-bottom:30px;
+
+}

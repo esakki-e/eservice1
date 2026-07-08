@@ -37,7 +37,7 @@ public class ServiceController {
 
     ) {
 
-        return service.getAll(
+        return service.getActiveServices(
 
                 page,
 
@@ -45,9 +45,8 @@ public class ServiceController {
 
                 search
 
-        );
+        );}
 
-    }
 
     @GetMapping("/{serviceId}/documents")
     public List<RequiredDocument> getDocuments(

@@ -1,6 +1,7 @@
 package com.eservice1.user.service;
 
 import com.eservice1.common.Role;
+import com.eservice1.common.exception.InvalidCredentialsException;
 import com.eservice1.user.dto.LoginRequest;
 import com.eservice1.user.entity.User;
 import com.eservice1.user.repository.UserRepository;
@@ -12,28 +13,36 @@ import com.eservice1.employee.entity.Employee;
 
 import com.eservice1.config.JwtService;
 import com.eservice1.user.dto.AuthResponse;
-
+import org.springframework.security.crypto.password.PasswordEncoder;import com.eservice1.security.service.LoginAttemptService;import com.eservice1.common.exception.AccountLockedException;
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final EmployeeRepository
             employeeRepository;
-
+    private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
-
+    private final LoginAttemptService loginAttemptService;
     public UserService(
             UserRepository userRepository,
             JwtService jwtService,
-            EmployeeRepository employeeRepository) {
+            EmployeeRepository employeeRepository,
+            PasswordEncoder passwordEncoder,
+            LoginAttemptService loginAttemptService) {
 
         this.userRepository = userRepository;
         this.jwtService = jwtService;
-        this.employeeRepository =
-                employeeRepository;
+        this.employeeRepository = employeeRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.loginAttemptService = loginAttemptService;
     }
-
     public User register(User user) {
+
+        user.setPassword(
+                passwordEncoder.encode(
+                        user.getPassword()
+                )
+        );
 
         return userRepository.save(user);
     }
@@ -44,19 +53,39 @@ public class UserService {
                 userRepository.findByPhoneNumber(
                         request.getPhoneNumber()
                 ).orElseThrow();
-        System.out.println("LOGIN USER = " + user.getName());
-        System.out.println("ROLE = " + user.getRole());
-        System.out.println("DB PASSWORD = " + user.getPassword());
-        System.out.println("REQUEST PASSWORD = " + request.getPassword());
 
-        if (!user.getPassword()
-                .equals(request.getPassword())) {
+        if (loginAttemptService.isLocked(
+                request.getPhoneNumber())) {
 
-            throw new RuntimeException(
-                    "Invalid Password"
+            long minutes = loginAttemptService
+                    .getRemainingLockMinutes(request.getPhoneNumber());
+
+            throw new AccountLockedException(
+                    "Account is temporarily locked. Try again in "
+                            + minutes + " minute(s)."
+            );
+
+        }
+        // System.out.println("LOGIN USER = " + user.getName());
+        //System.out.println("ROLE = " + user.getRole());
+        //System.out.println("DB PASSWORD = " + user.getPassword());
+        //System.out.println("REQUEST PASSWORD = " + request.getPassword());
+        if (!passwordEncoder.matches(
+                request.getPassword(),
+                user.getPassword()
+        )) {
+
+            loginAttemptService.loginFailed(
+                    request.getPhoneNumber()
+            );
+
+            throw new InvalidCredentialsException(
+                    "Invalid phone number or password."
             );
         }
-
+        loginAttemptService.loginSucceeded(
+                request.getPhoneNumber()
+        );
         String token =
                 jwtService.generateToken(
                         user.getPhoneNumber()
@@ -90,8 +119,11 @@ public class UserService {
 
         owner.setName("Owner");
         owner.setPhoneNumber("9999999999");
-        owner.setPassword("owner123");
-        owner.setRole(Role.OWNER);
+        owner.setPassword(
+                passwordEncoder.encode(
+                        "owner123"
+                )
+        );        owner.setRole(Role.OWNER);
 
         return userRepository.save(owner);
     }

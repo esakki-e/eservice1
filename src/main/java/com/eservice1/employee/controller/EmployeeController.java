@@ -14,7 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
+import java.io.IOException;import com.eservice1.employee.dto.CreateEmployeeRequest;
 @RestController
 @RequestMapping("/employees")
 public class EmployeeController {
@@ -39,9 +39,9 @@ public class EmployeeController {
 
     @PostMapping
     public Employee createEmployee(
-            @RequestBody Employee employee) {
+            @RequestBody CreateEmployeeRequest request) {
 
-        return employeeService.save(employee);
+        return employeeService.createEmployee(request);
     }
     @GetMapping
     public List<EmployeeDTO> getEmployees() {

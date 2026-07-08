@@ -72,6 +72,13 @@ public class AdminServiceController {
 
         return service.save(serviceToUpdate);
     }
+    @GetMapping("/{id}")
+    public PortalService getService(
+            @PathVariable Long id) {
+
+        return service.getById(id);
+
+    }
 }
 
 

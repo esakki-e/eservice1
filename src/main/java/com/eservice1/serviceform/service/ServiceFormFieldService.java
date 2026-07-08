@@ -1,11 +1,14 @@
 package com.eservice1.serviceform.service;
 
+import com.eservice1.common.exception.DuplicateResourceException;
+import com.eservice1.common.exception.InvalidOperationException;
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.serviceform.entity.ServiceFormField;
 import com.eservice1.serviceform.repository.ServiceFormFieldRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ServiceFormFieldService {
 
@@ -20,6 +23,21 @@ public class ServiceFormFieldService {
     public ServiceFormField save(
             ServiceFormField field
     ) {
+        if (field.getFieldName() == null ||
+                field.getFieldName().isBlank()) {
+
+            throw new InvalidOperationException(
+                    "Field name cannot be empty."
+            );
+        }
+        if (repository.existsByServiceIdAndFieldName(
+                field.getServiceId(),
+                field.getFieldName())) {
+
+            throw new DuplicateResourceException(
+                    "Field already exists."
+            );
+        }
         return repository.save(field);
     }
 
@@ -38,13 +56,25 @@ public class ServiceFormFieldService {
                 .findByServiceIdAndActiveTrue(
                         serviceId
                 );
-    }public ServiceFormField update(
+    }
+    @Transactional
+    public ServiceFormField update(
             Long id,
             ServiceFormField updated) {
+        if (updated.getFieldName() == null ||
+                updated.getFieldName().isBlank()) {
 
+            throw new InvalidOperationException(
+                    "Field name cannot be empty."
+            );
+        }
         ServiceFormField field =
                 repository.findById(id)
-                        .orElseThrow();
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Service form field not found."
+                                )
+                        );
 
         field.setFieldName(
                 updated.getFieldName()
@@ -59,8 +89,15 @@ public class ServiceFormFieldService {
         );
 
         return repository.save(field);
-    }public void deleteField(Long id) {
+    }@Transactional
+    public void deleteField(Long id) {
 
-        repository.deleteById(id);
-    }
+        ServiceFormField field = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Service form field not found."
+                        )
+                );
+
+        repository.delete(field);    }
 }

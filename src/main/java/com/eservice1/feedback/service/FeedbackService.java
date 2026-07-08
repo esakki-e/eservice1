@@ -1,5 +1,8 @@
 package com.eservice1.feedback.service;
 
+import com.eservice1.common.exception.DuplicateResourceException;
+import com.eservice1.common.exception.InvalidOperationException;
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.feedback.dto.FeedbackDTO;
 import com.eservice1.feedback.entity.Feedback;
 import com.eservice1.feedback.repository.FeedbackRepository;
@@ -30,11 +33,14 @@ public class FeedbackService {
 
         CustomerRequest request =
                 requestRepository.findById(dto.getRequestId())
-                        .orElseThrow();
-
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Request not found."
+                                )
+                        );
         if (feedbackRepository.existsByRequestId(request.getId())) {
 
-            throw new RuntimeException(
+            throw new DuplicateResourceException(
                     "Feedback already submitted."
             );
 
@@ -42,7 +48,7 @@ public class FeedbackService {
 
         if (request.getStatus() != RequestStatus.COMPLETED) {
 
-            throw new RuntimeException(
+            throw new InvalidOperationException(
                     "Only completed requests can be rated."
             );
 

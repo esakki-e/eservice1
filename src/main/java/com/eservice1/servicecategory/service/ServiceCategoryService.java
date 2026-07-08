@@ -1,11 +1,13 @@
 package com.eservice1.servicecategory.service;
 
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.repository.PortalServiceRepository;
 import com.eservice1.servicecategory.entity.ServiceCategory;
 import com.eservice1.servicecategory.repository.ServiceCategoryRepository;
 import org.springframework.stereotype.Service;
-
+import com.eservice1.common.exception.ResourceNotFoundException;
+import com.eservice1.common.exception.DuplicateResourceException;
 import java.util.List;
 
 @Service
@@ -29,23 +31,24 @@ public class ServiceCategoryService {
 
     }
 
-    public ServiceCategory getCategory(
-            Long id
-    ) {
+    public ServiceCategory getCategory(Long id) {
 
         return categoryRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Service category not found."
+                        )
+                );
 
     }
 
     public ServiceCategory createCategory(
             ServiceCategory category
     ) {
-
         if (categoryRepository.existsByName(category.getName())) {
 
-            throw new RuntimeException(
-                    "Category already exists"
+            throw new DuplicateResourceException(
+                    "Category already exists."
             );
 
         }
@@ -61,7 +64,11 @@ public class ServiceCategoryService {
 
         ServiceCategory category =
                 categoryRepository.findById(id)
-                        .orElseThrow();
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Service category not found."
+                                )
+                        );
 
         category.setName(
                 request.getName()
@@ -78,14 +85,14 @@ public class ServiceCategoryService {
         return categoryRepository.save(category);
 
     }
+    public void deleteCategory(Long id) {
 
-    public void deleteCategory(
-            Long id
-    ) {
+        ServiceCategory category = getCategory(id);
 
-        categoryRepository.deleteById(id);
+        categoryRepository.delete(category);
 
-    }public List<ServiceCategory> getActiveCategories() {
+    }
+    public List<ServiceCategory> getActiveCategories() {
 
         return categoryRepository.findByActiveTrue();
 

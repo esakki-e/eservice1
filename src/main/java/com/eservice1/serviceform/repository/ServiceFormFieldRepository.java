@@ -15,4 +15,8 @@ public interface ServiceFormFieldRepository
     findByServiceIdAndActiveTrue(
             Long serviceId
     );
+    boolean existsByServiceIdAndFieldName(
+            Long serviceId,
+            String fieldName
+    );
 }

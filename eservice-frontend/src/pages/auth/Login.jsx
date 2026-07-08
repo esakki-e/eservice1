@@ -58,9 +58,16 @@ function Login() {
 
             }
 
-        } catch (error) {
+        }catch (error) {
 
-            alert("Login Failed");
+            alert(
+
+                error.response?.data?.message ||
+
+                "Login failed"
+
+            );
+
         }
     };
 

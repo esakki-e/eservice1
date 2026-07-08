@@ -11,7 +11,10 @@ public interface RequiredDocumentRepository
         extends JpaRepository<RequiredDocument, Long> {
 
     List<RequiredDocument> findByServiceId(Long serviceId);
-
+    boolean existsByService_IdAndDocumentName(
+            Long serviceId,
+            String documentName
+    );
     @Transactional
     @Modifying
     @org.springframework.data.jpa.repository.Query(

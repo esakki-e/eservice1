@@ -658,7 +658,96 @@ CARD ANIMATION
     animation:applicationFade .45s ease;
 
 }
+/* Upload buttons */
 
+.upload-actions{
+
+    display:flex;
+
+    gap:12px;
+
+    margin-top:12px;
+
+}
+
+.upload-btn,
+.capture-btn{
+
+    display:inline-flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:10px 18px;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+    color:#fff;
+
+    font-weight:600;
+
+    transition:.25s;
+
+    user-select:none;
+
+}
+
+.upload-btn{
+
+    background:#4F46E5;
+
+}
+
+.upload-btn:hover{
+
+    background:#4338CA;
+
+}
+
+.capture-btn{
+
+    background:#16A34A;
+
+}
+
+.capture-btn:hover{
+
+    background:#15803D;
+
+}
+.selected-file{
+
+    margin-top:10px;
+
+    color:#16A34A;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    word-break:break-word;
+
+}
+.document-preview{
+
+    display:block;
+
+    margin-top:12px;
+
+    width:180px;
+
+    max-width:100%;
+
+    border-radius:12px;
+
+    border:1px solid #ddd;
+
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+
+}
 @keyframes applicationFade{
 
     from{

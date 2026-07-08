@@ -7,12 +7,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface PortalServiceRepository extends JpaRepository<PortalService, Long> {
     @Query("""
 SELECT s
 FROM PortalService s
-WHERE s.active=true
-AND
+WHERE
 (
     :search IS NULL
 
@@ -34,5 +35,21 @@ AND
 
             Pageable pageable
 
+    );
+    @Query("""
+SELECT s
+FROM PortalService s
+WHERE s.active = true
+AND (
+    :search IS NULL
+    OR LOWER(s.serviceName)
+       LIKE LOWER(CONCAT('%', :search, '%'))
+    OR LOWER(s.description)
+       LIKE LOWER(CONCAT('%', :search, '%'))
+)
+""")
+    Page<PortalService> searchActiveServices(
+            @Param("search") String search,
+            Pageable pageable
     );
 }

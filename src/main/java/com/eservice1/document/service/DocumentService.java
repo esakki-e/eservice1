@@ -7,7 +7,8 @@ import com.eservice1.service.repository.PortalServiceRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+import com.eservice1.common.exception.InvalidOperationException;
+import com.eservice1.common.exception.ResourceNotFoundException;
 @Service
 public class DocumentService {
 
@@ -28,14 +29,47 @@ public class DocumentService {
 
         PortalService service =
                 serviceRepository.findById(serviceId)
-                        .orElseThrow();
+                        .orElseThrow(() ->
+                                new ResourceNotFoundException(
+                                        "Service not found."
+                                )
+                        );
+        if (!Boolean.TRUE.equals(service.getActive())) {
 
+            throw new InvalidOperationException(
+                    "Cannot add documents to an inactive service."
+            );
+
+        }
+        if (document.getDocumentName() == null ||
+
+                document.getDocumentName().isBlank()) {
+
+            throw new InvalidOperationException(
+                    "Document name cannot be empty."
+            );
+
+        }
+        if (documentRepository.existsByService_IdAndDocumentName(
+
+                serviceId,
+
+                document.getDocumentName()
+
+        )) {
+
+            throw new InvalidOperationException(
+                    "Document already exists."
+            );
+
+        }
         document.setService(service);
 
         return documentRepository.save(document);
     }
 
     public List<RequiredDocument> getDocuments(Long serviceId) {
+
         return documentRepository.findByServiceId(serviceId);
     }
 }
