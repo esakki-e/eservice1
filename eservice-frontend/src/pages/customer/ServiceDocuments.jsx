@@ -87,8 +87,13 @@ function ServiceDocuments() {
                 formResponses
             );
            // console.log(response.data);
-            const uploadFile = async (file) => {
+            const uploadFile = async (
 
+                file,
+
+                documentName
+
+            ) => {
                 if (!file) return;
 
                 const formData = new FormData();
@@ -101,7 +106,10 @@ function ServiceDocuments() {
                 formData.append(
                     "requestId",
                     requestId
-                );const token = localStorage.getItem("token");
+                );
+                formData.append("documentName", documentName);
+
+                const token = localStorage.getItem("token");
 
                 await axios.post(
                     (`${API_URL}/documents/upload`),
@@ -117,14 +125,21 @@ function ServiceDocuments() {
                 );
             };
 
-            for (
-                const file
-                of Object.values(
-                uploadedFiles
-            )
-                ) {
+            for (const document of requiredDocuments) {
 
-                await uploadFile(file);
+                const file = uploadedFiles[document.documentName];
+
+                if (file) {
+
+                    await uploadFile(
+
+                        file,
+
+                        document.documentName
+
+                    );
+
+                }
 
             }
 

@@ -11,18 +11,15 @@ import java.util.List;
 public class DashboardController {
 
     private final DashboardService dashboardService;
-    private final CustomerRequestRepository
-            requestRepository;
 
     public DashboardController(
-            DashboardService dashboardService,
-            CustomerRequestRepository requestRepository) {
+            DashboardService dashboardService
+             ) {
 
         this.dashboardService =
                 dashboardService;
 
-        this.requestRepository =
-                requestRepository;
+
     }
 
     @GetMapping("/dashboard")
@@ -31,31 +28,10 @@ public class DashboardController {
         return dashboardService.getDashboard();
     }
 
-    @GetMapping(
-            "/dashboard/service-analytics"
-    )
-    public List<ServiceAnalyticsDTO>
-    getServiceAnalytics() {
+    @GetMapping("/dashboard/service-analytics")
+    public List<ServiceAnalyticsDTO> getServiceAnalytics() {
 
-        return requestRepository
-                .getServiceRequestCounts()
-                .stream()
-                .map(row -> {
+        return dashboardService.getServiceAnalytics();
 
-                    ServiceAnalyticsDTO dto =
-                            new ServiceAnalyticsDTO();
-
-                    dto.setServiceName(
-                            (String) row[0]
-                    );
-
-                    dto.setRequestCount(
-                            (Long) row[1]
-                    );
-
-                    return dto;
-
-                })
-                .toList();
     }
 }

@@ -15,12 +15,17 @@ import com.eservice1.common.exception.ResourceNotFoundException;
 
 import java.util.Set;
 import java.util.UUID;
+import org.springframework.beans.factory.annotation.Value;
 @Service
 public class RealFileUploadService {
 
     private final UploadedDocumentRepository documentRepository;
     private final CustomerRequestRepository requestRepository;
+    @Value("${file.upload-dir}")
+    private String uploadDir;
 
+    @Value("${file.max-size}")
+    private long maxFileSize;
     public RealFileUploadService(
             UploadedDocumentRepository documentRepository,
             CustomerRequestRepository requestRepository) {
@@ -32,7 +37,8 @@ public class RealFileUploadService {
     public UploadedDocument uploadFile(
             Long requestId,
             String documentName,
-            MultipartFile file) throws IOException {
+            MultipartFile file,
+            boolean isResult)throws IOException {
 
         CustomerRequest request =
                 requestRepository.findById(requestId)
@@ -55,8 +61,7 @@ public class RealFileUploadService {
             );
 
         }
-        if (file.getSize() > 5 * 1024 * 1024) {
-
+        if (file.getSize() > maxFileSize) {
             throw new InvalidOperationException(
                     "Maximum file size is 5 MB."
             );
@@ -88,13 +93,12 @@ public class RealFileUploadService {
             );
 
         }
-        String uploadDir = System.getProperty("user.dir")
+        String uploadPath = System.getProperty("user.dir")
                 + File.separator
-                + "uploads"
+                + uploadDir
                 + File.separator;
 
-        File directory = new File(uploadDir);
-
+        File directory = new File(uploadPath);
         if (!directory.exists() && !directory.mkdirs()) {
 
             throw new IOException(
@@ -119,8 +123,7 @@ public class RealFileUploadService {
 
         String fileName =
                 UUID.randomUUID() + extension;
-        String filePath = uploadDir + fileName;
-
+        String filePath = uploadPath + fileName;
         //System.out.println("Saving to: " + filePath);
 
         file.transferTo(new File(filePath));
@@ -132,7 +135,7 @@ public class RealFileUploadService {
         document.setFileName(fileName);
         document.setFilePath(filePath);
         document.setRequest(request);
-
+        document.setResultDocument(isResult);
         return documentRepository.save(document);
     }
 }

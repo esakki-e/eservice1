@@ -3,8 +3,9 @@ package com.eservice1.user.controller;
 import com.eservice1.user.dto.LoginRequest;
 import com.eservice1.user.entity.User;
 import com.eservice1.user.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
+import com.eservice1.user.dto.RegisterRequest;
 import com.eservice1.user.dto.AuthResponse;
 
 @RestController
@@ -21,14 +22,23 @@ public class AuthController {
 
     @PostMapping("/register")
     public User register(
-            @RequestBody User user) {
 
-        return userService.register(user);
+            @Valid
+            @RequestBody RegisterRequest request
+
+    ) {
+
+        return userService.register(request);
+
     }
 
     @PostMapping("/login")
     public AuthResponse login(
-            @RequestBody LoginRequest request) {
+
+            @Valid
+            @RequestBody LoginRequest request
+
+    ) {
 
         return userService.login(request);
     }

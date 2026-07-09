@@ -1,6 +1,7 @@
 package com.eservice1.submission.controller;
 
 import com.eservice1.common.dto.PageResponseDTO;
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.submission.dto.CustomerRequestDTO;
 import com.eservice1.submission.dto.CustomerRequestViewDTO;
 import com.eservice1.submission.entity.CustomerRequest;
@@ -8,7 +9,7 @@ import com.eservice1.submission.service.CustomerRequestService;
 import org.springframework.web.bind.annotation.*;
 
 import com.eservice1.submission.repository.CustomerRequestRepository;
-import com.eservice1.submission.entity.PaymentStatus;
+import com.eservice1.submission.entity.PaymentStatus;import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/requests")
 public class CustomerRequestController {
@@ -27,6 +28,7 @@ public class CustomerRequestController {
 
     @PostMapping
     public CustomerRequest createRequest(
+            @Valid
             @RequestBody CustomerRequestDTO dto) {
 
         return requestService.createRequest(dto);
@@ -57,9 +59,14 @@ public class CustomerRequestController {
     public CustomerRequest getRequest(
             @PathVariable Long id
     ) {
+
         return requestRepository
                 .findById(id)
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Request not found."
+                        )
+                );
     }
     @PostMapping("/{id}/payment")
     public CustomerRequest updatePayment(

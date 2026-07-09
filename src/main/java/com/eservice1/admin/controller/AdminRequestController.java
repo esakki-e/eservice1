@@ -1,5 +1,6 @@
 package com.eservice1.admin.controller;
 
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.submission.entity.CustomerRequest;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.web.bind.annotation.*;
@@ -78,7 +79,12 @@ public class AdminRequestController {
 
         return requestRepository
                 .findById(id)
-                .orElseThrow();
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Request not found."
+                        )
+                );
+
     }
 
     @GetMapping("/phone/{phoneNumber}")
@@ -93,9 +99,5 @@ public class AdminRequestController {
                 );
     }
 
-    @GetMapping("/test")
-    public String test() {
 
-        return "WORKING";
-    }
 }

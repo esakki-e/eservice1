@@ -1,21 +1,46 @@
 package com.eservice1.employee.dto;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 import java.time.LocalDate;
 
 public class CreateEmployeeRequest {
 
+    @NotBlank(message = "Employee name is required.")
+    @Size(max = 100, message = "Employee name cannot exceed 100 characters.")
     private String name;
 
+    @NotBlank(message = "Phone number is required.")
+    @Pattern(
+            regexp = "^[6-9]\\d{9}$",
+            message = "Enter a valid 10-digit phone number."
+    )
     private String phoneNumber;
 
+    @NotBlank(message = "Password is required.")
+    @Size(
+            min = 6,
+            max = 100,
+            message = "Password must be between 6 and 100 characters."
+    )
     private String password;
 
+    @NotBlank(message = "Email is required.")
+    @Email(message = "Enter a valid email address.")
     private String email;
 
+    @NotBlank(message = "Gender is required.")
     private String gender;
 
+    @NotBlank(message = "Address is required.")
+    @Size(max = 255, message = "Address cannot exceed 255 characters.")
     private String address;
 
+    @Past(message = "Date of birth must be in the past.")
     private LocalDate dob;
 
     public CreateEmployeeRequest() {

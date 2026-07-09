@@ -4,7 +4,7 @@ import com.eservice1.service.entity.PortalService;
 import com.eservice1.service.service.PortalServiceService;
 import org.springframework.web.bind.annotation.*;
 import com.eservice1.service.dto.CreateServiceRequest;
-
+import jakarta.validation.Valid;
 import java.util.List;
 import com.eservice1.common.dto.PageResponseDTO;
 @RestController
@@ -16,14 +16,17 @@ public class AdminServiceController {
     public AdminServiceController(PortalServiceService service) {
         this.service = service;
     }
-
     @PostMapping
     public PortalService createService(
-            @RequestBody CreateServiceRequest request) {
 
-        return service.createService(
-                request
-        );
+            @Valid
+            @RequestBody
+            CreateServiceRequest request
+
+    ) {
+
+        return service.createService(request);
+
     }
 
 
@@ -46,31 +49,37 @@ public class AdminServiceController {
     }
     @DeleteMapping("/{id}")
     public void deleteService(@PathVariable Long id) {
-        System.out.println("DELETE CONTROLLER HIT");
+       // System.out.println("DELETE CONTROLLER HIT");
 
         service.delete(id);
     }
     @PutMapping("/{id}")
     public PortalService updateService(
+
             @PathVariable Long id,
-            @RequestBody PortalService updatedService) {
+
+            @Valid
+            @RequestBody CreateServiceRequest request
+
+    ) {
 
         PortalService serviceToUpdate =
                 service.getById(id);
 
         serviceToUpdate.setServiceName(
-                updatedService.getServiceName()
+                request.getServiceName()
         );
 
         serviceToUpdate.setDescription(
-                updatedService.getDescription()
+                request.getDescription()
         );
 
         serviceToUpdate.setActive(
-                updatedService.getActive()
+                request.getActive()
         );
 
         return service.save(serviceToUpdate);
+
     }
     @GetMapping("/{id}")
     public PortalService getService(

@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.time.LocalDateTime;
-
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import java.util.HashMap;
+import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -94,20 +96,99 @@ public class GlobalExceptionHandler {
 
     }
     @ExceptionHandler(DuplicateResourceException.class)
-    public ResponseEntity<String> handleDuplicateResource(
-            DuplicateResourceException ex) {
+    public ResponseEntity<ErrorResponse> handleDuplicateResource(
+
+            DuplicateResourceException ex
+
+    ) {
+
+        ErrorResponse error = new ErrorResponse(
+
+                LocalDateTime.now(),
+
+                HttpStatus.CONFLICT.value(),
+
+                "Conflict",
+
+                ex.getMessage()
+
+        );
 
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
-                .body(ex.getMessage());
+                .body(error);
+
     }
     @ExceptionHandler(InvalidOperationException.class)
-    public ResponseEntity<String> handleInvalidOperation(
-            InvalidOperationException ex) {
+    public ResponseEntity<ErrorResponse> handleInvalidOperation(
+
+            InvalidOperationException ex
+
+    ) {
+
+        ErrorResponse error = new ErrorResponse(
+
+                LocalDateTime.now(),
+
+                HttpStatus.BAD_REQUEST.value(),
+
+                "Bad Request",
+
+                ex.getMessage()
+
+        );
 
         return ResponseEntity
                 .badRequest()
-                .body(ex.getMessage());
+                .body(error);
+
+    }
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidation(
+
+            MethodArgumentNotValidException ex
+
+    ) {
+
+        Map<String, String> errors = new HashMap<>();
+
+        ex.getBindingResult()
+                .getFieldErrors()
+                .forEach(error ->
+                        errors.put(
+                                error.getField(),
+                                error.getDefaultMessage()
+                        )
+                );
+
+        return ResponseEntity
+                .badRequest()
+                .body(errors);
+
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleException(
+
+            Exception ex
+
+    ) {
+
+        ErrorResponse error = new ErrorResponse(
+
+                LocalDateTime.now(),
+
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+
+                "Internal Server Error",
+
+                "Something went wrong. Please try again later."
+
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(error);
+
     }
 
 }

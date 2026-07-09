@@ -1,6 +1,7 @@
 package com.eservice1.dashboard.service;
 
 import com.eservice1.dashboard.dto.DashboardResponse;
+import com.eservice1.dashboard.dto.ServiceAnalyticsDTO;
 import com.eservice1.employee.entity.Task;
 import com.eservice1.employee.entity.TaskStatus;
 import com.eservice1.employee.repository.EmployeeRepository;
@@ -10,6 +11,7 @@ import com.eservice1.submission.repository.CustomerRequestRepository;
 import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class DashboardService {
@@ -49,20 +51,14 @@ public class DashboardService {
         );
 
         long pending =
-                taskRepository.findAll()
-                        .stream()
-                        .filter(task ->
-                                task.getStatus()
-                                        != TaskStatus.COMPLETED)
-                        .count();
+                taskRepository.countByStatusNot(
+                        TaskStatus.COMPLETED
+                );
 
         long completed =
-                taskRepository.findAll()
-                        .stream()
-                        .filter(task ->
-                                task.getStatus()
-                                        == TaskStatus.COMPLETED)
-                        .count();
+                taskRepository.countByStatus(
+                        TaskStatus.COMPLETED
+                );
 
         response.setPendingTasks(pending);
         response.setCompletedTasks(completed);
@@ -84,15 +80,7 @@ public class DashboardService {
                                 end
                         )
         );
-        System.out.println(
-                "TODAY REQUESTS = "
-                        +
-                        requestRepository
-                                .countByCreatedAtBetween(
-                                        start,
-                                        end
-                                )
-        );
+       // System.out.println("TODAY REQUESTS = " + requestRepository.countByCreatedAtBetween(start, end));
         response.setPaidRequests(
 
                 requestRepository
@@ -122,5 +110,29 @@ public class DashboardService {
 
         );
         return response;
+    }
+    public List<ServiceAnalyticsDTO> getServiceAnalytics() {
+
+        return requestRepository
+                .getServiceRequestCounts()
+                .stream()
+                .map(row -> {
+
+                    ServiceAnalyticsDTO dto =
+                            new ServiceAnalyticsDTO();
+
+                    dto.setServiceName(
+                            (String) row[0]
+                    );
+
+                    dto.setRequestCount(
+                            (Long) row[1]
+                    );
+
+                    return dto;
+
+                })
+                .toList();
+
     }
 }

@@ -13,7 +13,7 @@ import com.eservice1.employee.entity.Employee;
 
 import com.eservice1.config.JwtService;
 import com.eservice1.user.dto.AuthResponse;
-import org.springframework.security.crypto.password.PasswordEncoder;import com.eservice1.security.service.LoginAttemptService;import com.eservice1.common.exception.AccountLockedException;
+import org.springframework.security.crypto.password.PasswordEncoder;import com.eservice1.security.service.LoginAttemptService;import com.eservice1.common.exception.AccountLockedException;import com.eservice1.user.dto.RegisterRequest;
 @Service
 public class UserService {
 
@@ -36,17 +36,31 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.loginAttemptService = loginAttemptService;
     }
-    public User register(User user) {
+    public User register(RegisterRequest request) {
+
+        User user = new User();
+
+        user.setName(
+                request.getName()
+        );
+
+        user.setPhoneNumber(
+                request.getPhoneNumber()
+        );
 
         user.setPassword(
                 passwordEncoder.encode(
-                        user.getPassword()
+                        request.getPassword()
                 )
         );
 
-        return userRepository.save(user);
-    }
+        user.setRole(
+                request.getRole()
+        );
 
+        return userRepository.save(user);
+
+    }
     public AuthResponse login(LoginRequest request) {
 
         User user =

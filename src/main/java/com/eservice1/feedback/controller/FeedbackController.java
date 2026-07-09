@@ -4,7 +4,7 @@ import com.eservice1.feedback.dto.FeedbackDTO;
 import com.eservice1.feedback.entity.Feedback;
 import com.eservice1.feedback.service.FeedbackService;
 import org.springframework.web.bind.annotation.*;
-
+import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/feedback")
 public class FeedbackController {
@@ -19,8 +19,11 @@ public class FeedbackController {
 
     @PostMapping
     public Feedback submitFeedback(
+
+            @Valid
             @RequestBody FeedbackDTO dto
-    ) {
+
+    ){
 
         return service.submitFeedback(
                 dto

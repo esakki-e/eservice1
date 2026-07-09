@@ -34,6 +34,9 @@ public interface TaskRepository
     List<Task> findByEmployeeIdOrderByIdDesc(
             Long employeeId
     );
+    long countByStatus(TaskStatus status);
+
+    long countByStatusNot(TaskStatus status);
     @Query("""
 SELECT t
 FROM Task t

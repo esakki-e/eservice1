@@ -119,9 +119,9 @@ public class EmployeeTaskController {
             @PathVariable Long requestId,
             @PathVariable Long employeeId) {
 
-        System.out.println("ASSIGN CONTROLLER HIT");
-        System.out.println("REQUEST ID = " + requestId);
-        System.out.println("EMPLOYEE ID = " + employeeId);
+        //System.out.println("ASSIGN CONTROLLER HIT");
+        //System.out.println("REQUEST ID = " + requestId);
+        //System.out.println("EMPLOYEE ID = " + employeeId);
 
         return taskService.assignEmployee(
                 requestId,
@@ -142,8 +142,7 @@ public class EmployeeTaskController {
                 file
         );
 
-        return "SUCCESS";
-    }
+        return "Result uploaded successfully.";    }
     @GetMapping("/dashboard/stats")
     public EmployeeDashboardStatsDTO getDashboardStats(
             Authentication authentication

@@ -27,10 +27,7 @@ public class CustomerProfileController {
     public CustomerProfile getProfile(
             @PathVariable String phoneNumber) {
 
-        System.out.println(
-                "CONTROLLER HIT: " +
-                        phoneNumber
-        );
+        //System.out.println("CONTROLLER HIT: " + phoneNumber);
 
         return service.getByPhone(phoneNumber);
     }

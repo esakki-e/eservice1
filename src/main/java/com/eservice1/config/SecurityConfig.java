@@ -33,7 +33,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(
             HttpSecurity http)
             throws Exception {
-        System.out.println("SECURITY CONFIG LOADED");
+        //System.out.println("SECURITY CONFIG LOADED");
         http
                 .cors(Customizer.withDefaults())
                 .csrf(csrf -> csrf.disable())
@@ -47,8 +47,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**")
                         .permitAll()
 
-                        .requestMatchers("/auth/**")
-                        .permitAll()
+                        .requestMatchers(
+                                "/auth/login",
+                                "/auth/owner"
+                        ).permitAll()
+
+                        .requestMatchers("/auth/register")
+                        .hasAuthority("OWNER")
 
                         .requestMatchers(
                                 "/admin/requests/test"
@@ -97,8 +102,10 @@ public class SecurityConfig {
                         .permitAll()
 
                         .requestMatchers("/employees/**")
-                        .permitAll()
-
+                        .hasAnyAuthority(
+                                "OWNER",
+                                "EMPLOYEE"
+                        )
 
                         .requestMatchers("/employee/**")
                         .hasAnyAuthority(
@@ -134,13 +141,10 @@ public class SecurityConfig {
                         )
                         .permitAll()
 
-                        .requestMatchers(
-                                "/documents/upload"
-                        )
+                        .requestMatchers("/documents/upload")
+                        .authenticated()
 
-                        .permitAll()
-                        .requestMatchers("/requests/**")
-                        .permitAll()
+
                         .requestMatchers("/feedback/**")
                         .permitAll()
                         .anyRequest()

@@ -3,6 +3,7 @@ package com.eservice1.serviceform.controller;
 import com.eservice1.serviceform.dto.ServiceFormResponseDTO;
 import com.eservice1.serviceform.entity.ServiceFormResponse;
 import com.eservice1.serviceform.service.ServiceFormResponseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,9 +24,12 @@ public class ServiceFormResponseController {
 
     @PostMapping
     public void save(
+
             @RequestBody
-            List<ServiceFormResponseDTO> responses
+            List<@Valid ServiceFormResponseDTO> responses
+
     ) {
+
         service.saveResponses(
                 responses
         );

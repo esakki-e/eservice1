@@ -2,6 +2,7 @@ package com.eservice1.admin.controller;
 
 import com.eservice1.document.entity.RequiredDocument;
 import com.eservice1.document.service.DocumentService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,8 +19,13 @@ public class AdminDocumentController {
 
     @PostMapping("/{serviceId}/documents")
     public RequiredDocument addDocument(
+
             @PathVariable Long serviceId,
-            @RequestBody RequiredDocument document) {
+
+            @Valid
+            @RequestBody RequiredDocument document
+
+    ) {
 
         return documentService.addDocument(serviceId, document);
     }

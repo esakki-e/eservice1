@@ -3,6 +3,7 @@ package com.eservice1.customer.controller;
 import com.eservice1.customer.dto.CustomerFormResponseDTO;
 import com.eservice1.customer.entity.CustomerFormResponse;
 import com.eservice1.customer.service.CustomerFormResponseService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 import java.util.HashMap;
@@ -23,9 +24,14 @@ public class CustomerFormResponseController {
 
     @PostMapping
     public CustomerFormResponse save(
-            @RequestBody CustomerFormResponseDTO dto) {
+
+            @Valid
+            @RequestBody CustomerFormResponseDTO dto
+
+    ) {
 
         return service.save(dto);
+
     }
 
     @GetMapping("/{phoneNumber}")

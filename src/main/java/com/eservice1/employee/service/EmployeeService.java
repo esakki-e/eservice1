@@ -419,7 +419,7 @@ public class EmployeeService {
     getEmployeePerformance(
             Long employeeId
     ) {
-        System.out.println("Employee Performance API called");
+        //System.out.println("Employee Performance API called");
 
 
         Employee employee =

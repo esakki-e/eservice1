@@ -40,21 +40,13 @@ public class JwtFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        System.out.println("FILTER HIT");
+        //System.out.println("FILTER HIT");
 
-        System.out.println(
-                "REQUEST URI = " +
-                        request.getRequestURI()
-        );
-        System.out.println(
-                "AUTH BEFORE  = " +
-                        SecurityContextHolder
-                                .getContext()
-                                .getAuthentication()
-        );
+        //System.out.println("REQUEST URI = " +request.getRequestURI());
+       // System.out.println("AUTH BEFORE  = " + SecurityContextHolder.getContext().getAuthentication());
         String header =
                 request.getHeader("Authorization");
-        System.out.println("HEADER = " + header);
+        //System.out.println("HEADER = " + header);
 
         if (header != null
                 && header.startsWith("Bearer ")) {
@@ -63,8 +55,8 @@ public class JwtFilter extends OncePerRequestFilter {
                     header.substring(7);
 
             if (jwtService.isValid(token)) {
-                System.out.println("JWT VALID");
-                System.out.println(jwtService.isValid(token));
+             //   System.out.println("JWT VALID");
+               // System.out.println(jwtService.isValid(token));
                 String phoneNumber =
                         jwtService.extractPhoneNumber(token);
 
@@ -73,7 +65,7 @@ public class JwtFilter extends OncePerRequestFilter {
                                 phoneNumber
                         ).orElseThrow();
 
-                System.out.println("ROLE = " + user.getRole());
+              //  System.out.println("ROLE = " + user.getRole());
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
@@ -89,12 +81,7 @@ public class JwtFilter extends OncePerRequestFilter {
                         .setAuthentication(auth);
             }
         }
-        System.out.println(
-                "AUTH AFTER = " +
-                        SecurityContextHolder
-                                .getContext()
-                                .getAuthentication()
-        );
+        //System.out.println("AUTH AFTER = " + SecurityContextHolder.getContext().getAuthentication());
         filterChain.doFilter(
                 request,
                 response

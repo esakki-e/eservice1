@@ -1,9 +1,11 @@
 package com.eservice1.document.controller;
 
+import com.eservice1.common.exception.ResourceNotFoundException;
 import com.eservice1.submission.entity.CustomerRequest;
 import com.eservice1.submission.entity.UploadedDocument;
 import com.eservice1.submission.repository.CustomerRequestRepository;
 import com.eservice1.submission.repository.UploadedDocumentRepository;
+import com.eservice1.submission.service.RealFileUploadService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,100 +23,46 @@ import java.nio.file.Paths;
 @RequestMapping("/documents")
 public class DocumentController {
 
-    private final UploadedDocumentRepository
-            documentRepository;
+    private final RealFileUploadService uploadService;
 
-    private final CustomerRequestRepository
-            requestRepository;
+    private final UploadedDocumentRepository documentRepository;
 
     public DocumentController(
+
             UploadedDocumentRepository documentRepository,
-            CustomerRequestRepository requestRepository) {
 
-        this.documentRepository =
-                documentRepository;
+            RealFileUploadService uploadService
 
-        this.requestRepository =
-                requestRepository;
+    ) {
+
+        this.documentRepository = documentRepository;
+
+        this.uploadService = uploadService;
+
     }
-
     @PostMapping("/upload")
-    public String uploadFile(
+    public UploadedDocument uploadFile(
 
-            @RequestParam("file")
-            MultipartFile file,
+            @RequestParam Long requestId,
 
-            @RequestParam("requestId")
-            Long requestId,
+            @RequestParam MultipartFile file,
 
-            @RequestParam(
-                    value = "isResult",
-                    defaultValue = "false"
-            )
-            Boolean isResult
+            @RequestParam(defaultValue = "false")
+            boolean isResult
 
-    )
-            throws IOException {
+    ) throws IOException {
 
-        System.out.println(
-                "FILE RECEIVED = "
-                        + file.getOriginalFilename()
-        );
+        return uploadService.uploadFile(
 
-        String uploadDir =
-                System.getProperty("user.dir")
-                        + File.separator
-                        + "uploads"
-                        + File.separator;
+                requestId,
 
-        File dir = new File(uploadDir);
+                file.getOriginalFilename(),
 
-        if (!dir.exists()) {
-            dir.mkdirs();
-        }
+                file,
 
-        String filePath =
-                uploadDir
-                        + file.getOriginalFilename();
-
-        file.transferTo(
-                new File(filePath)
-        );
-
-        CustomerRequest request =
-                requestRepository
-                        .findById(requestId)
-                        .orElseThrow();
-
-        UploadedDocument document =
-                new UploadedDocument();
-
-        document.setDocumentName(
-                file.getOriginalFilename()
-        );
-
-        document.setFileName(
-                file.getOriginalFilename()
-        );
-
-        document.setFilePath(
-                filePath
-        );
-
-        document.setRequest(
-                request
-        );
-        document.setResultDocument(
                 isResult
         );
-
-        documentRepository.save(
-                document
-        );
-
-        return "File uploaded successfully";
     }
-
     @GetMapping("/request/{requestId}")
     public java.util.List<UploadedDocument>
     getDocumentsByRequest(

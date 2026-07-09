@@ -8,27 +8,34 @@ import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-
+import org.springframework.beans.factory.annotation.Value;
 @Service
 public class JwtService {
 
-    private static final String SECRET =
-            "eservice1-secret-key-eservice1-secret-key-123456";
+    private final String secret;
 
-    private final SecretKey key =
-            Keys.hmacShaKeyFor(
-                    SECRET.getBytes(StandardCharsets.UTF_8)
-            );
+    private final SecretKey key;
+    private static final long EXPIRATION_TIME =
+            24 * 60 * 60 * 1000;
+    public JwtService(
+            @Value("${jwt.secret}") String secret
+    ) {
 
+        this.secret = secret;
+
+        this.key = Keys.hmacShaKeyFor(
+                secret.getBytes(StandardCharsets.UTF_8)
+        );
+
+    }
     public String generateToken(String phoneNumber) {
 
         return Jwts.builder()
                 .subject(phoneNumber)
-                .issuedAt(new Date())
-                .expiration(
+                .issuedAt(new Date()).expiration(
                         new Date(
                                 System.currentTimeMillis()
-                                        + 86400000
+                                        + EXPIRATION_TIME
                         )
                 )
                 .signWith(key)
@@ -57,13 +64,13 @@ public class JwtService {
                     .build()
                     .parseSignedClaims(token);
 
-            System.out.println("TOKEN IS VALID");
+            //System.out.println("TOKEN IS VALID");
 
             return true;
 
         } catch (Exception e) {
 
-            e.printStackTrace();
+           // e.printStackTrace();
 
             return false;
         }
